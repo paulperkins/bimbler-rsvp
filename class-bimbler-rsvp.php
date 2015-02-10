@@ -32,7 +32,7 @@ $bimbler_timezone = 'Australia/Brisbane';
 //	require_once( plugin_dir_path( __FILE__ ) . 'admin/bimbler-rsvp-settings.php' );
 
 	// Meta boxes.	
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/bimbler-rsvp-admin.php' );
+	//require_once( plugin_dir_path( __FILE__ ) . 'admin/bimbler-rsvp-admin.php' );
 //}
 
 
@@ -1570,28 +1570,48 @@ class Bimbler_RSVP {
 			error_log ('  Guests:  ' . $guests); 
 				
 			date_default_timezone_set('Australia/Brisbane');
+
+			// If this is an admin update, don't set the timestamp, and don't send an email notification.
+			if ($user_id == $current_user->ID) {
+						
+				if ( false === $wpdb->update(
+							$table_name,
+							array ( 'rsvp'    	=> $rsvp,
+									'comment'	=> $comment,
+									'time'		=> Date("Y-m-d H:i:s"),
+									'guests'	=> $guests
+							),
+							array (	'user_id'  	=> $user_id,
+									'event'		=> $event_id),
+							array ('%s', '%s', '%s', '%d')
+							)){
+					error_log ('    Could not update row: '. $wpdb->print_error());
+				} else {
+						
+					get_currentuserinfo();
+		
+					// Only send an email for 'yes' RSVPs.
+					if ('Y' == $rsvp) {
+						// Send the email confirmation.
+						Bimbler_Reminders::get_instance()->send_rsvp_confirmation($user_id, $event_id);
+					}
+				}
+				 
+			} else {
 				
-			if ( false === $wpdb->update(
+				if ( false === $wpdb->update(
 						$table_name,
 						array ( 'rsvp'    	=> $rsvp,
 								'comment'	=> $comment,
-								'time'		=> Date("Y-m-d H:i:s"),
 								'guests'	=> $guests
 						),
 						array (	'user_id'  	=> $user_id,
 								'event'		=> $event_id),
-						array ('%s', '%s', '%s', '%d')
-						)){
-				error_log ('    Could not update row: '. $wpdb->print_error());
-			}
-			//error_log ('    Could not update row: '. $wpdb->print_error());
-				
-			get_currentuserinfo();
-
-			// Admin updates will not trigger a notification.
-			if (('Y' == $rsvp) && ($user_id == $current_user->ID)) {
-				// Send the email confirmation.
-				Bimbler_Reminders::get_instance()->send_rsvp_confirmation($user_id, $event_id);
+						array ('%s', '%s', '%d')
+				)){
+							error_log ('    Could not update row: '. $wpdb->print_error());
+								
+				}
 			}
 		}
 		
