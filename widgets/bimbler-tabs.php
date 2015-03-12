@@ -44,11 +44,11 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			'comments' 	=> 'fa fa-comments-o',
 			'events'	=> 'fa fa-calendar'
 		);
-		$output = sprintf('<ul class="alx-tabs-nav group tab-count-%s">', $count);
+		$output = sprintf('	<ul class="alx-tabs-nav group tab-count-%s">', $count) . PHP_EOL;
 		foreach ( $tabs as $tab ) {
-			$output .= sprintf('<li class="alx-tab tab-%1$s"><a href="#tab-%2$s" title="%4$s"><i class="%3$s"></i><span>%4$s</span></a></li>',$tab, $tab, $icons[$tab], $titles[$tab]);
+			$output .= sprintf('		<li class="alx-tab tab-%1$s"><a href="#tab-%2$s" title="%4$s"><i class="%3$s"></i><span>%4$s</span></a></li>',$tab, $tab, $icons[$tab], $titles[$tab]) . PHP_EOL;
 		}
-		$output .= '</ul>';
+		$output .= '	</ul>' . PHP_EOL;
 		return $output;
 	}
 	

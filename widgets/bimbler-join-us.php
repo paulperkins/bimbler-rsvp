@@ -60,7 +60,8 @@ class Bimbler_Join_Us_Widget extends WP_Widget {
 		<div class="entry themeform">
 			<div class="section" style="text-align: center; display: block; width: 100%; margin-left: auto; margin-right: auto;">
 				<form>
-					<input type="button" value="Join Us" onclick="window.location.href='/wp-login.php?action=register'" class="bimbler-button">
+					<input type="button" value="Register" onclick="window.location.href='/wp-login.php?action=register'" class="bimbler-button">
+					<input type="button" value="Log in" onclick="window.location.href='/wp-login.php'" class="bimbler-button">
 				</form>
 			</div>
 		</div>

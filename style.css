@@ -1,5 +1,107 @@
 @CHARSET "US-ASCII";
 
+/* ALX */
+
+/*  base : clear
+/* ------------------------------------ */
+/*.clear { clear: both; display: block; overflow: hidden; visibility: hidden; width: 0; height: 0; }
+.group:before, .group:after { content: ""; display: table; }
+.group:after { clear: both; }
+.group { zoom: 1; }*/
+
+
+.bimbler-tab li,
+.bimbler-posts li { padding: 10px 0; border-bottom: 1px solid #e4e4e4; }
+
+#footer .bimbler-tab li,
+#footer .bimbler-posts li,
+#footer .widget_calendar th, 
+#footer .widget_calendar td { border-color: #f2f2f2; }
+
+
+/*  custom widget : bimblertabs / bimblerposts
+/* ------------------------------------ */
+.bimbler-tabs-nav { border-bottom: 3px solid #ddd; margin-bottom: 10px; text-align: center; }
+.bimbler-tabs-nav.tab-count-1 li { width: 100%; }
+.bimbler-tabs-nav.tab-count-2 li { width: 50%; }
+.bimbler-tabs-nav.tab-count-3 li { width: 33.333%; }
+.bimbler-tabs-nav.tab-count-4 li { width: 25%; }
+.bimbler-tabs-nav li { display: block; float: left; }
+.bimbler-tabs-nav li a { font-size: 18px; display: block; padding: 8px 0; margin-bottom: -3px; border-bottom: 3px solid transparent; }
+.bimbler-tabs-nav li a:hover { border-bottom-color: #ccc; }
+.bimbler-tabs-nav li.active a,
+#footer .bimbler-tabs-nav li.active a { color: #444; /* background: linear-gradient(to bottom, rgba(255,255,255,0.0) 0%, #fff 100%) 0 0 rgba(0,0,0, 0); */ }
+.bimbler-tabs-nav li a span { display: none; }
+#footer .bimbler-tabs-nav { border-bottom-color: #eee; }
+#footer .bimbler-tabs-nav li a:hover { border-bottom-color: #ddd; }
+
+.s1 .bimbler-tabs-nav li.active a,
+#footer .bimbler-tabs-nav li.active a { border-bottom-color: #3b8dbd; }
+.s2 .bimbler-tabs-nav li.active a { border-bottom-color: #82b965; }
+
+.bimbler-tab li,
+.bimbler-posts li { font-weight: 400; line-height: 1.4em; overflow: hidden; }
+.bimbler-tab a,
+.bimbler-posts a { -webkit-transition: all 0.2s ease; -moz-transition: all 0.2s ease; transition: all 0.2s ease; }
+.bimbler-tab img,
+.bimbler-posts img { display: block; width: 100%; height: auto; }
+.bimbler-tab.thumbs-enabled li{ padding-left: 94px; }
+.bimbler-tab .tab-item-thumbnail { width: 80px; margin-left: -94px; float: left; }
+.bimbler-tab .tab-item-thumbnail,
+.bimbler-posts .post-item-thumbnail { position: relative; -webkit-transition: all 1s ease; -moz-transition: all 1s ease; transition: all 1s ease; }
+.bimbler-tab.avatars-enabled li{ padding-left: 62px; }
+.bimbler-tab .tab-item-avatar { margin-left: -62px; width: 48px; float: left; -webkit-transition: all 1s ease; -moz-transition: all 1s ease; transition: all 1s ease; }
+.bimbler-tab .tab-item-category,
+.bimbler-posts .post-item-category { color: #aaa; text-transform: uppercase; font-size: 13px; }
+.bimbler-tab .tab-item-title a,
+.bimbler-tab .tab-item-comment a,
+.bimbler-posts .post-item-title a { color: #444; }
+.bimbler-tab .tab-item-category a:hover,
+.bimbler-posts .post-item-category a:hover { color: #444!important; }
+.bimbler-tab .tab-item-title,
+.bimbler-tab .tab-item-comment,
+.bimbler-posts .post-item-title { margin: 2px 0; -ms-word-wrap: break-word; word-wrap: break-word; }
+.bimbler-tab .tab-item-date,
+.bimbler-tab .tab-item-name,
+.bimbler-posts .post-item-date  { text-transform: uppercase; color: #aaa; font-size: 13px; }
+.bimbler-tab .thumb-icon.small { bottom: 8px; left: 8px; }
+.bimbler-tab li:hover .tab-item-thumbnail,
+.bimbler-tab li:hover .tab-item-avatar,
+.bimbler-posts li:hover .post-item-thumbnail { opacity: 0.75; }
+.bimbler-tab li:hover .thumb-icon,
+.bimbler-posts li:hover .thumb-icon { background: #fff; color: #111; }
+
+.s1 .bimbler-tab .tab-item-category a,
+.s1 .bimbler-posts .post-item-category a,
+.s1 .bimbler-tab li:hover .tab-item-title a,
+.s1 .bimbler-tab li:hover .tab-item-comment a,
+.s1 .bimbler-posts li:hover .post-item-title a,
+#footer .bimbler-tab .tab-item-category a,
+#footer .bimbler-posts .post-item-category a,
+#footer .bimbler-tab li:hover .tab-item-title a,
+#footer .bimbler-tab li:hover .tab-item-comment a,
+#footer .bimbler-posts li:hover .post-item-title a { color: #3b8dbd; }
+.s2 .bimbler-tab .tab-item-category a,
+.s2 .bimbler-posts .post-item-category a,
+.s2 .bimbler-tab li:hover .tab-item-title a,
+.s2 .bimbler-tab li:hover .tab-item-comment a,
+.s2 .bimbler-posts li:hover .post-item-title a { color: #82b965; }
+
+.bimbler-posts .post-item-thumbnail { margin-bottom: 10px; }
+.bimbler-posts .post-item-title { font-size: 16px; line-height: 1.5em; }
+
+.s1 .bimbler-posts .post-item-title,
+#footer .bimbler-posts .post-item-title { font-size: 18px; line-height: 1.4em; font-weight: 300; }
+.s1 .bimbler-posts .post-item-category,
+.s1 .bimbler-posts .post-item-date,
+#footer .bimbler-posts .post-item-category,
+#footer .bimbler-posts .post-item-date { font-size: 14px; }
+
+/* End ALX */
+
+
+
+
 /*.bimbler_mobile_widget {
 	position: fixed;
 	top:100px; 
@@ -1432,6 +1534,12 @@
 	/* Fix-up avatar squishing.*/
 	width: 150px !important;
 	height: 150px !important;
+
+	background-position: center;
+	background-repeat: no-repeat!important; 
+	
+	/* Make the background image cover the area of the <div>, and clip the excess */
+	background-size: cover; 
 }
 
 .bimbler-avatar-medium img {

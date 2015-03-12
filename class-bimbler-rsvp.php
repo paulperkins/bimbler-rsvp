@@ -394,18 +394,23 @@ class Bimbler_RSVP {
   		function add_stylesheet() {
   			wp_register_style( 'bimbler-rsvp-style', plugins_url('style.css', __FILE__) );
   			wp_enqueue_style( 'bimbler-rsvp-style' );
+  			
+  			wp_register_script ('bimbler-rsvp-script', plugin_dir_url( __FILE__ ) . 'js/bimbler.js', array( 'jquery' ) );
+  			wp_enqueue_script( 'bimbler-rsvp-script');
+  				
 
   			// Fancybox - profile page, etc.
   			// TODO: Move Fancybox into plugin code.
-  			wp_register_style('fancy', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/jquery.fancybox-1.3.4.css');
-			wp_register_style('fancy-ease', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/jquery.easing-1.3.pack.js');
-			wp_register_style('fancy-pack', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/jquery.fancybox-1.3.4.pack.js');
-			wp_register_style('fancy-init', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/nextgen_fancybox_init.js');
-  			
-			wp_enqueue_style( 'fancy' );
-  			wp_enqueue_style( 'fancy-ease' );
-  			wp_enqueue_style( 'fancy-pack' );
-  			wp_enqueue_style( 'fancy-init' );
+  			//wp_register_style('fancy', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/jquery.fancybox-1.3.4.css');
+  			//wp_enqueue_style( 'fancy' );
+  				
+  			//wp_register_script('fancy-ease', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/jquery.easing-1.3.pack.js');
+			//wp_register_script('fancy-pack', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/jquery.fancybox-1.3.4.pack.js');
+			//wp_register_script('fancy-init', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/nextgen_fancybox_init.js');
+
+			//wp_enqueue_script( 'fancy-ease' );
+  			//wp_enqueue_script( 'fancy-pack' );
+  			//wp_enqueue_script( 'fancy-init' ); 
 
   			wp_register_style( 'bimbler-toastr-style', plugins_url('toastr.css', __FILE__) );
   			wp_enqueue_style( 'bimbler-toastr-style' );
@@ -3247,6 +3252,21 @@ jQuery(document).ready(function($)
 		
 			date_default_timezone_set($bimbler_timezone);
 		}
+
+		/**
+		 * Returns an array of user IDs who have the administrator capability.
+		 *
+		 * @param	none
+		 */
+		function get_admin_users () {
+
+			$users = get_users (array (	'role'		=> 'administrator',
+										'fields'	=> 'ID'));
+
+			return $users;
+		}
+				
+		
 		
 		
 } // End class
