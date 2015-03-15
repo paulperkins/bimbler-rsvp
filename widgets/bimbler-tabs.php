@@ -27,6 +27,15 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 				);	
 	}
 
+	private function bimbler_get_avatar_img ($avatar) {
+	
+		preg_match( '#src=["|\'](.+)["|\']#Uuis', $avatar, $matches );
+	
+		return ( isset( $matches[1] ) && ! empty( $matches[1]) ) ?
+		(string) $matches[1] : '';
+	}
+	
+	
 /*  Create tabs-nav
 /* ------------------------------------ */
 	private function _create_tabs($tabs,$count) {
@@ -149,6 +158,11 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 						$time = $rsvp->time;
 						$avatar = get_avatar ($rsvp->user_id);//, null, null, $user_info->user_login);
 						
+						$avatar_img = $this->bimbler_get_avatar_img ($avatar);
+						
+						$avatar_div = '<div class="avatar-clipped" style="background-image: url(\'' . $avatar_img . '\');"></div>';
+						
+						
 						$num_rsvps = Bimbler_RSVP::get_instance()->count_rsvps ($post->ID);
 						
 						$start_date = tribe_get_start_date($rsvp->event, false, $date_str);
@@ -160,7 +174,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 							{
 					?>
 					<div class="tab-item-avatar">
-						<a href="/profile/<?php echo $user_info->user_nicename; //echo urlencode ($user); ?>/" title="View <?php echo $user; ?>'s profile"><?php echo $avatar; ?></a>
+						<a href="/profile/<?php echo $user_info->user_nicename; //echo urlencode ($user); ?>/" title="View <?php echo $user; ?>'s profile"><?php echo $avatar_div; ?></a>
 					</div>
 					<?php 
 							} ?>
@@ -232,11 +246,20 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			<ul id="tab-comments" class="alx-tab group <?php if($instance['comments_avatars']) { echo 'avatars-enabled'; } ?>">
 				<?php foreach ($comments as $comment): ?>
 				<li>
+				
+				<?php 
+						$avatar = get_avatar ($comment->comment_author_email);//, null, null, $user_info->user_login);
+						
+						$avatar_img = $this->bimbler_get_avatar_img ($avatar);
+						
+						$avatar_div = '<div class="avatar-clipped" style="background-image: url(\'' . $avatar_img . '\');"></div>';
+				
+				?>
 						<?php if($instance['comments_avatars']) { // Avatars enabled? ?>
 						<div class="tab-item-avatar">
 							<a href="/profile/<?php echo urlencode($comment->comment_author); ?>/" title="View <?php echo $comment->comment_author;?>'s profile.">
 								<?php //echo get_avatar($comment->comment_author_email); ?>
-								<?php echo get_avatar($comment->comment_author_email); ?>
+								<?php echo $avatar_div; //echo get_avatar($comment->comment_author_email); ?>
 							</a>
 						</div>
 						<?php } ?>
