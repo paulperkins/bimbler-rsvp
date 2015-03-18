@@ -332,6 +332,9 @@ class Bimbler_RSVP {
         	// Work around date UTC flaw.
         	add_action( 'init', array ($this, 'set_timezone'));
         	
+        	// Add style from settings rather than hard-coded in CSS.
+        	add_action('wp_head',array ($this, 'add_dynamic_style'));
+        	
         	// Widgets.
         	require_once( $this->pluginPath.'/widgets/bimbler-widgets.php' );
         	require_once( $this->pluginPath.'/widgets/bimbler-tabs.php' );
@@ -3266,6 +3269,23 @@ jQuery(document).ready(function($)
 			return $users;
 		}
 				
+		/*
+		 * Generates CSS elements which contain the 'Primary Color' setting in the Theme's 'Styling' configuration.
+		*/
+		function add_dynamic_style () {
+			 
+			$output = '<style type="text/css">' . PHP_EOL;
+			 
+			$colour = ot_get_option('color-1');
+
+			$output .= '[data-notifications]:after { background: ' . $colour . '; }' . PHP_EOL;
+			$output .= '.bimbler-button { background: ' . $colour . ' !important; }' . PHP_EOL;
+			 
+			$output .= '</style>' . PHP_EOL;
+			 
+			echo $output;
+		}
+		 
 		
 		
 		

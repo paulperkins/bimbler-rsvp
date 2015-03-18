@@ -6095,7 +6095,7 @@ a.list-group-item.active > .badge,
 //	height: 80px;
 	width: 48px;
 	height: 48px;
-	background-position: center;
+	background-position: top;
 	
 	/* Make the background image cover the area of the <div>, and clip the excess */
 	background-size: cover;
@@ -6111,7 +6111,7 @@ a.list-group-item.active > .badge,
 .avatar-profile-clipped {
 	width: 125px;
 	height: 125px;
-	background-position: center;
+	background-position: top;
 	
 	/* Make the background image cover the area of the <div>, and clip the excess */
 	background-size: cover;
