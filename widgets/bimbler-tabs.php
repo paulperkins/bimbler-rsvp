@@ -337,13 +337,16 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 	  							<div class="rsvp-checkin-indicator">   
 	
 	  							<?php 
-		  						if (!isset ($rsvpd)) {
-									echo '<div class="rsvp-indicator-none"><i class="fa-question-circle"></i></div>';
-								} else if ('Y' == $rsvpd) {
-									echo '<div class="rsvp-indicator-yes"><i class="fa-check-circle"></i></div>';
-								}
-								else {
-									echo '<div class="rsvp-indicator-no"><i class="fa-times-circle"></i></div>';
+	  							// Only show RSVP indicators to logged-in users.
+	  							if (is_user_logged_in()) {
+			  						if (!isset ($rsvpd)) {
+										echo '<div class="rsvp-indicator-none"><i class="fa-question-circle"></i></div>';
+									} else if ('Y' == $rsvpd) {
+										echo '<div class="rsvp-indicator-yes"><i class="fa-check-circle"></i></div>';
+									}
+									else {
+										echo '<div class="rsvp-indicator-no"><i class="fa-times-circle"></i></div>';
+									}
 								}
 	  							?>
   							
