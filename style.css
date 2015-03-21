@@ -6108,6 +6108,23 @@ a.list-group-item.active > .badge,
 
 }
 
+.avatar-rsvps-clipped {
+	width: 80px;
+	height: 80px;
+	background-position: top;
+	
+	/* Make the background image cover the area of the <div>, and clip the excess */
+	background-size: cover;
+	
+/* If we want rounded avatars, uncomment the three lines below. */
+ 	
+	-webkit-border-radius: 50% !important;
+	-moz-border-radius: 50% !important;
+	border-radius: 50% !important;
+
+}
+
+
 .avatar-profile-clipped {
 	width: 125px;
 	height: 125px;
