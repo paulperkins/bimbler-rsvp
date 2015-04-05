@@ -720,6 +720,30 @@ class Bimbler_RSVP {
 				
 			return $link->num;
 		}
+
+		/**
+		 * Determines if event will be starting within an hour, or finished less than an hour ago.
+		 * 
+		 * @param unknown $event_id
+		 * @return boolean
+		 */
+		function is_event_in_progress ($event_id) {
+
+			$gmt_offset = ( get_option( 'gmt_offset' ) >= '0' ) ? ' +' . get_option( 'gmt_offset' ) : " " . get_option( 'gmt_offset' );
+			$gmt_offset = str_replace( array( '.25', '.5', '.75' ), array( ':15', ':30', ':45' ), $gmt_offset );
+			 
+			// More than an hour until the start.
+			if (strtotime( tribe_get_start_date( $event_id, false, 'Y-m-d G:i' ) . $gmt_offset ) - 3600 > time() ) {
+				return false;
+			}
+			
+			// Over an hour since event finished.
+			if (strtotime( tribe_get_end_date( $event_id, false, 'Y-m-d G:i' ) . $gmt_offset ) + 3600 < time() ) {
+				return false;
+			}
+				
+			return true;
+		}
 		
   		/**
   		 * 
