@@ -1246,7 +1246,7 @@ class Bimbler_RSVP {
 			}
 				
 			$meta_gallery_id = get_post_meta ($post_id, 'bimbler_gallery_id', true);
-		
+				
 			//error_log ('Stored gallery ID: ' . $meta_gallery_id);
 			?>
 						<table id="event_page" class="eventtable">
@@ -1258,8 +1258,9 @@ class Bimbler_RSVP {
 						<td style="width:172px;"><?php echo ('Gallery:'); ?></td>
 						<td>
 							<select  id="Gallery" name="Gallery">
-								<option value=""<?php if (!isset ($meta_gallery_id)) echo ' selected="selected"' ?>>Select a gallery</option>
-							
+								<option value=""<?php if (!isset ($meta_gallery_id) && !empty ($post_object->post_title)) echo ' selected="selected"' ?>>Select a gallery</option>
+								<option value="0">Create new gallery and attach</option>
+								
 			<?php 	
 			foreach ($galleries as $gallery) {
 				$gallery_id = $gallery->gid;
@@ -1424,6 +1425,121 @@ class Bimbler_RSVP {
 			update_post_meta( $event_id, '_BimblerRidePage', $_POST['RidePage']);
 		}
 		
+		/**
+		 * create a new gallery & folder
+		 *
+		 * @class nggAdmin
+		 * @param string $name of the gallery
+		 * @param string $defaultpath
+		 * @param bool $output if the function should show an error messsage or not
+		 * @return
+		 */
+		function create_gallery($title, $defaultpath, $output = true) {
+		
+			global $user_ID;
+			$fs       = C_Fs::get_instance();
+			$storage  = C_Gallery_Storage::get_instance();
+		
+			// get the current user ID
+			get_currentuserinfo();
+		
+			//cleanup pathname
+			$name = sanitize_file_name( sanitize_title($title)  );
+			$name = apply_filters('ngg_gallery_name', $name);
+			$txt = '';
+		
+			$galleryObj = new stdClass;
+			$galleryObj->path = '';
+			$nggRoot = $storage->get_gallery_abspath($galleryObj);
+		
+			// No gallery name ?
+			if ( empty($name) ) {
+				if ($output) nggGallery::show_error( __('No valid gallery name!', 'nggallery') );
+				return false;
+			}
+		
+			$galleryObj = new stdClass;
+			$galleryObj->path = $fs->join_paths($defaultpath, $name);
+			$gallery_path = $storage->get_gallery_abspath($galleryObj);
+		
+			// check for main folder
+			if ( !is_dir($nggRoot) ) {
+				if ( !wp_mkdir_p( $nggRoot ) ) {
+					$txt  = __('Directory', 'nggallery').' <strong>' . esc_html( $nggRoot ) . '</strong> '.__('didn\'t exist. Please create first the main gallery folder ', 'nggallery').'!<br />';
+					$txt .= __('Check this link, if you didn\'t know how to set the permission :', 'nggallery').' <a href="http://codex.wordpress.org/Changing_File_Permissions">http://codex.wordpress.org/Changing_File_Permissions</a> ';
+					if ($output) nggGallery::show_error($txt);
+					return false;
+				}
+			}
+		
+			// 1. Check for existing folder
+			if ( is_dir($gallery_path) && !(SAFE_MODE) ) {
+				$suffix = 1;
+				do {
+					$alt_name = substr ($name, 0, 200 - ( strlen( $suffix ) + 1 ) ) . "_$suffix";
+					$galleryObj->path = $fs->join_paths($defaultpath, $alt_name);
+					$gallery_path = $storage->get_gallery_abspath($galleryObj);
+					$dir_check = is_dir($gallery_path);
+					$suffix++;
+				} while ( $dir_check );
+				$name = $alt_name;
+			}
+		
+			$thumb_path = $fs->join_paths($gallery_path, 'thumbs');
+		
+			// 2. Create new gallery folder
+			if ( !wp_mkdir_p ($gallery_path) )
+				$txt  = __('Unable to create directory ', 'nggallery') . esc_html($gallery_path) . '!<br />';
+		
+			// 3. Check folder permission
+			if ( !is_writeable($gallery_path) )
+				$txt .= __('Directory', 'nggallery').' <strong>' . esc_html($gallery_path) . '</strong> '.__('is not writeable !', 'nggallery').'<br />';
+		
+			// 4. Now create thumbnail folder inside
+			if ( !is_dir($thumb_path) ) {
+				if ( !wp_mkdir_p ($thumb_path) )
+					$txt .= __('Unable to create directory ', 'nggallery').' <strong>' . esc_html($thumb_path) . '/thumbs !</strong>';
+			}
+		
+			if (SAFE_MODE) {
+				$help  = __('The server setting Safe-Mode is on !', 'nggallery');
+				$help .= '<br />'.__('If you have problems, please create directory', 'nggallery').' <strong>' . esc_html($gallery_path) . '</strong> ';
+				$help .= __('and the thumbnails directory', 'nggallery').' <strong>' . esc_html($thumb_path) . '</strong> '.__('with permission 777 manually !', 'nggallery');
+				if ($output) nggGallery::show_message($help);
+			}
+		
+			// show a error message
+			if ( !empty($txt) ) {
+				if (SAFE_MODE) {
+					// for safe_mode , better delete folder, both folder must be created manually
+					@rmdir($thumb_path);
+					@rmdir($gallery_path);
+				}
+				if ($output) nggGallery::show_error($txt);
+				return false;
+			}
+		
+			// now add the gallery to the database
+			$galleryID = nggdb::add_gallery($title, $defaultpath . $name, '', 0, 0, $user_ID );
+			// here you can inject a custom function
+			do_action('ngg_created_new_gallery', $galleryID);
+		
+			// return only the id if defined
+			if ($output == false)
+				return $galleryID;
+		
+			if ($galleryID != false) {
+				$message  = __('Gallery ID %1$s successfully created. You can show this gallery in your post or page with the shortcode %2$s.<br/>','nggallery');
+				$message  = sprintf($message, $galleryID, '<strong>[nggallery id=' . $galleryID . ']</strong>');
+				$message .= '<a href="' . admin_url() . 'admin.php?page=nggallery-manage-gallery&mode=edit&gid=' . $galleryID . '" >';
+				$message .= __('Edit gallery','nggallery');
+				$message .= '</a>';
+		
+				if ($output) nggGallery::show_message($message);
+			}
+			return true;
+		}		
+		
 		/*
 		 * Saves the gallery ID as the event's meta data.
 		 * 
@@ -1431,14 +1547,37 @@ class Bimbler_RSVP {
 		 * 
 		*/
 		function tribe_events_save_gallery ($event_id) {
+			
+			global $ngg;
 				
-			if (!isset ($_POST['RidePage'])) {
+			if (!isset ($_POST['Gallery']) || (0 == strlen(($_POST['Gallery'])))) {
 				return null;
 			}
+			
+			$gallery_id = $_POST['Gallery'];
+			
+			// Create new gallery.
+			if (0 == $gallery_id) {
+				error_log ('Auto-creating new gallery for event ' . $event_id);
 				
-			// error_log ('Saving gallery page ' . $_POST['Gallery'] . ' for event '. $event_id);
+				$post_object = get_post ($event_id);
 				
-			update_post_meta( $event_id, 'bimbler_gallery_id', $_POST['Gallery']);
+				$date_str = 'Y.m.d';
+				
+				$event_date = tribe_get_start_date($event_id, false, $date_str);
+				
+				$gallery_name = $event_date . ' - ' . $post_object->post_title; 
+				
+				error_log ('Creating gallery "' . $gallery_name . '" in "' . $ngg->options['gallerypath'] . '"');
+				
+				//error_log (print_r ($ngg, true));
+				
+				$gallery_id = $this->create_gallery($gallery_name, $defaultpath, false);
+			}
+				
+			error_log ('Saving gallery page ' . $gallery_id . ' for event '. $event_id);
+				
+			update_post_meta( $event_id, 'bimbler_gallery_id', $gallery_id);
 		}
 
 		/*
