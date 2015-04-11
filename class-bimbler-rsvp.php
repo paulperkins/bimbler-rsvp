@@ -1258,7 +1258,7 @@ class Bimbler_RSVP {
 						<td style="width:172px;"><?php echo ('Gallery:'); ?></td>
 						<td>
 							<select  id="Gallery" name="Gallery">
-								<option value=""<?php if (!isset ($meta_gallery_id) && !empty ($post_object->post_title)) echo ' selected="selected"' ?>>Select a gallery</option>
+								<option value=""<?php if (!isset ($meta_gallery_id)) echo ' selected="selected"' ?>>Select a gallery</option>
 								<option value="0">Create new gallery and attach</option>
 								
 			<?php 	
@@ -1550,7 +1550,7 @@ class Bimbler_RSVP {
 			
 			global $ngg;
 				
-			if (!isset ($_POST['Gallery']) || (0 == strlen(($_POST['Gallery'])))) {
+			if (!isset ($_POST['Gallery']) || (0 == strlen(($_POST['Gallery']))) || (!is_numeric($_POST['Gallery']))) {
 				return null;
 			}
 			
@@ -1572,7 +1572,7 @@ class Bimbler_RSVP {
 				
 				//error_log (print_r ($ngg, true));
 				
-				$gallery_id = $this->create_gallery($gallery_name, $defaultpath, false);
+				$gallery_id = $this->create_gallery($gallery_name, $ngg->options['gallerypath'], false);
 			}
 				
 			error_log ('Saving gallery page ' . $gallery_id . ' for event '. $event_id);
