@@ -293,23 +293,17 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 				
 				if ( function_exists( 'tribe_get_events' ) ) {
 				
-					$args = array(
-							'eventDisplay'   => 'upcoming',
-							'posts_per_page' => $instance["events_num"]
-					);
-				
-					if ( ! empty( $category ) ) {
-						$args['tax_query'] = array(
-								array(
-										'taxonomy'         => TribeEvents::TAXONOMY,
-										'terms'            => $category,
-										'field'            => 'ID',
-										'include_children' => false
-								)
-						);
-					}
-				
-					$posts = tribe_get_events( $args );
+					$posts = tribe_get_events( array(
+							'eventDisplay' 	=> 'custom',
+							'posts_per_page'=>	$instance["events_num"],
+							'meta_query' 	=> array(
+									array(
+											'key' 		=> '_EventStartDate',
+											'value' 	=> date('Y-m-d H:i:s'), // Now onwards.
+											'compare' 	=> '>',
+											'type' 		=> 'date'
+									)
+							)));
 				}
 
 				if ($posts)
