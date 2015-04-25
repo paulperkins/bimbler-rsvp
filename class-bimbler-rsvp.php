@@ -2379,38 +2379,61 @@ jQuery(document).ready(function($)
 			return $user_list;
 		}
 		
-		//
-		// Returns an array of user IDs of those who created the post (will only ever contain a single element).
+		/*
+		 * TODO:
+		 */
 		function get_event_host_users ($post_id) {
-			
+		
 			$user_list = array ();
-				
+		
 			// Make sure we're dealing with an event post.
 			if (!tribe_is_event ($post_id))
 			{
 				return null;
 			}
 		
+			// Get the Tribe Events Organiser.
 			$organiser = tribe_get_organizer ($post_id);
-			
-			if (!isset ($organiser)) {
-				//error_log ('Could not get organiser for event '. $post_id);
-				return null;
-			}
-			
-			$organiser_user = get_user_by ('login', $organiser);
-
-			if (!isset ($organiser_user)) {
-				error_log ('Could not get user details for user '. $organiser);
-				return null;
-			}
-				
-			//error_log ('User '. $organiser_user->ID . ' is the organiser for event '. $post_id);
 		
-			$user_list[] = $organiser_user->ID;
+			if (isset ($organiser)) {
+		
+				$organiser_user = get_user_by ('login', $organiser);
+		
+				if (isset ($organiser_user)) {
+		
+					$user_list[] = $organiser_user->ID;
+		
+				}
+			}
+		
+			// Get the event hosts.
+			$meta_hosts_json = get_post_meta ($post_id, 'bimbler_ride_hosts', true);
+		
+			if (isset ($meta_hosts_json)) {
+		
+				$meta_hosts = json_decode($meta_hosts_json);
+		
+				if (isset ($meta_hosts)) {
+		
+					foreach ($meta_hosts as $host) {
+		
+						$user_list[] = $host;
+		
+					}
+				}
+			}
+		
+			/*			error_log ('Event Hosts:');
+		
+			foreach ($user_list as $host) {
+				
+			error_log ('   ' . $host);
+				
+			} */
 		
 			return $user_list;
 		}
+			
 		
 		function get_from_address () {
 			return 'website@bimblers.com';
