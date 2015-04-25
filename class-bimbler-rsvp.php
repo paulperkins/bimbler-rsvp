@@ -254,6 +254,9 @@ class Bimbler_RSVP {
         	// Show the gallery.
         	//add_action( 'tribe_events_after_html' , array( $this, 'show_gallery' ) );
         	
+        	// Show event hosts on the Event admin page.
+        	add_action( 'tribe_events_details_table_bottom' , array( $this, 'show_event_hosts' ) );
+        	 
         	// Show the rides pages section on the Event admin page.
         	add_action( 'tribe_events_details_table_bottom' , array( $this, 'show_event_admin_rides' ) );
         	 
@@ -299,6 +302,9 @@ class Bimbler_RSVP {
         	// Save RWGPS in event page.
         	add_action( 'tribe_events_update_meta', array( $this, 'tribe_events_save_rwgps' ), 30, 2 );
         	
+        	// Save hosts in event page.
+        	add_action( 'tribe_events_update_meta', array( $this, 'tribe_events_save_hosts' ), 30, 2 );
+        	
         	// TODO: Move to plugin.
         	add_action('wp_insert_comment', array ($this, 'comment_inserted'),50,2);
         	 
@@ -334,7 +340,11 @@ class Bimbler_RSVP {
         	
         	// Add style from settings rather than hard-coded in CSS.
         	add_action('wp_head',array ($this, 'add_dynamic_style'));
+
         	
+        	// Prevent cost fields from being displayed in editor.
+        	add_filter('tribe_events_admin_show_cost_field', array ($this, 'tribe_events_admin_hide_cost_field'));
+        	 
         	// Widgets.
         	require_once( $this->pluginPath.'/widgets/bimbler-widgets.php' );
         	require_once( $this->pluginPath.'/widgets/bimbler-tabs.php' );
@@ -420,7 +430,18 @@ class Bimbler_RSVP {
   			
   			wp_register_script ('bimbler-toastr-script', plugin_dir_url( __FILE__ ) . 'js/toastr.js', array( 'jquery' ) );
   			wp_enqueue_script( 'bimbler-toastr-script');
-  				
+
+  			// Select2 - event host multi-select.
+  			// TODO: Move into admin code.
+  			
+  			// Only load if an admin user.
+  			if (current_user_can( 'manage_options' )) {
+	  			wp_register_style( 'bimbler-select2-style', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css' );
+	  			wp_enqueue_style( 'bimbler-select2-style' );
+	  			
+	  			wp_register_script ('bimbler-select2-script', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js', array( 'jquery' ) );
+	  			wp_enqueue_script( 'bimbler-select2-script');
+  			}
   		}
   		
   		/*
@@ -958,7 +979,7 @@ class Bimbler_RSVP {
 		/**
 		 * Displays the RSVP buttons for the current event.
 		 * 
-		 * TODO: Remove as now redundant - logic exists in single_event.php.
+		 * Logic exists in single_event.php in parallel, in addition to here.
 		 *
 		 * @param	
 		 */
@@ -1026,7 +1047,15 @@ class Bimbler_RSVP {
 
 				if ('Y' != $rsvp->rsvp) {
 					$html .= '  <input type="checkbox" name="accept_terms" value="accept">Check here to confirm that you have read, understand and agree to the &#039;Assumption of Risk&#039; statement, that you have examined the proposed route, and that you are satisfied that you can complete the route.<br>';
-				}
+					
+/*					$html .= '
+<button class="btn btn-default popover-default" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="It\'s so simple to create a tooltop for my website!" data-original-title="Twitter Bootstrap Popover">I\'m a Popover</button>							
+'; */
+
+/*					$html .= '
+<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tooltip on top</button>							
+							';*/
+				} 
 				
 				$html .= '<div class="col-sm-5">';
 				$html .= '<span>Guests:</span>';
@@ -1088,8 +1117,6 @@ class Bimbler_RSVP {
 				$html .= '	</p></form>';
 				$html .= '</div> <!--#rsvp-respond-->';
 				$html .= '</div> <!-- #rsvp-form -->';
-				
-//				$html .= '<h3>Gallery</h3>'. wppa_albums(1);
 		
 				echo $html;
 				}
@@ -1281,6 +1308,139 @@ class Bimbler_RSVP {
 					</table>
 			<?php 
 		}
+		
+		/*
+		 * Gets list of users.
+		 *
+		 * TODO: Add to admin file.
+		 *
+		 * @param post_id
+		 */
+		
+		function get_user_list () {
+			global $wpdb;
+				
+			//$table_name = $wpdb->base_prefix . 'bimblers_rsvp';
+		
+			/*SELECT u.id,
+				m_f.meta_value AS FIRST,
+				m_l.meta_value AS LAST,
+				u.display_name AS DISPLAY
+				FROM wp_users u,
+				wp_usermeta m_f,
+				wp_usermeta m_l
+				WHERE u.id = m_f.user_id
+				AND u.id = m_l.user_id
+				AND m_f.meta_key = 'first_name'
+				AND m_l.meta_key = 'last_name'
+				ORDER BY FIRST, LAST, ID */
+		
+			$sql =  'SELECT u.id as id, ';
+			$sql .= ' m_f.meta_value AS first, ';
+			$sql .= ' m_l.meta_value AS last, ';
+			$sql .= ' u.display_name AS display ';
+			$sql .= " FROM {$wpdb->users} u, ";
+			$sql .= " {$wpdb->usermeta} m, ";
+			$sql .= " {$wpdb->usermeta} m_f, ";
+			$sql .= " {$wpdb->usermeta} m_l ";
+			$sql .= ' WHERE u.id = m.user_id ';
+			$sql .= ' AND m.meta_key = \'wp_capabilities\' ';
+			$sql .= ' AND m.meta_value NOT LIKE \'%unverified%\' ';
+			$sql .= ' AND u.id = m_l.user_id ';
+			$sql .= ' AND u.id = m_f.user_id ';
+			$sql .= ' AND m_f.meta_key = \'first_name\' ';
+			$sql .= ' AND m_l.meta_key = \'last_name\' ';
+			//		$sql .= ' AND u.id NOT IN (33) ';
+			$sql .= ' ORDER BY FIRST, LAST, ID ';
+				
+			//error_log ($sql);
+			$users = $wpdb->get_results ($sql);
+		
+			return $users;
+		}		
+
+		/*
+		 * Adds a dropdown of ride hosts to the Event Admin page.
+		 *
+		 * TODO: Add to admin file.
+		 *
+		 * @param post_id
+		 */
+		function show_event_hosts ($post_id) {
+			$slug = 'ride';
+		
+			$galleries = $this->get_galleries();
+		
+			if (!isset ($galleries)) {
+				return null;
+			}
+		
+			$meta_hosts_json = get_post_meta ($post_id, 'bimbler_ride_hosts', true);
+			
+			$meta_hosts = json_decode($meta_hosts_json);
+		
+			//error_log ('Stored gallery ID: ' . $meta_gallery_id);
+			?>
+								<table id="event_page" class="eventtable">
+									<tr>
+										<td colspan="2" class="tribe_sectionheader" ><h4><?php echo ('Ride Hosts'); ?></h4></td>
+									</tr>
+<!--  									<tr>
+										<td colspan="2" class="tribe_sectionheader" ><pre><?php //echo $meta_hosts_json; ?></pre></td>
+									</tr> -->
+									
+							<tr>
+								<td style="width:172px;"><?php echo ('Ride Hosts:'); ?></td>
+								<td>
+<?php 
+
+			$users = $this->get_user_list ();
+				
+			if (0 == $users) {
+				error_log ('Could not get list of users for dropdown.');
+			
+				echo '<div class="bimbler-error-box error"><span>Error: </span>Could not populate user dropdown.</div>';
+					
+			} else {
+				echo '<select multiple="multiple" class="bimbler-select2-event-hosts"  style="width: 350px;" id="bimbler_ride_hosts" name="bimbler_ride_hosts[]">';
+			
+				foreach ($users as $user) {
+					
+					$selected = false;
+					
+					if (isset ($meta_hosts) && in_array  ($user->id, $meta_hosts)) {
+						
+						$selected = true;
+						
+					}
+						
+					echo '<option value=' . $user->id;
+
+					if ($selected) echo ' selected="selected"';
+					
+					echo '>';
+					
+					echo  $user->first . ' ' . $user->last;
+					echo ' (' . $user->display . ')</option>';
+				}
+			
+				echo '</select>';
+			}
+?>								
+								</td>
+								</tr>
+								
+							</table>
+							
+<script type="text/javascript">
+	jQuery(document).ready(function($)
+	{
+		$(".bimbler-select2-event-hosts").select2();
+	});
+	
+</script>
+					<?php 
+				}		
 
 		/*
 		 * Adds a dropdown of ride difficulty rating to the Event Admin page.
@@ -1595,6 +1755,25 @@ class Bimbler_RSVP {
 			// error_log ('Saving RWGPS ID ' . $_POST['RWGPSID'] . ' for event '. $event_id);
 		
 			update_post_meta( $event_id, 'bimbler_rwgps_id', $_POST['RWGPSID']);
+		}
+		
+		/*
+		 * Saves the ride hosts into the event's meta data.
+		 *
+		 * TODO: Add to admin file.
+		 *
+		 */
+		function tribe_events_save_hosts ($event_id) {
+		
+			//error_log ('Saving hosts: ' . print_r($_POST['bimbler_ride_hosts'], true));
+			
+			if (!isset ($_POST['bimbler_ride_hosts'])) {
+				return null;
+			}
+			
+			$hosts = json_encode($_POST['bimbler_ride_hosts']);
+		
+			update_post_meta( $event_id, 'bimbler_ride_hosts', $hosts);
 		}
 		
 		
@@ -3449,7 +3628,13 @@ jQuery(document).ready(function($)
 			echo $output;
 		}
 		 
-		
+		/*
+		 * TODO: Add to admin file.
+		 */
+		function tribe_events_admin_hide_cost_field () {
+
+			return false;
+		}
 		
 		
 } // End class
