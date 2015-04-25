@@ -292,7 +292,7 @@ class Bimbler_Edit_Attendees_Widget extends WP_Widget {
 				$html .= '<div class="bimbler-error-box error"><span>Error: </span>Could not populate user dropdown.</div>';
 					
 			} else {
-				$html .= '<select id="rsvp_user" name="rsvp_user">';
+				$html .= '<select id="rsvp_user" name="rsvp_user" class="bimbler-select2-attendees"  style="width: 238px;">';
 				$html .= '<option>Select a person...</option>';
 				
 				foreach ($users as $user) {
@@ -329,6 +329,16 @@ class Bimbler_Edit_Attendees_Widget extends WP_Widget {
 			$html .= '</div> <!-- #rsvp-form -->';
 	
 			//				$html .= '<h3>Gallery</h3>'. wppa_albums(1);
+			
+			$html .= '
+			<script type="text/javascript">
+			jQuery(document).ready(function($)
+			{
+				$(".bimbler-select2-attendees").select2();
+			});
+			
+			</script>';
+				
 	
 			echo $html;
 	
