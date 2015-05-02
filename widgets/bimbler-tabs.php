@@ -162,7 +162,6 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 						
 						$avatar_div = '<div class="avatar-clipped" style="background-image: url(\'' . $avatar_img . '\');"></div>';
 						
-						
 						$num_rsvps = Bimbler_RSVP::get_instance()->count_rsvps ($post->ID);
 						
 						$start_date = tribe_get_start_date($rsvp->event, false, $date_str);
@@ -320,6 +319,8 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 						if (0 == $rwgps_id) {
 							$rwgps_id = 5961603; 
 						}
+
+						if ((null === $num_rsvps)) $num_rsvps = 0;
 						
 //						print_r ($post);
 					?>
