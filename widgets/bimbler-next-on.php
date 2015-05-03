@@ -212,6 +212,9 @@ public function widget($args, $instance) {
 						
 						$rsvpd = Bimbler_RSVP::get_instance()->get_current_rsvp ($post->ID);
 						$num_rsvps = Bimbler_RSVP::get_instance()->count_rsvps ($post->ID);
+						
+						if ((null === $num_rsvps)) $num_rsvps = 0;
+
 					?>
 					<li>
   						<div class="tab-item-avatar">
