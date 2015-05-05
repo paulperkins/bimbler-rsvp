@@ -1716,6 +1716,7 @@ class Bimbler_RSVP {
 			
 			$gallery_id = $_POST['Gallery'];
 			
+			
 			// Create new gallery.
 			if (0 == $gallery_id) {
 				error_log ('Auto-creating new gallery for event ' . $event_id);
@@ -3634,6 +3635,7 @@ jQuery(document).ready(function($)
 			return $users;
 		}
 				
+						
 		/*
 		 * Generates CSS elements which contain the 'Primary Color' setting in the Theme's 'Styling' configuration.
 		*/
@@ -3658,6 +3660,49 @@ jQuery(document).ready(function($)
 
 			return false;
 		}
+		
+        /*
+         * Determines if the user can execute Ajax, and checks if the Ajax Bimbler plugin is loaded.
+        */
+        function can_modify_attendance ($event_id = null) {
+
+                // Ajax module not loaded - no point in showing Ajax-enabled controls.
+/*              if (!class_exists (BIMBLER_AJAX_CLASS)) {
+                        error_log ('User can\'t run Ajax - BIMBLER_AJAX_CLASS not loaded - so cannot modify attendance.');
+                        return false;
+                } */
+
+                // Admins can do everything!
+                if (current_user_can ('manage_options')) {
+                        //error_log ('User can\'t run Ajax - not an admin.');
+                        error_log ('User is admin - can modify attendance.');
+
+                        return true;
+                }
+
+                // Event hosts can modify attendance.
+                if (isset ($event_id)) {
+
+                        global $current_user;
+                        get_currentuserinfo();
+
+                        $host_users = Bimbler_RSVP::get_instance()->get_event_host_users ($event_id);
+
+                        if (isset ($host_users) && in_array ($current_user->ID,$host_users)) {
+
+                                error_log ('This user is a host for event ' . $event_id . ' - can modify attendance.');
+
+                                return true;
+
+                        }
+                }
+
+                error_log ('Current user cannot modify attendance.');
+
+                return false;
+        }
+
+
 		
 		
 } // End class
