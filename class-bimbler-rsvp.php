@@ -3674,8 +3674,7 @@ jQuery(document).ready(function($)
 
                 // Admins can do everything!
                 if (current_user_can ('manage_options')) {
-                        //error_log ('User can\'t run Ajax - not an admin.');
-                        error_log ('User is admin - can modify attendance.');
+                        //error_log ('User is admin - can modify attendance.');
 
                         return true;
                 }
@@ -3690,14 +3689,14 @@ jQuery(document).ready(function($)
 
                         if (isset ($host_users) && in_array ($current_user->ID,$host_users)) {
 
-                                error_log ('This user is a host for event ' . $event_id . ' - can modify attendance.');
+                                //error_log ('This user is a host for event ' . $event_id . ' - can modify attendance.');
 
                                 return true;
 
                         }
                 }
 
-                error_log ('Current user cannot modify attendance.');
+                //error_log ('Current user cannot modify attendance.');
 
                 return false;
         }
