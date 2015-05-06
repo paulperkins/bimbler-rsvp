@@ -1913,12 +1913,12 @@ class Bimbler_RSVP {
 				
 			$table_name = $wpdb->base_prefix . $rsvp_db_table;
 			
-			error_log ('Updating RSVP data');
-			error_log ('  User:    ' . $user_id);
-			error_log ('  RSVP:    ' . $rsvp);
-			error_log ('  Event:   ' . $event_id);
-			error_log ('  Comment: ' . $comment);
-			error_log ('  Guests:  ' . $guests); 
+			//error_log ('Updating RSVP data');
+			//error_log ('  User:    ' . $user_id);
+			//error_log ('  RSVP:    ' . $rsvp);
+			//error_log ('  Event:   ' . $event_id);
+			//error_log ('  Comment: ' . $comment);
+			//error_log ('  Guests:  ' . $guests); 
 				
 			date_default_timezone_set('Australia/Brisbane');
 
