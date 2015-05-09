@@ -290,20 +290,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 				
 				<?php
 				
-				if ( function_exists( 'tribe_get_events' ) ) {
-				
-					$posts = tribe_get_events( array(
-							'eventDisplay' 	=> 'custom',
-							'posts_per_page'=>	$instance["events_num"],
-							'meta_query' 	=> array(
-									array(
-											'key' 		=> '_EventEndDate',
-											'value' 	=> date('Y-m-d H:i:s'), // Now onwards.
-											'compare' 	=> '>=',
-											'type' 		=> 'date'
-									)
-							)));
-				}
+				$posts = Bimbler_RSVP::get_instance()->get_upcoming_events($instance["events_num"]);
 
 				if ($posts)
 				{
