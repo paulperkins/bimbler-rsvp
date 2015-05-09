@@ -299,7 +299,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 									array(
 											'key' 		=> '_EventStartDate',
 											'value' 	=> date('Y-m-d H:i:s'), // Now onwards.
-											'compare' 	=> '>',
+											'compare' 	=> '>=',
 											'type' 		=> 'date'
 									)
 							)));
