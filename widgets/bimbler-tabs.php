@@ -297,7 +297,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 							'posts_per_page'=>	$instance["events_num"],
 							'meta_query' 	=> array(
 									array(
-											'key' 		=> '_EventStartDate',
+											'key' 		=> '_EventEndDate',
 											'value' 	=> date('Y-m-d H:i:s'), // Now onwards.
 											'compare' 	=> '>=',
 											'type' 		=> 'date'
