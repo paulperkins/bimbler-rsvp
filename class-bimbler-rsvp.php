@@ -2819,6 +2819,8 @@ jQuery(document).ready(function($)
 		// Post title
 		// Comment user
 		// Comment text
+		// TODO: Move this to Notifications plugin.
+		//
 		
 		function build_new_user_notification_email ($user_to) {
 			$slug = 'email-template-new-user'; // TODO: Move this into settings.
@@ -3701,7 +3703,77 @@ jQuery(document).ready(function($)
                 return false;
         }
 
+		function get_next_event () {
+			// Fix-up timezone bug.
+			date_default_timezone_set('Australia/Brisbane');
 
+			$posts = tribe_get_events(array(
+					'eventDisplay'          => 'all',
+					//'start_date'          => date('Y-m-d', strtotime('1 days')), // From tomorrow - we should already be at today's ride.
+					'start_date'            => date('Y-m-d H:i:s'), // From now, not midnight - we should already be at today's ride.
+					'posts_per_page'        => 1) ); 
+
+			return $posts;
+		}
+		
+		function get_upcoming_events ($events_per_page) {
+			
+			// Fix-up timezone bug.
+			date_default_timezone_set('Australia/Brisbane');
+			
+			$posts = tribe_get_events( array(
+					'eventDisplay' 	=> 'custom',
+					'posts_per_page'=>	$events_per_page,
+					'meta_query' 	=> array(
+							array(
+									//'key' 		=> '_EventStartDate',
+									'key' 		=> '_EventEndDate',		// Events which will be ending after now - show in-flight events.
+									'value' 	=> date('Y-m-d H:i:s'), // Now onwards.
+									'compare' 	=> '>',
+									'type' 		=> 'date'
+							),
+							'orderby' 	=> '_EventEndDate',
+							'order'	 	=> 'ASC'
+					)));
+	
+			return $posts;
+		}
+		
+		function get_past_events ($events_per_page) {
+		
+			// Fix-up timezone bug.
+			date_default_timezone_set('Australia/Brisbane');
+		
+			$posts = tribe_get_events( array(
+					'eventDisplay' 	=> 'custom',
+					'posts_per_page'=>	$events_per_page,
+					'order'			=> 'DESC', 
+					'meta_query' 	=> array(
+							array(
+									'key' 		=> '_EventStartDate',
+									'value' 	=> date('Y-m-d H:i:s'), // Now onwards.
+									'compare' 	=> '<=',
+									'type' 		=> 'date'
+							)
+					)));
+			
+			return $posts;
+		}
+		
+		function get_added_events ($events_per_page) {
+		
+			// Fix-up timezone bug.
+			date_default_timezone_set('Australia/Brisbane');
+				
+			$posts = tribe_get_events( array(
+					'eventDisplay'   => 'all', //'upcoming',
+					'posts_per_page' => $events_per_page,
+					'orderby'		=> 'post_date',
+					'order'			=> 'DESC'
+					));
+			
+			return $posts;
+		}
 		
 		
 } // End class
