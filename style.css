@@ -4,10 +4,10 @@
 
 /*  base : clear
 /* ------------------------------------ */
-/*.clear { clear: both; display: block; overflow: hidden; visibility: hidden; width: 0; height: 0; }
+.clear { clear: both; display: block; overflow: hidden; visibility: hidden; width: 0; height: 0; }
 .group:before, .group:after { content: ""; display: table; }
-.group:after { clear: both; }
-.group { zoom: 1; }*/
+.group:after { clear: both; } 
+.group { zoom: 1; }
 
 
 
@@ -28,7 +28,7 @@
 .bimbler-tabs-nav.tab-count-3 li { width: 33.333%; }
 .bimbler-tabs-nav.tab-count-4 li { width: 25%; }
 .bimbler-tabs-nav li { display: block; float: left; }
-.bimbler-tabs-nav li a { font-size: 18px; display: block; padding: 8px 0; margin-bottom: -3px; border-bottom: 3px solid transparent; }
+.bimbler-tabs-nav li a { font-size: 18px; display: block; padding: 8px 0; margin-bottom: -3px; border-bottom: 3px solid transparent; border-top-style: none;}
 .bimbler-tabs-nav li a:hover { border-bottom-color: #ccc; }
 .bimbler-tabs-nav li.active a,
 #footer .bimbler-tabs-nav li.active a { color: #444; /* background: linear-gradient(to bottom, rgba(255,255,255,0.0) 0%, #fff 100%) 0 0 rgba(0,0,0, 0); */ }
@@ -36,7 +36,7 @@
 #footer .bimbler-tabs-nav { border-bottom-color: #eee; }
 #footer .bimbler-tabs-nav li a:hover { border-bottom-color: #ddd; }
 
-.s1 .bimbler-tabs-nav li.active a,
+.bimbler-tabs-nav li.active a,
 #footer .bimbler-tabs-nav li.active a { border-bottom-color: #dd9933; }
 .s2 .bimbler-tabs-nav li.active a { border-bottom-color: #82b965; }
 
@@ -72,16 +72,17 @@
 .bimbler-tab li:hover .thumb-icon,
 .bimbler-posts li:hover .thumb-icon { background: #fff; color: #111; }
 
-.s1 .bimbler-tab .tab-item-category a,
-.s1 .bimbler-posts .post-item-category a,
-.s1 .bimbler-tab li:hover .tab-item-title a,
-.s1 .bimbler-tab li:hover .tab-item-comment a,
-.s1 .bimbler-posts li:hover .post-item-title a,
+.bimbler-tab .tab-item-category a,
+.bimbler-posts .post-item-category a,
+.bimbler-tab li:hover .tab-item-title a,
+.bimbler-tab li:hover .tab-item-comment a,
+.bimbler-posts li:hover .post-item-title a,
 #footer .bimbler-tab .tab-item-category a,
 #footer .bimbler-posts .post-item-category a,
 #footer .bimbler-tab li:hover .tab-item-title a,
 #footer .bimbler-tab li:hover .tab-item-comment a,
 #footer .bimbler-posts li:hover .post-item-title a { color: #dd9933; }
+
 .s2 .bimbler-tab .tab-item-category a,
 .s2 .bimbler-posts .post-item-category a,
 .s2 .bimbler-tab li:hover .tab-item-title a,
@@ -91,10 +92,10 @@
 .bimbler-posts .post-item-thumbnail { margin-bottom: 10px; }
 .bimbler-posts .post-item-title { font-size: 16px; line-height: 1.5em; }
 
-.s1 .bimbler-posts .post-item-title,
+.bimbler-posts .post-item-title,
 #footer .bimbler-posts .post-item-title { font-size: 18px; line-height: 1.4em; font-weight: 300; }
-.s1 .bimbler-posts .post-item-category,
-.s1 .bimbler-posts .post-item-date,
+.bimbler-posts .post-item-category,
+.bimbler-posts .post-item-date,
 #footer .bimbler-posts .post-item-category,
 #footer .bimbler-posts .post-item-date { font-size: 14px; }
 
