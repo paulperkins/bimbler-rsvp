@@ -3645,7 +3645,8 @@ jQuery(document).ready(function($)
 			 
 			$output = '<style type="text/css">' . PHP_EOL;
 			 
-			$colour = ot_get_option('color-1');
+			//$colour = ot_get_option('color-1');
+			$colour = '#dd9933';
 
 			$output .= '[data-notifications]:after { background: ' . $colour . '; }' . PHP_EOL;
 			$output .= '.bimbler-button { background: ' . $colour . ' !important; }' . PHP_EOL;
