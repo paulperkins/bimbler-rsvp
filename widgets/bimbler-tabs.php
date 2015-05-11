@@ -53,9 +53,9 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			'comments' 	=> 'fa fa-comments-o',
 			'events'	=> 'fa fa-calendar'
 		);
-		$output = sprintf('	<ul class="alx-tabs-nav group tab-count-%s">', $count) . PHP_EOL;
+		$output = sprintf('	<ul class="bimbler-tabs-nav group tab-count-%s">', $count) . PHP_EOL;
 		foreach ( $tabs as $tab ) {
-			$output .= sprintf('		<li class="alx-tab tab-%1$s"><a href="#tab-%2$s" title="%4$s"><i class="%3$s"></i><span>%4$s</span></a></li>',$tab, $tab, $icons[$tab], $titles[$tab]) . PHP_EOL;
+			$output .= sprintf('		<li class="bimbler-tab tab-%1$s"><a href="#tab-%2$s" title="%4$s"><i class="%3$s"></i><span>%4$s</span></a></li>',$tab, $tab, $icons[$tab], $titles[$tab]) . PHP_EOL;
 		}
 		$output .= '	</ul>' . PHP_EOL;
 		return $output;
@@ -106,7 +106,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 	
 ?>
 
-	<div class="alx-tabs-container" <?php echo $scroller_style; ?>>
+	<div class="bimbler-tabs-container" <?php echo $scroller_style; ?>>
 
 		<?php 
 			// RSVPs.
@@ -132,7 +132,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 				{
 		?>			
 				
-			<ul id="tab-rsvps" class="alx-tab group <?php if($instance['rsvps_thumbs']) { echo 'avatars-enabled'; } ?>">
+			<ul id="tab-rsvps" class="bimbler-tab group <?php if($instance['rsvps_thumbs']) { echo 'avatars-enabled'; } ?>">
 				<?php
 
 				if (!is_user_logged_in()) {
@@ -204,7 +204,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			<?php $recent=new WP_Query(); ?>
 			<?php $recent->query('showposts='.$instance["recent_num"].'&cat='.$instance["recent_cat_id"].'&ignore_sticky_posts=1');?>
 			
-			<ul id="tab-recent" class="alx-tab group <?php if($instance['recent_thumbs']) { echo 'avatars-enabled'; } ?>">
+			<ul id="tab-recent" class="bimbler-tab group <?php if($instance['recent_thumbs']) { echo 'avatars-enabled'; } ?>">
 				<?php while ($recent->have_posts()): $recent->the_post(); ?>
 				<li>
 					<?php if($instance['recent_thumbs']) { // Thumbnails enabled? ?>
@@ -242,7 +242,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 
 			<?php $comments = get_comments(array('number'=>$instance["comments_num"],'status'=>'approve','post_status'=>'publish')); ?>
 			
-			<ul id="tab-comments" class="alx-tab group <?php if($instance['comments_avatars']) { echo 'avatars-enabled'; } ?>">
+			<ul id="tab-comments" class="bimbler-tab group <?php if($instance['comments_avatars']) { echo 'avatars-enabled'; } ?>">
 				<?php foreach ($comments as $comment): ?>
 				<li>
 				
@@ -285,8 +285,8 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			if(!empty ($instance['events_enable'])) { // Tags enabled? 
 				
 				?>
-<!-- 				<ul id="tab-events" class="alx-tab group"> -->
-				<ul id="tab-events" class="alx-tab group avatars-enabled">
+<!-- 				<ul id="tab-events" class="bimbler-tab group"> -->
+				<ul id="tab-events" class="bimbler-tab group avatars-enabled">
 				
 				<?php
 				
