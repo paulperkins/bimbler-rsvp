@@ -5,7 +5,7 @@ This WordPress plugin is part of the Bimbler RSVP suite, designed to add member 
 
 Please note a few things:
  - The RSVP plugins are not yet in a state to be used in the wild
- - The plusing depend heavily on the Huemann theme and The Events Calendar plugin
+ - The plugins depend heavily on the Huemann theme and The Events Calendar plugin
 
 I'll be releasing the plugins en-masse once I've made the code portable (and of quality to be distributable).
 
