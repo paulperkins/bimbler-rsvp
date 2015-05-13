@@ -128,8 +128,10 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 				
 				//error_log ('Returned '. count ($rsvps) .' RSVPs.');
 				
-				if ($rsvps && (count ($rsvps) > 0))	
-				{
+				// Check if The Events Calendar is loaded.
+				if (!function_exists ('tribe_get_events')) {
+					echo '<div class="bimbler-alert-box error"><span>Error: </span>This plugin requires <a href="https://theeventscalendar.com/product/wordpress-events-calendar/" targer="_external">The Events Calendar</a> to work.</div>';
+				} else if ($rsvps && (count ($rsvps) > 0))	{
 		?>			
 				
 			<ul id="tab-rsvps" class="bimbler-tab group <?php if($instance['rsvps_thumbs']) { echo 'avatars-enabled'; } ?>">
@@ -289,60 +291,66 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 				<ul id="tab-events" class="bimbler-tab group avatars-enabled">
 				
 				<?php
-				
-				$posts = Bimbler_RSVP::get_instance()->get_upcoming_events($instance["events_num"]);
-
-				if ($posts)
-				{
-					foreach ($posts as $post)
-					{
-						$event_date = $post->EventStartDate;
-						
-						$rsvpd = Bimbler_RSVP::get_instance()->get_current_rsvp ($post->ID);
-						$num_rsvps = Bimbler_RSVP::get_instance()->count_rsvps ($post->ID);
-						$rwgps_id = Bimbler_RSVP::get_instance()->get_rwgps_id ($post->ID);
-						
-						// Nothing found, use Tomewin.
-						if (0 == $rwgps_id) {
-							$rwgps_id = 5961603; 
-						}
-
-						if ((null === $num_rsvps)) $num_rsvps = 0;
-						
-//						print_r ($post);
-					?>
-					<li class="AvatarListSide">
-						<div class="tab-item-avatar">
-	  						<div class="rsvp-checkin-container">
-			 					<img src="http://assets2.ridewithgps.com/routes/<?php echo $rwgps_id; ?>/thumb.png" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">
-	  						
-	  							<div class="rsvp-checkin-indicator">   
+					
+				// Check if The Events Calendar is loaded.
+				if (!function_exists ('tribe_get_events')) {
+					echo '<div class="bimbler-alert-box error"><span>Error: </span>This plugin requires <a href="https://theeventscalendar.com/product/wordpress-events-calendar/" targer="_external">The Events Calendar</a> to work.</div>';
+				} else {
+					
+					$posts = Bimbler_RSVP::get_instance()->get_upcoming_events($instance["events_num"]);
 	
-	  							<?php 
-	  							// Only show RSVP indicators to logged-in users.
-	  							if (is_user_logged_in()) {
-			  						if (!isset ($rsvpd)) {
-										echo '<div class="rsvp-indicator-none"><i class="fa-question-circle"></i></div>';
-									} else if ('Y' == $rsvpd) {
-										echo '<div class="rsvp-indicator-yes"><i class="fa-check-circle"></i></div>';
+					if ($posts)
+					{
+						foreach ($posts as $post)
+						{
+							$event_date = $post->EventStartDate;
+							
+							$rsvpd = Bimbler_RSVP::get_instance()->get_current_rsvp ($post->ID);
+							$num_rsvps = Bimbler_RSVP::get_instance()->count_rsvps ($post->ID);
+							$rwgps_id = Bimbler_RSVP::get_instance()->get_rwgps_id ($post->ID);
+							
+							// Nothing found, use Tomewin.
+							if (0 == $rwgps_id) {
+								$rwgps_id = 5961603; 
+							}
+	
+							if ((null === $num_rsvps)) $num_rsvps = 0;
+							
+	//						print_r ($post);
+						?>
+						<li class="AvatarListSide">
+							<div class="tab-item-avatar">
+		  						<div class="rsvp-checkin-container">
+				 					<img src="http://assets2.ridewithgps.com/routes/<?php echo $rwgps_id; ?>/thumb.png" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">
+		  						
+		  							<div class="rsvp-checkin-indicator">   
+		
+		  							<?php 
+		  							// Only show RSVP indicators to logged-in users.
+		  							if (is_user_logged_in()) {
+				  						if (!isset ($rsvpd)) {
+											echo '<div class="rsvp-indicator-none"><i class="fa-question-circle"></i></div>';
+										} else if ('Y' == $rsvpd) {
+											echo '<div class="rsvp-indicator-yes"><i class="fa-check-circle"></i></div>';
+										}
+										else {
+											echo '<div class="rsvp-indicator-no"><i class="fa-times-circle"></i></div>';
+										}
 									}
-									else {
-										echo '<div class="rsvp-indicator-no"><i class="fa-times-circle"></i></div>';
-									}
-								}
-	  							?>
-  							
+		  							?>
+	  							
+									</div>
 								</div>
+							</div> 
+							<div class="tab-item-inner group">
+								<p class="tab-item-title"><a href="<?php echo tribe_get_event_link($post); ?>" rel="bookmark" title="<?php echo $post->post_title; ?>"><?php echo $post->post_title; ?></a></p>
+								<?php if($instance['tabs_date']) { ?><p class="tab-item-date"><?php echo date ($day_time_str, strtotime($event_date)); ?>, <?php echo $num_rsvps; ?> attending.</p><?php } ?>
 							</div>
-						</div> 
-						<div class="tab-item-inner group">
-							<p class="tab-item-title"><a href="<?php echo tribe_get_event_link($post); ?>" rel="bookmark" title="<?php echo $post->post_title; ?>"><?php echo $post->post_title; ?></a></p>
-							<?php if($instance['tabs_date']) { ?><p class="tab-item-date"><?php echo date ($day_time_str, strtotime($event_date)); ?>, <?php echo $num_rsvps; ?> attending.</p><?php } ?>
-						</div>
-					</li>
-				<?php 
-					} // foreach
-				} // if posts				
+						</li>
+					<?php 
+						} // foreach
+					} // if posts	
+				}// TEC loaded.			
 				?>
 				</ul>
 		<?php } ?>
