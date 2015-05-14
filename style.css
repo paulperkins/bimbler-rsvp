@@ -6142,4 +6142,51 @@ a.list-group-item.active > .badge,
 
 }
 
+/* PP - Google map fix: make the zoom controls visible. */
+.tribe-events-venue-map img { max-width: inherit !important; }
+.bimbler-locator img { max-width: inherit !important; }
+#bimbler-next-ride-map img { max-width: inherit !important; }
+
+
+/* PP - Make NGG responsive. */
+.ngg-slideshow, .ngg-slideshow img{
+  max-width:100%;
+  height: auto;
+}
+
+.ngg-galleryoverview, .ngg-galleryoverview img{
+  max-width:100%;
+  height: auto;
+}
+
+.featured,
+.featured.flexslider { 
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	border-bottom: 0px;}
+	
+.bimbler-tabs-nav.tab-count-5 li { width: 20%; }
+
+.bimbler-tabs-nav li.active a { border-bottom-color: #dd9933;  }
+.post-comments span:before { border-right-color: #dd9933; }				
+
+
+.bimbler-tabs-nav li.active a, #footer .bimbler-tabs-nav li.active a, .comment-tabs li.active a, .wp-pagenavi a:hover, .wp-pagenavi a:active, .wp-pagenavi span.current 
+{
+border-bottom-color: #dd9933!important;
+}
+
+.bimbler-tabs-nav li a
+ { color: #777777!important;}
+ 
+.bimbler-badge a i
+ { font-size: 30px;}
+ 
+.bimbler-tab img {display:inline; width: auto; } 
+
+
+/* Prevent tribe dropdown Z-ordering itself above the menu bar. */
+#tribe-bar-views .tribe-bar-views-list {
+  z-index: 50; 
+}
 
