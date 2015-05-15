@@ -1922,6 +1922,7 @@
    	left: 69%; 
 	font-size: 250%;
  	font-family: FontAwesome;
+     font-style: normal;
 	z-index: 10;
 } 
 
@@ -1950,7 +1951,8 @@
    	left: 38px; 
 	font-size: 150%;
  	font-family: FontAwesome;
-	z-index: 99;
+  font-style: normal;
+  	z-index: 99;
 } 
 
 .rsvp-indicator-yes i {
@@ -1988,7 +1990,7 @@
 	color: red;
  	font-family: FontAwesome;
  	text-colour: #ffffff !important; 
- 	text-decoration:  solid rgb(255, 0, 0);
+  text-decoration:  solid rgb(255, 0, 0);
 	z-index: 99;
 	height: 100px;
 } 
