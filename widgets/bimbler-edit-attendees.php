@@ -305,7 +305,7 @@ class Bimbler_Edit_Attendees_Widget extends WP_Widget {
 			
 			//$html .= '<div class="col-sm-5">';
 			$html .= '<span>Guests:</span>';
-			$html .= '		<select class="form-control" id="rsvp_guests" name="rsvp_guests">';
+			$html .= '		<select class="xform-control" id="rsvp_guests" name="rsvp_guests">';
 			
 			$i = 0;
 			for ($i = 0; $i < 5; $i++) {
@@ -315,6 +315,7 @@ class Bimbler_Edit_Attendees_Widget extends WP_Widget {
 			
 			//$html .= '</div>';
 					
+			$html .= '<br>';
 				
 			$html .= '  <input name="submit" type="submit" class="button-primary" id="submit" value="RSVP Yes" style="background: #6aab2d;">';
 			$html .= '<input type="hidden" name="rsvp_post_id" id="rsvp_post_id" value="'. $post_id .'">';
