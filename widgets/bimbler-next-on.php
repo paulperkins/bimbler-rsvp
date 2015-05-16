@@ -37,9 +37,9 @@ class Bimbler_NextOn_Widget extends WP_Widget {
 			'future'	=> 'fa fa-calendar',
 			'past'		=> 'fa fa-clock-o'
 			);
-		$output = sprintf('<ul class="alx-tabs-nav group tab-count-%s">', $count);
+		$output = sprintf('<ul class="bimbler-tabs-nav group tab-count-%s">', $count);
 		foreach ( $tabs as $tab ) {
-			$output .= sprintf('<li class="alx-tab tab-%1$s"><a href="#tab-%2$s" title="%4$s"><i class="%3$s"></i><span>%4$s</span></a></li>',$tab, $tab, $icons[$tab], $titles[$tab]);
+			$output .= sprintf('<li class="bimbler-tab tab-%1$s"><a href="#tab-%2$s" title="%4$s"><i class="%3$s"></i><span>%4$s</span></a></li>',$tab, $tab, $icons[$tab], $titles[$tab]);
 		}
 		$output .= '</ul>';
 		return $output;
@@ -169,7 +169,7 @@ public function widget($args, $instance) {
 	
 ?>
 
-	<div class="alx-tabs-container">
+	<div class="bimbler-tabs-container">
 
 		<?php 
 			// Future.
@@ -177,7 +177,7 @@ public function widget($args, $instance) {
 			if($instance['future_enable']) { // Enabled? 
 				
 				?>
-				<ul id="tab-future" class="alx-tab group avatars-enabled">
+				<ul id="tab-future" class="bimbler-tab group avatars-enabled">
 				
 				<?php
 				
@@ -254,7 +254,7 @@ public function widget($args, $instance) {
 			if($instance['past_enable']) { // Enabled? 
 				
 				?>
-				<ul id="tab-past" class="alx-tab group avatars-enabled">
+				<ul id="tab-past" class="bimbler-tab group avatars-enabled">
 				
 				<?php
 				
@@ -324,7 +324,7 @@ public function widget($args, $instance) {
 		
 		
 		
-	</div> <!-- alx-tabs-container -->
+	</div> <!-- bimbler-tabs-container -->
 
 <?php
 		$output .= ob_get_clean();
