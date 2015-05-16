@@ -107,8 +107,10 @@ class Bimbler_Download_GPS_Widget extends WP_Widget {
 		$post_id = get_queried_object_id();
 	
 		$rwgps_id = Bimbler_RSVP::get_instance()->get_rwgps_id ($post_id);
+		
+		error_log ('RWGPS ID ' . $rwgps_id);
 
-		if (0 == $rsgps_id) { return; }
+		if (0 == $rwgps_id) { return; }
 
 		$title  = apply_filters( 'widget_title', empty( $instance['title'] ) ? ' ' : $instance['title'], $instance, $this->id_base );
 		
@@ -124,19 +126,17 @@ class Bimbler_Download_GPS_Widget extends WP_Widget {
 //		echo '		    <h3 id="reply-title" class="comment-reply-title">GPS Downloads</h3>';
 		?>
 
-
-?>
 		<div class="entry themeform">
 			<div class="section" style="text-align: left; display: block; width: 100%; margin-left: auto; margin-right: auto;">
 				<form>
 					<div class="row" style="padding-top: 2px;">
-						<div class="col-sm-6">Garmin TCX:</div><div class="col-sm-3"><input type="button" class="bimbler-button" title="Ideal for turn-by-turn navigation on Garmin units." value="Download" onclick="window.location.href='http://ridewithgps.com/routes/<?php echo $rwgps_id; ?>.tcx'" style="xbackground: #dd9933 !important;"></div>
+						<div class="col-sm-4">Garmin TCX:</div><div class="col-sm-5"><input type="button"  class="bimbler-button" title="Ideal for turn-by-turn navigation on Garmin units." value="Download" onclick="window.location.href='http://ridewithgps.com/routes/<?php echo $rwgps_id; ?>.tcx'" style="xbackground: #dd9933 !important;"></div>
 					</div>
 					<div class="row" style="padding-top: 2px;">
-						<div class="col-sm-6">GPX:</div><div class="col-sm-3"><input type="button" title="For enabling track displays on non-Garmin units." value="Download" onclick="window.location.href='http://ridewithgps.com/routes/<?php echo $rwgps_id; ?>.gpx?sub_format=track'" class="bimbler-button"></div>
+						<div class="col-sm-4">GPX:</div><div class="col-sm-5"><input type="button" title="For enabling track displays on non-Garmin units." value="Download" onclick="window.location.href='http://ridewithgps.com/routes/<?php echo $rwgps_id; ?>.gpx?sub_format=track'" class="bimbler-button"></div>
 					</div>
 					<div class="row" style="padding-top: 2px;">
-						<div class="col-sm-6">Google KML:</div><div class="col-sm-3"><input type="button" title="For viewing in Google Earth." value="Download" onclick="window.location.href='http://ridewithgps.com/routes/<?php echo $rwgps_id; ?>.kml'" class="bimbler-button"></div>
+						<div class="col-sm-4">Google KML:</div><div class="col-sm-5"><input type="button" title="For viewing in Google Earth." value="Download" onclick="window.location.href='http://ridewithgps.com/routes/<?php echo $rwgps_id; ?>.kml'" class="bimbler-button"></div>
 					</div>
 				</form>
 			</div>
