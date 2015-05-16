@@ -126,6 +126,13 @@ public function widget($args, $instance) {
 		{
 			// Fix bug for erroneously showing widget on front page - user get_queried_object_id.
 			$post_id = get_queried_object_id();
+		
+			// Set up the ride page ID.
+			$meta_ride_page = get_post_meta ($post_id, '_BimblerRidePage', true);
+			
+			if (isset ($meta_ride_page) && (0 != strlen ($meta_ride_page))) {
+				$post_id = $meta_ride_page;
+			}
 
 			// Get the post ID, and determine if it's a ride or not.
 			if (!$this->can_display_nexton ($post_id))
