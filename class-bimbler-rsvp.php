@@ -355,6 +355,7 @@ class Bimbler_RSVP {
         	require_once( $this->pluginPath.'/widgets/bimbler-mobile-widget.php' );
         	require_once( $this->pluginPath.'/widgets/bimbler-edit-attendees.php' );
         	require_once( $this->pluginPath.'/widgets/bimbler-join-us.php' );
+        	require_once( $this->pluginPath.'/widgets/bimbler-download-gps.php' );
         	 
         	add_action( 'widgets_init', array ($this, 'register_bimbler_rsvp_widget') );
         	add_action( 'widgets_init', array ($this, 'register_bimbler_tabs_widget') );
@@ -365,6 +366,7 @@ class Bimbler_RSVP {
         	add_action( 'widgets_init', array ($this, 'register_bimbler_mobile_widget') );
         	add_action( 'widgets_init', array ($this, 'register_bimbler_edit_attendees_widget') );
         	add_action( 'widgets_init', array ($this, 'register_bimbler_join_us_widget') );
+        	add_action( 'widgets_init', array ($this, 'register_bimbler_download_gps_widget') );
         	 
 		} // End constructor.
 		
@@ -3231,6 +3233,10 @@ jQuery(document).ready(function($)
 		
 		function register_bimbler_join_us_widget() {
 			register_widget( 'Bimbler_Join_Us_Widget' );
+		}
+
+		function register_bimbler_download_gps_widget() {
+			register_widget( 'Bimbler_Download_GPS_Widget' );
 		}
 		
 		function display_admin_options_page () {
