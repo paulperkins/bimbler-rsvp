@@ -98,10 +98,6 @@ class Bimbler_Download_GPS_Widget extends WP_Widget {
 		
 		global $wpdb;
 		global $wp_query;
-
-		//global $rsvp_db_table;
-		
-		if (!current_user_can( 'manage_options')) { return; } 
 		
 		// Fix bug for erroneously showing widget on front page - user get_queried_object_id.
 		$post_id = get_queried_object_id();
@@ -122,8 +118,6 @@ class Bimbler_Download_GPS_Widget extends WP_Widget {
 
 		ob_start();
 		
-//		echo '<div id="rsvp-list" class="widget">';
-//		echo '		    <h3 id="reply-title" class="comment-reply-title">GPS Downloads</h3>';
 		?>
 
 		<div class="entry themeform">
@@ -142,11 +136,6 @@ class Bimbler_Download_GPS_Widget extends WP_Widget {
 			</div>
 		</div>
 <?php 			
-		
-		
-//		echo '</div>';
-				
-		
 
 		$output .= ob_get_clean();
 		$output .= $after_widget."\n";
