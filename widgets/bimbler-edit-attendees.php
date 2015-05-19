@@ -99,18 +99,12 @@ class Bimbler_Edit_Attendees_Widget extends WP_Widget {
 		global $wpdb;
 		global $wp_query;
 
-		//global $rsvp_db_table;
+		// Need to be admin to edit attendance.		
+		if (!Bimbler_RSVP::get_instance()->can_modify_attendance(get_queried_object_id())) { return; }
 		
-		if (!current_user_can( 'manage_options')) { return; } 
-		
-//		$post_id = get_queried_object_id();
-		
-//		if (!$this->can_display_this ($post_id)) { return null; }
-				
-//		if ( is_cart() || is_checkout() ) return;
+		// Don't show if not on an actual event page.
+		if (!(tribe_is_event() && is_single())) { return; }
 			
-		// Fix bug for erroneously showing widget on front page - user get_queried_object_id.
-
 		$title  = apply_filters( 'widget_title', empty( $instance['title'] ) ? ' ' : $instance['title'], $instance, $this->id_base );
 		
 		$output = $before_widget."\n";
@@ -125,51 +119,7 @@ class Bimbler_Edit_Attendees_Widget extends WP_Widget {
 				
 		<div class="section" style="display: block;">
 				<?php
-				/*$top_sellers = $this->get_order_report_data( array(
-					'data' => array(
-						'_product_id' => array(
-							'type'            => 'order_item_meta',
-							'order_item_type' => 'line_item',
-							'function'        => '',
-							'name'            => 'product_id'
-						),
-						'_qty' => array(
-							'type'            => 'order_item_meta',
-							'order_item_type' => 'line_item',
-							'function'        => 'SUM',
-							'name'            => 'order_item_qty'
-						)
-					),
-					'order_by'     => 'order_item_qty DESC',
-					'group_by'     => 'product_id',
-					'limit'        => 12,
-					'query_type'   => 'get_results',
-					'filter_range' => false
-				) ); */
-				
 				$this->add_rsvp_form();	
-				
-				if ( 0 ) {
-						
-					foreach ( $top_sellers as $product ) {
-//						echo '<tr class="' . ( in_array( $product->product_id, $this->product_ids ) ? 'active' : '' ) . '">
-						echo '<tr>';
-						
-						echo '<td class="tribe-events-thismonth tribe-events-future tribe-events-has-events mobile-trigger tribe-event-day-24 tribe-events-right">';
-						echo '<div id="tribe-events-event-1" class="hentry type-tribe-events status-publish">';
-						echo '<h3 class="tribe-events-month-event-title summary">' . $product->order_item_qty .'</h3>';
-						echo '</div>';
-						
-						echo '<td class="tribe-events-thismonth">';
-						echo '<div id="tribe-events-event-1" class="hentry vevent tribe-events-category- post-107 tribe_events type-tribe_events status-publish">';
-						echo '<h3 class="tribe-events-month-event-title summary"><a href="' . add_query_arg( 'product_ids', $product->product_id ) . '">' . get_the_title( $product->product_id ) . '</a></h3>';
-						echo '</div>';
-						
-						
-						echo '</tr>';
-					}
-				}
-				
 				?>
 		</div>
 		
@@ -185,21 +135,6 @@ class Bimbler_Edit_Attendees_Widget extends WP_Widget {
 	
 	function get_user_list () {
 		global $wpdb;
-			
-		//$table_name = $wpdb->base_prefix . 'bimblers_rsvp';
-		
-		/*SELECT u.id,
-		m_f.meta_value AS FIRST,
-		m_l.meta_value AS LAST,
-		u.display_name AS DISPLAY
-		FROM wp_users u,
-		wp_usermeta m_f,
-		wp_usermeta m_l
-		WHERE u.id = m_f.user_id
-		AND u.id = m_l.user_id
-		AND m_f.meta_key = 'first_name'
-		AND m_l.meta_key = 'last_name'
-		ORDER BY FIRST, LAST, ID */
 		
 		$sql =  'SELECT u.id as id, ';
 		$sql .= ' m_f.meta_value AS first, ';
