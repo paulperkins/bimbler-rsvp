@@ -412,7 +412,9 @@ class Bimbler_RSVP {
   			
   			wp_register_script ('bimbler-rsvp-script', plugin_dir_url( __FILE__ ) . 'js/bimbler.js', array( 'jquery' ) );
   			wp_enqueue_script( 'bimbler-rsvp-script');
-  				
+
+			// Load FontAwesome.			  
+	  		wp_enqueue_style('font-awesome-min', plugin_dir_url( __FILE__ ) .  'fa/css/font-awesome.min.css');
 
   			// Fancybox - profile page, etc.
   			// TODO: Move Fancybox into plugin code.
