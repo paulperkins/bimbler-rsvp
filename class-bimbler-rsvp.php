@@ -2154,6 +2154,11 @@ jQuery(document).ready(function($)
 
 					if (isset ($_POST['rsvp_user'])) {
 						$user_id = $_POST['rsvp_user'];
+						
+						if (!is_numeric ($user_id)) {
+							error_log ('process_rsvp: Non-numeric user ID.');
+							return;
+						}
 					} else {
 						global $current_user;
 						get_currentuserinfo();
@@ -2164,6 +2169,11 @@ jQuery(document).ready(function($)
 
 					if (isset ($_POST['rsvp_guests'])) {
 						$guests = $_POST['rsvp_guests'];
+
+						if (!is_numeric ($guests)) {
+							error_log ('process_rsvp: Non-numeric guest count.');
+							return;
+						}
 					}
 					else {
 						$guests = 0;
