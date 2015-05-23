@@ -3783,6 +3783,53 @@ jQuery(document).ready(function($)
 			
 			return $posts;
 		}
+
+		function get_next_ride_object () {
+			
+			$ride = new stdClass();
+			
+			$date_str = 'D j M';
+
+			date_default_timezone_set('Australia/Brisbane');
 		
+			// Get the details of the first ride.
+			$get_posts = tribe_get_events(array(
+					'eventDisplay'		=> 'all',
+					'start_date' 		=> date('Y-m-d H:i:s'), // From now, not midnight - we should already be at today's ride.
+					'posts_per_page' 	=> 1) );
+			
+			$event = $get_posts[0];
+
+			if (!isset ($event)) {
+				return null;
+			}
+	
+			$ride->post = $event;
+		
+			//$event->ID = 4258; // Testing.
+			
+			$ride->title = $event->post_title; 
+			$ride->url 	= get_permalink ($event->ID);
+			$ride->rwgps = $this->get_rwgps_id ($event->ID);
+			
+			$map_id = 'bimbler-next-ride-map';
+		
+			// Get the excerpt if it exists, or use the event text otherwise.
+			$ride->excerpt = $event->post_excerpt;
+			
+			if (empty ($ride->excerpt)) {
+				$ride->excerpt = $event->post_content;
+			}
+			
+			//Don't show the route if the user is not logged in.
+			if (!is_user_logged_in()) {
+				$ride->rwgps = 0;
+			}
+			
+			$ride->start_date = tribe_get_start_date($event->ID, false, $date_str);
+			$ride->end_date = tribe_get_end_date($event->ID, false, $date_str);
+			
+			return $ride;
+		}		
 		
 } // End class
