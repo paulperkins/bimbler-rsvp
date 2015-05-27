@@ -243,7 +243,7 @@ class Bimbler_Edit_Attendees_Widget extends WP_Widget {
 			$html .= '		<select class="xform-control" id="rsvp_guests" name="rsvp_guests">';
 			
 			$i = 0;
-			for ($i = 0; $i < 5; $i++) {
+			for ($i = 0; $i < 11; $i++) {
 				$html .= '			<option>' . $i . '</option>';
 			}
 			$html .= '		</select>';
