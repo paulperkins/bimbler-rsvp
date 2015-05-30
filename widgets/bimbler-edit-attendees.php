@@ -214,7 +214,7 @@ class Bimbler_Edit_Attendees_Widget extends WP_Widget {
 				
 			$html  = '<div id="rsvp-form">';
 			$html .= '<div id="respond" class="comment-respond">';
-			$html .= '	<form method="post" id="commentform" class="commentform" enctype="multipart/form-data">';
+			$html .= '	<form action="#tab-event-rsvps" method="post" id="commentform" class="commentform" enctype="multipart/form-data">';
 			//$html .= '<p>'. $status .'</p>';
 			$html .= wp_nonce_field('rsvp', 'rsvp_nonce', true, true);
 			$html .= '	<p class="form-submit">';
