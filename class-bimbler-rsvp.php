@@ -3822,8 +3822,6 @@ jQuery(document).ready(function($)
 			$ride->url 	= get_permalink ($event->ID);
 			$ride->rwgps = $this->get_rwgps_id ($event->ID);
 			
-			$map_id = 'bimbler-next-ride-map';
-		
 			// Get the excerpt if it exists, or use the event text otherwise.
 			$ride->excerpt = $event->post_excerpt;
 			
