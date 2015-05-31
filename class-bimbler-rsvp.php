@@ -416,19 +416,6 @@ class Bimbler_RSVP {
 			// Load FontAwesome.			  
 	  		wp_enqueue_style('font-awesome-min', plugin_dir_url( __FILE__ ) .  'fa/css/font-awesome.min.css');
 
-  			// Fancybox - profile page, etc.
-  			// TODO: Move Fancybox into plugin code.
-  			//wp_register_style('fancy', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/jquery.fancybox-1.3.4.css');
-  			//wp_enqueue_style( 'fancy' );
-  				
-  			//wp_register_script('fancy-ease', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/jquery.easing-1.3.pack.js');
-			//wp_register_script('fancy-pack', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/jquery.fancybox-1.3.4.pack.js');
-			//wp_register_script('fancy-init', '/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/lightbox/static/fancybox/nextgen_fancybox_init.js');
-
-			//wp_enqueue_script( 'fancy-ease' );
-  			//wp_enqueue_script( 'fancy-pack' );
-  			//wp_enqueue_script( 'fancy-init' ); 
-
   			wp_register_style( 'bimbler-toastr-style', plugins_url('toastr.css', __FILE__) );
   			wp_enqueue_style( 'bimbler-toastr-style' );
   			
@@ -439,7 +426,7 @@ class Bimbler_RSVP {
   			// TODO: Move into admin code.
   			
   			// Only load if an admin user.
-  			if (current_user_can( 'manage_options' )) {
+			if ($this->can_modify_attendance (get_queried_object_id())) {
 	  			wp_register_style( 'bimbler-select2-style', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css' );
 	  			wp_enqueue_style( 'bimbler-select2-style' );
 	  			
