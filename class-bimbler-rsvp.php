@@ -3832,7 +3832,16 @@ jQuery(document).ready(function($)
 		// Encourage facebook to use the bimbler flag image as the preferred preview image.
 		function add_opengraph_tags()
 		{
-			$output  = '<meta property="og:image" content="http://bimblers.com/wp-content/uploads/2014/04/bimbler_flag-520x245.jpeg" />' . PHP_EOL;
+			$post_id = get_queried_object_id();
+			
+			// If this is an event page, return the featured image, or the map.
+			if (tribe_is_event ($post_id) && ($rwgps_id = $this->get_rwgps_id ($post_id))) {
+
+				$output  = '<meta property="og:image" content="http://ridewithgps.com/routes/full/' . $rwgps_id . '.png" />' . PHP_EOL;
+			} else { // Main website logo.
+				$output  = '<meta property="og:image" content="http://bimblers.com/wp-content/uploads/2014/04/bimbler_flag-520x245.jpeg" />' . PHP_EOL;
+			}
+			
 			$output .= '<meta property="og:url" content="http://bimblers.com" />' . PHP_EOL;
 			$output .= '<meta property="og:type" content="website" />' . PHP_EOL;
 			$output .= '<meta property="og:title" content="bimblers.com - Brisbane Bimblers Cycling" />' . PHP_EOL;
