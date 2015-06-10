@@ -341,6 +341,8 @@ class Bimbler_RSVP {
         	// Add style from settings rather than hard-coded in CSS.
         	add_action('wp_head',array ($this, 'add_dynamic_style'));
 
+			// Add Open Graph tags.
+        	add_action('wp_head',array ($this, 'add_opengraph_tags'));
         	
         	// Prevent cost fields from being displayed in editor.
         	add_filter('tribe_events_admin_show_cost_field', array ($this, 'tribe_events_admin_hide_cost_field'));
@@ -3826,5 +3828,18 @@ jQuery(document).ready(function($)
 			
 			return $ride;
 		}		
+		
+		// Encourage facebook to use the bimbler flag image as the preferred preview image.
+		function add_opengraph_tags()
+		{
+			$output  = '<meta property="og:image" content="http://bimblers.com/wp-content/uploads/2014/04/bimbler_flag-520x245.jpeg" />' . PHP_EOL;
+			$output .= '<meta property="og:url" content="http://bimblers.com" />' . PHP_EOL;
+			$output .= '<meta property="og:type" content="website" />' . PHP_EOL;
+			$output .= '<meta property="og:title" content="bimblers.com - Brisbane Bimblers Cycling" />' . PHP_EOL;
+			$output .= '<meta property="og:description" content="The Brisbane Bimblers’ Cycling Group is a light-hearted group of cyclists who love to get out and about on two wheels, but don’t take themselves too seriously." />' . PHP_EOL;
+			
+			echo $output;
+		}
+
 		
 } // End class
