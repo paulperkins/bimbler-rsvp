@@ -242,9 +242,17 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			// Comments.
 			if(!empty ($instance['comments_enable'])) { // Recent comments enabled? ?>
 
+
 			<?php $comments = get_comments(array('number'=>$instance["comments_num"],'status'=>'approve','post_status'=>'publish')); ?>
 			
 			<ul id="tab-comments" class="bimbler-tab group <?php if($instance['comments_avatars']) { echo 'avatars-enabled'; } ?>">
+
+<?php
+				if (!is_user_logged_in()) {
+					echo '<div class="bimbler-alert-box notice"><span>Notice: </span>You must be logged in to view RSVPs.</div>';
+				}
+				else {
+?>
 				<?php foreach ($comments as $comment): ?>
 				<li>
 				
@@ -276,6 +284,10 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 
 				</li>
 				<?php endforeach; ?>
+				
+<?php
+				} // If logged-in.	
+?>				
 			</ul><!--/.bimbler-tab-->
 
 		<?php } ?>
@@ -292,6 +304,11 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 				
 				<?php
 					
+				if (!is_user_logged_in()) {
+					echo '<div class="bimbler-alert-box notice"><span>Notice: </span>You must be logged in to view RSVPs.</div>';
+				}
+				else {
+
 				// Check if The Events Calendar is loaded.
 				if (!function_exists ('tribe_get_events')) {
 					echo '<div class="bimbler-alert-box error"><span>Error: </span>This plugin requires <a href="https://theeventscalendar.com/product/wordpress-events-calendar/" targer="_external">The Events Calendar</a> to work.</div>';
@@ -350,7 +367,8 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 					<?php 
 						} // foreach
 					} // if posts	
-				}// TEC loaded.			
+				}// TEC loaded.
+				}// User logged in.			
 				?>
 				</ul>
 		<?php } ?>
