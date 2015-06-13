@@ -101,10 +101,14 @@ class Bimbler_Download_GPS_Widget extends WP_Widget {
 		
 		// Fix bug for erroneously showing widget on front page - user get_queried_object_id.
 		$post_id = get_queried_object_id();
+		
+		if (!is_user_logged_in()) {
+			return;
+		}
 	
 		$rwgps_id = Bimbler_RSVP::get_instance()->get_rwgps_id ($post_id);
 		
-		error_log ('RWGPS ID ' . $rwgps_id);
+//		error_log ('RWGPS ID ' . $rwgps_id);
 
 		if (0 == $rwgps_id) { return; }
 
