@@ -3728,7 +3728,15 @@ jQuery(document).ready(function($)
 			
 			// Fix-up timezone bug.
 			date_default_timezone_set('Australia/Brisbane');
+
+			// Fallback, but sometimes gets the order wrong.
+			$posts = tribe_get_events(array(
+					'eventDisplay'          => 'all',
+					'start_date'            => date('Y-m-d H:i:s'), // From now, not midnight - we should already be at today's ride.
+					'posts_per_page'        => $events_per_page) ); 
 			
+/*			
+			// This is the better technique, but does not show in-flight events.
 			$posts = tribe_get_events( array(
 					'eventDisplay' 	=> 'custom',
 					'posts_per_page'=>	$events_per_page,
@@ -3743,6 +3751,7 @@ jQuery(document).ready(function($)
 							'orderby' 	=> '_EventEndDate',
 							'order'	 	=> 'ASC'
 					)));
+*/
 	
 			return $posts;
 		}
