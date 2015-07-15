@@ -2934,11 +2934,12 @@ jQuery(document).ready(function($)
 			// Get old user data from transient.
 			$old_user_data = get_transient( 'bimbler_old_user_data_' . $user_id );
 			
-			//error_log ('Old caps: ' . print_r ($old_user_data->caps, true));
-			//error_log ('New caps: ' . print_r ($user_object->caps, true));
+			error_log ('Old caps: ' . print_r ($old_user_data->caps, true));
+			error_log ('New caps: ' . print_r ($user_object->caps, true));
 				
 			// We only want to send a notification if the caps have changed from 'unverified' to 'subscriber'.
-			if (array_key_exists ('rpr_unverified', $old_user_data->caps) && array_key_exists ('subscriber', $user_object->caps)) {
+			// Bug-fix - RPR seems to not be setting rpr_unverified.
+			if ((empty ($old_user_data->caps) || array_key_exists ('rpr_unverified', $old_user_data->caps)) && array_key_exists ('subscriber', $user_object->caps)) {
 
 				error_log ('New user signed-up: ' . $user_object->first_name . ' ' . $user_object->last_name);
 	
@@ -2965,7 +2966,7 @@ jQuery(document).ready(function($)
 			$user_data->data->caps = $user_data->caps; 
 			
 			//error_log ('Saved transient data: ' . print_r ($user_data, true));
-			//error_log ('Saved transient data: ' . print_r ($user_data->caps, true));
+			error_log ('Saved transient data: ' . print_r ($user_data->caps, true));
 					
 			// 1 hour should be sufficient
 			set_transient( 'bimbler_old_user_data_' . $user->ID, $user_data, 60 * 60 );
