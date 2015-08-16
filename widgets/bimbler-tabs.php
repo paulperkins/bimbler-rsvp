@@ -347,11 +347,17 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 		  							if (is_user_logged_in()) {
 				  						if (!isset ($rsvpd)) {
 											echo '<div class="rsvp-indicator-none"><i class="fa-question-circle"></i></div>';
+											$no_btn_state = '  ';
+											$yes_btn_state = ' ';
 										} else if ('Y' == $rsvpd) {
 											echo '<div class="rsvp-indicator-yes"><i class="fa-check-circle"></i></div>';
+											$yes_btn_state = ' disabled="disabled" ';
+											$no_btn_state = ' ';
 										}
 										else {
 											echo '<div class="rsvp-indicator-no"><i class="fa-times-circle"></i></div>';
+											$no_btn_state = ' disabled="disabled" ';
+											$yes_btn_state = ' ';
 										}
 									}
 		  							?>
