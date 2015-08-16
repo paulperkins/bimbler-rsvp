@@ -362,7 +362,39 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 							<div class="tab-item-inner group">
 								<p class="tab-item-title"><a href="<?php echo tribe_get_event_link($post); ?>" rel="bookmark" title="<?php echo $post->post_title; ?>"><?php echo $post->post_title; ?></a></p>
 								<?php if($instance['tabs_date']) { ?><p class="tab-item-date"><?php echo date ($day_time_str, strtotime($event_date)); ?>, <?php echo $num_rsvps; ?> attending.</p><?php } ?>
+
+		  						<?php if (is_user_logged_in()) {
+									   
+									global $current_user;
+									get_currentuserinfo();
+									
+									// User ID
+									$user_id = $current_user->ID;
+									
+									$nonce = wp_create_nonce('bimbler_rsvp');
+
+								?>
+								
+								<form action="#" method="post" id="commentform" class="commentform" enctype="multipart/form-data">
+								<?php wp_nonce_field('rsvp', 'rsvp_nonce', true, true); ?>
+								<input type="hidden" name="rsvp_post_id" id="rsvp_post_id" value="<?php echo $post->ID; ?>">
+								<input type="hidden" name="accept_terms" value="accept" value="Y">
+
+								<div id="bimbler-rsvp-control" class="btn-group btn-group-xs" data-event-id="<?php echo  $post->ID; ?>" data-user-id="<?php echo $user_id; ?>" data-nonce="<?php echo  $nonce; ?>">
+									<button type="submit" name="submit" value='RSVP Yes' class="btn btn-success btn-xs rsvp-button" <?php echo $yes_btn_state; ?> data-rsvp="Y" id="bimbler-rsvp-yes" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP Yes">
+										RSVP Yes
+									</button>
+									<button type="submit" name="submit" value='RSVP No' class="btn btn-danger btn-xs rsvp-button" <?php echo $no_btn_state; ?> data-rsvp="N" id="bimbler-rsvp-no" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP No">
+										RSVP No
+									</button>
+								</div>
+								
+								</form>
+								
+								<?php } ?>
+
 							</div>
+
 						</li>
 					<?php 
 						} // foreach
