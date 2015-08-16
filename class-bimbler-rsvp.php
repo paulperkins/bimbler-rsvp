@@ -239,7 +239,10 @@ class Bimbler_RSVP {
         	$this->pluginPath = trailingslashit( dirname( dirname(__FILE__) ) ) .'bimbler-rsvp';
         	
         	// Hook to save RSVP data.
-        	add_action( 'tribe_events_before_html' , array( $this, 'process_rsvp' ) );
+        	//add_action( 'tribe_events_before_html' , array( $this, 'process_rsvp' ) );
+			
+        	add_action( 'init' , array( $this, 'process_rsvp' ) );
+			
         	
         	// Hook to display notices (before HTML is fully rendered - use JavaScript).
         	//add_action( 'tribe_events_before_html' , array( $this, 'show_notices' ) );
@@ -2075,14 +2078,23 @@ jQuery(document).ready(function($)
 			
 			// Only save if we've been passed the 'nonce'... i.e. the event is being renderered as part of an 
 			// RSVP update.
-			if ( ( is_single() || is_page() ) &&
-					isset($_POST['rsvp_nonce']) &&
+			//if ( ( is_single() || is_page() ) &&
+			if (		
+				isset ($_POST['rsvp_post_id']) &&
+				isset($_POST['rsvp_nonce']) &&
 					wp_verify_nonce($_POST['rsvp_nonce'], 'rsvp')
 			) {
 				global $wpdb;
 				global $rsvp_db_table;
 
 				$accept = 'N';
+
+				$event_id = $_POST['rsvp_post_id'];
+
+				if (!is_numeric ($event_id)) {
+					error_log ('process_rsvp: Non-numeric event ID.');
+					return;
+				}
 				
 				if (isset ($_POST['accept_terms']))
 				{
@@ -2091,7 +2103,9 @@ jQuery(document).ready(function($)
 				
 				//error_log ('Accept is: '. $accept);
 				
-				//error_log ('Saving RSVP data');
+//				error_log ('Saving RSVP data');
+//				error_log ('Submit: ' . $_POST['id']);
+//				error_log ('_POST :' . print_r($_POST, true));
 				
 				$table_name = $wpdb->base_prefix . $rsvp_db_table;
 				
