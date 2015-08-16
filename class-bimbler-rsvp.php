@@ -2088,6 +2088,7 @@ jQuery(document).ready(function($)
 				global $rsvp_db_table;
 
 				$accept = 'N';
+			
 
 				$event_id = $_POST['rsvp_post_id'];
 
