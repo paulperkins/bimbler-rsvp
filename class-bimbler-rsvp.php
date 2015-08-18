@@ -318,18 +318,7 @@ class Bimbler_RSVP {
         	add_action ('ngg_after_new_images_added', array ($this, 'photo_uploaded'), 50 , 2);
         	
         	// Send welcome message to new users.
-        	// edit_user_profile_update is only called when someone updates another's profile.
-        	// profile_update is called when a user updates their own profile.
         	add_action( 'edit_user_profile', array ($this, 'profile_updated'));
-			//add_action( 'profile_update', array ($this, 'profile_updated'), 10, 2 );
-        	//add_action( 'edit_user_profile_update', array ($this, 'profile_updated'));
-        	 
-        	// TODO: Move to a separate plugin.
-        	// User profile transient management.
-        	// Save old user data and meta for later comparison for non-standard fields (phone, address etc.)
-        	//add_action('show_user_profile', array ($this, 'bimbler_old_user_data_transient'));
-        	//add_action('edit_user_profile', array ($this, 'bimbler_old_user_data_transient'), 99, 1);
-        	//add_action( 'profile_update', array ($this, 'bimbler_old_user_data_cleanup'), 1000, 2 );
         	
         	// Change 'Leave a Reply' on comment form.
         	add_filter('comment_form_defaults', array ($this, 'comment_reform'));
@@ -2981,42 +2970,6 @@ jQuery(document).ready(function($)
 			set_transient( 'bimbler_old_user_data_' . $user_object->ID, $user_object->caps, 60 * 60 );
 			error_log (' ');
 		}
-		
-		// TODO: Remove this function.
-		// TODO: Move to separate plugin.
-		// Transient management.
-		// Save old user data and meta for later comparison for non-standard fields (phone, address etc.)
-		function bimbler_old_user_data_transient($user){
-				
-			//$user_id = get_current_user_id();
-			$user_data = get_userdata( $user->ID );
-			$user_meta = get_user_meta( $user->ID );
-				
-			//error_log ('Saving transient data for user ' . $user->ID);
-				
-			foreach( $user_meta as $key=>$val ){
-				$user_data->data->$key = current($val);
-			}
-			
-			// Save the capabilities.
-			$user_data->data->caps = $user_data->caps; 
-			
-			//error_log ('Saved transient data: ' . print_r ($user_data, true));
-			//error_log ('Saved transient data: ' . json_encode ($user_data));
-			error_log ('Saved caps: ' . json_encode ($user_data->caps));
-					
-			// 1 hour should be sufficient
-			set_transient( 'bimbler_old_user_data_' . $user->ID, $user_data, 60 * 60 );
-			//set_transient( 'bimbler_old_user_data_' . $user->ID, $user_data->caps, 60 * 60 );
-		}
-		
-		// Cleanup when done
-		function bimbler_old_user_data_cleanup( $user_id, $old_user_data ){
-			//error_log ('Deleting transient data for user ' . $user_id);
-			delete_transient( 'bimbler_old_user_data_' . $user_id );
-		}
-		
-		
 		
 		/**
 		 *
