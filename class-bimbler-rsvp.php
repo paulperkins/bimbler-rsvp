@@ -320,15 +320,16 @@ class Bimbler_RSVP {
         	// Send welcome message to new users.
         	// edit_user_profile_update is only called when someone updates another's profile.
         	// profile_update is called when a user updates their own profile.
-        	//add_action( 'edit_user_profile_update', array ($this, 'profile_updated'), 10, 2 );
-        	add_action( 'profile_update', array ($this, 'profile_updated'), 10, 2 );
+        	add_action( 'edit_user_profile', array ($this, 'profile_updated'));
+			//add_action( 'profile_update', array ($this, 'profile_updated'), 10, 2 );
+        	//add_action( 'edit_user_profile_update', array ($this, 'profile_updated'));
         	 
         	// TODO: Move to a separate plugin.
         	// User profile transient management.
         	// Save old user data and meta for later comparison for non-standard fields (phone, address etc.)
         	//add_action('show_user_profile', array ($this, 'bimbler_old_user_data_transient'));
-        	add_action('edit_user_profile', array ($this, 'bimbler_old_user_data_transient'), 99, 1);
-        	add_action( 'profile_update', array ($this, 'bimbler_old_user_data_cleanup'), 1000, 2 );
+        	//add_action('edit_user_profile', array ($this, 'bimbler_old_user_data_transient'), 99, 1);
+        	//add_action( 'profile_update', array ($this, 'bimbler_old_user_data_cleanup'), 1000, 2 );
         	
         	// Change 'Leave a Reply' on comment form.
         	add_filter('comment_form_defaults', array ($this, 'comment_reform'));
@@ -2941,27 +2942,47 @@ jQuery(document).ready(function($)
 			remove_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
 		}
 		
-		// Note that $old_user_data is overwritten from transient store.
-		function profile_updated ($user_id, $old_user_data) {
+		// This function is called at the bottom of the profile page, when another user 
+		// (hopefully, only the admin) edits a user's profile.
+		// In this instance we use it to determine when a new user has been approved.
+		// For this, the flow is:
+		//  - Hook fired with $user_object->caps holding an element of 'rpr_unverified'
+		//  - We save the $user_object->caps transient, containing 'rpr_unverified'.
+		//  - Admin updates the caps to 'subscriber' and saves the page.
+		//  - Page save triggers the hook again, so we load the transient.
+		//  - If the transient is found and contains 'rpr_unverified', and the new $user_object->caps 
+		//    are set to 'subscriber' then we know that this user has just been approved. 
+		//  - We then fire off the requisite emails.
+		//
+		//function profile_updated ($user_id) {
+		function profile_updated ($user_object) {//, $old_user_data) {
 
-			$user_object = get_userdata($user_id);
+			//$user_object = get_userdata($user_id);
+			error_log (' ');
 	
 			// Get old user data from transient.
+			error_log ('Getting transient data for user ID ' . $user_object->ID);
 			$old_user_data = get_transient( 'bimbler_old_user_data_' . $user_object->ID );
 			
-			error_log ('Old caps: ' . json_encode ($old_user_data->caps));
+			error_log ('Old caps: ' . json_encode ($old_user_data));
 			error_log ('New caps: ' . json_encode ($user_object->caps));
 				
 			// We only want to send a notification if the caps have changed from 'unverified' to 'subscriber'.
 			// Bug-fix - RPR seems to not be setting rpr_unverified.
-			if ((!empty ($old_user_data->caps) && array_key_exists ('rpr_unverified', $old_user_data->caps)) && array_key_exists ('subscriber', $user_object->caps)) {
+			if ((!empty ($old_user_data) && array_key_exists ('rpr_unverified', $old_user_data)) && array_key_exists ('subscriber', $user_object->caps)) {
 
 				error_log ('New user signed-up: ' . $user_object->first_name . ' ' . $user_object->last_name);
 	
-				$this->user_approved($user_id);
+				$this->user_approved($user_object->ID);
 			}
+
+			// Save the caps for next time around the loop.			
+			error_log ('Saving caps:' . json_encode($user_object->caps));
+			set_transient( 'bimbler_old_user_data_' . $user_object->ID, $user_object->caps, 60 * 60 );
+			error_log (' ');
 		}
 		
+		// TODO: Remove this function.
 		// TODO: Move to separate plugin.
 		// Transient management.
 		// Save old user data and meta for later comparison for non-standard fields (phone, address etc.)
