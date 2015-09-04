@@ -3792,10 +3792,26 @@ jQuery(document).ready(function($)
 			date_default_timezone_set('Australia/Brisbane');
 		
 			// Get the details of the first ride.
-			$get_posts = tribe_get_events(array(
+/*			$get_posts = tribe_get_events(array(
 					'eventDisplay'		=> 'all',
 					'start_date' 		=> date('Y-m-d H:i:s'), // From now, not midnight - we should already be at today's ride.
 					'posts_per_page' 	=> 1) );
+*/
+
+			$get_posts = tribe_get_events( array(
+					'eventDisplay' 	=> 'custom',
+					'posts_per_page'=>	1,
+					'meta_query' 	=> array(
+							array(
+									'key' 		=> '_EventStartDate',
+									//'key' 		=> '_EventEndDate',		// Events which will be ending after now - show in-flight events.
+									'value' 	=> date('Y-m-d H:i:s'), // Now onwards.
+									'compare' 	=> '>',
+									'type' 		=> 'date'
+							),
+							'orderby' 	=> '_EventEndDate',
+							'order'	 	=> 'ASC'
+					)));
 			
 			$event = $get_posts[0];
 
