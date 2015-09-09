@@ -2722,9 +2722,15 @@ jQuery(document).ready(function($)
 				// Do nothing - return silently.
 				return;
 			}
+			
+			// Only send emails when comment is approved - avoid sending emails for spam comments.
+			if ($post_object->post_status != 'publish') {
+				// Do nothing - return silently.
+				return;
+			}
 
-			// Always send mails to Paul (user ID 1).
-			$notify_users[] = 1;
+			// Always send mails to admin team. (Was Paul (user ID 1).)
+			$notify_users = array_merge ($notify_users, Bimbler_RSVP::get_instance()->get_admin_users());
 			
 			$users_rsvp = $this->get_rsvpd_users ($post_id);
 			$users_comment = $this->get_post_comment_users ($post_id);
