@@ -41,24 +41,122 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 	private function _create_tabs($tabs,$count) {
 		// Borrowed from Jermaine Maree, thanks mate!
 		$titles = array(
-			'rsvps'		=> 'RSVPs',
-			'recent'	=> 'Recent Posts',
-			'comments'	=> 'Comments',
-			'events'	=> 'Events'
+			'rsvps'				=> 'RSVPs',
+			'recent'			=> 'Recent Posts',
+			'comments'			=> 'Comments',
+			'events'			=> 'Bimbler Events',
+			'mingler_events'	=> 'Mingler Events',
 		);
 		$icons = array(
-			//'rsvps'  	=> 'fa fa-check-square-o',
-			'rsvps'  	=> 'fa fa-users',
-			'recent'   	=> 'fa fa-edit', //fa fa-clock-o',
-			'comments' 	=> 'fa fa-comments-o',
-			'events'	=> 'fa fa-calendar'
+			'rsvps'  			=> 'fa fa-users',
+			'recent'   			=> 'fa fa-edit', //fa fa-clock-o',
+			'comments' 			=> 'fa fa-comments-o',
+			'events'			=> 'fa fa-bicycle', //calendar',
+			'mingler_events'	=> 'fa fa-coffee', //calendar',
 		);
 		$output = sprintf('	<ul class="bimbler-tabs-nav group tab-count-%s">', $count) . PHP_EOL;
 		foreach ( $tabs as $tab ) {
 			$output .= sprintf('		<li class="bimbler-tab tab-%1$s"><a href="#tab-%2$s" title="%4$s"><i class="%3$s"></i><span>%4$s</span></a></li>',$tab, $tab, $icons[$tab], $titles[$tab]) . PHP_EOL;
+			//$output .= sprintf('		<li class="bimbler-tab tab-%1$s"><a href="#tab-%2$s" title="%4$s"><span class="fa-stack fa-lg"><i class="%3$s fa-stack-2x"></i><i class="fa fa-stack-1x">1</i></span><span>%4$s</span></a></li>',$tab, $tab, $icons[$tab], $titles[$tab]) . PHP_EOL;
 		}
 		$output .= '	</ul>' . PHP_EOL;
 		return $output;
+	}
+	
+	private function render_events ($posts) {
+		
+		$day_time_str = 'D j M g:ia';
+		
+		if ($posts) {
+			
+			foreach ($posts as $post)
+			{
+				$event_date = $post->EventStartDate;
+				
+				$rsvpd = Bimbler_RSVP::get_instance()->get_current_rsvp ($post->ID);
+				$num_rsvps = Bimbler_RSVP::get_instance()->count_rsvps ($post->ID);
+				$rwgps_id = Bimbler_RSVP::get_instance()->get_rwgps_id ($post->ID);
+				
+				// Nothing found, use Tomewin.
+				if (0 == $rwgps_id) {
+					$rwgps_id = 5961603; 
+				}
+
+				if ((null === $num_rsvps)) $num_rsvps = 0;
+				
+//						print_r ($post);
+			?>
+			<li class="AvatarListSide">
+				<div class="tab-item-avatar">
+					<div class="rsvp-checkin-container">
+						<img src="http://assets2.ridewithgps.com/routes/<?php echo $rwgps_id; ?>/thumb.png" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">
+					
+						<div class="rsvp-checkin-indicator">   
+
+						<?php 
+						// Only show RSVP indicators to logged-in users.
+						if (is_user_logged_in()) {
+							if (!isset ($rsvpd)) {
+								echo '<div class="rsvp-indicator-none"><i class="fa-question-circle"></i></div>';
+								$no_btn_state = '  ';
+								$yes_btn_state = ' ';
+							} else if ('Y' == $rsvpd) {
+								echo '<div class="rsvp-indicator-yes"><i class="fa-check-circle"></i></div>';
+								$yes_btn_state = ' disabled="disabled" ';
+								$no_btn_state = ' ';
+							}
+							else {
+								echo '<div class="rsvp-indicator-no"><i class="fa-times-circle"></i></div>';
+								$no_btn_state = ' disabled="disabled" ';
+								$yes_btn_state = ' ';
+							}
+						}
+						?>
+					
+						</div>
+					</div>
+				</div> 
+				<div class="tab-item-inner group">
+					<p class="tab-item-title"><a href="<?php echo tribe_get_event_link($post); ?>" rel="bookmark" title="<?php echo $post->post_title; ?>"><?php echo $post->post_title; ?></a></p>
+					<p class="tab-item-date"><?php echo date ($day_time_str, strtotime($event_date)); ?>, <?php echo $num_rsvps; ?> attending.</p>
+
+					<?php if (is_user_logged_in()) {
+							
+						global $current_user;
+						get_currentuserinfo();
+						
+						// User ID
+						$user_id = $current_user->ID;
+						
+						$nonce = wp_create_nonce('bimbler_rsvp');
+
+					?>
+					
+					<form action="#" method="post" id="commentform" class="commentform" enctype="multipart/form-data">
+					<?php wp_nonce_field('rsvp', 'rsvp_nonce', true, true); ?>
+					<input type="hidden" name="rsvp_post_id" id="rsvp_post_id" value="<?php echo $post->ID; ?>">
+					<input type="hidden" name="accept_terms" value="accept" value="Y">
+
+					<div id="bimbler-rsvp-control" class="btn-group btn-group-xs" data-event-id="<?php echo  $post->ID; ?>" data-user-id="<?php echo $user_id; ?>" data-nonce="<?php echo  $nonce; ?>">
+						<button type="submit" name="submit" value='RSVP Yes' class="btn btn-success btn-xs rsvp-button" <?php echo $yes_btn_state; ?> data-rsvp="Y" id="bimbler-rsvp-yes" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP Yes">
+							RSVP Yes
+						</button>
+						<button type="submit" name="submit" value='RSVP No' class="btn btn-danger btn-xs rsvp-button" <?php echo $no_btn_state; ?> data-rsvp="N" id="bimbler-rsvp-no" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP No">
+							RSVP No
+						</button>
+					</div>
+					
+					</form>
+					
+					<?php } ?>
+
+				</div>
+
+			</li>
+		<?php 
+			} // foreach
+						
+		}
 	}
 	
 /*  Widget
@@ -82,10 +180,11 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 	$tabs = array();
 	$count = 0;
 	$order = array(
-		'rsvps'		=> (empty ($instance['order_rsvps']) ? 1 : $instance['order_rsvps']),
-		'recent'	=> (empty ($instance['order_recent']) ? 1 : $instance['order_recent']),
-		'comments'	=> (empty ($instance['order_comments']) ? 1 : $instance['order_comments']),
-		'events'	=> (empty ($instance['order_events']) ? 1 : $instance['order_events']) 
+		'rsvps'				=> (empty ($instance['order_rsvps']) ? 1 : $instance['order_rsvps']),
+		'recent'			=> (empty ($instance['order_recent']) ? 1 : $instance['order_recent']),
+		'comments'			=> (empty ($instance['order_comments']) ? 1 : $instance['order_comments']),
+		'events'			=> (empty ($instance['order_events']) ? 1 : $instance['order_events']), 
+		'mingler_events'	=> (empty ($instance['order_mingler_events']) ? 1 : $instance['order_mingler_events']) 
 			);
 	asort($order);
 	foreach ( $order as $key => $value ) {
@@ -200,6 +299,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			
 		<?php 
 			// Recent posts.
+			
 		
 			if(!empty ($instance['recent_enable'])) { // Recent posts enabled? ?>
 			
@@ -299,7 +399,6 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			if(!empty ($instance['events_enable'])) { // Tags enabled? 
 				
 				?>
-<!-- 				<ul id="tab-events" class="bimbler-tab group"> -->
 				<ul id="tab-events" class="bimbler-tab group avatars-enabled">
 				
 				<?php
@@ -314,102 +413,95 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 					echo '<div class="bimbler-alert-box error"><span>Error: </span>This plugin requires <a href="https://theeventscalendar.com/product/wordpress-events-calendar/" targer="_external">The Events Calendar</a> to work.</div>';
 				} else {
 					
-					$posts = Bimbler_RSVP::get_instance()->get_upcoming_events($instance["events_num"]);
-	
+					// If we do not have the Mingler flag set, then fetch all events.
+					if(empty ($instance['mingler_events_enable'])) {
+					
+						$posts = Bimbler_RSVP::get_instance()->get_upcoming_events($instance["events_num"]);
+						
+					}
+					else { 
+					
+						$posts = tribe_get_events(array(
+							'posts_per_page' 	=> $instance["events_num"],
+							'eventDisplay' 		=> 'upcoming',
+							'tax_query' 		=> array(
+														'relation' 	=> 'OR', 
+														array(
+															'taxonomy' => TribeEvents::TAXONOMY,
+																		'field' => 'slug',
+																		'terms' => 'bimble'),
+														array(
+															'taxonomy' => TribeEvents::TAXONOMY,
+																		'field' => 'slug',
+																		'terms' => 'social')
+														)
+														));
+					}
+					
 					if ($posts)
 					{
-						foreach ($posts as $post)
-						{
-							$event_date = $post->EventStartDate;
-							
-							$rsvpd = Bimbler_RSVP::get_instance()->get_current_rsvp ($post->ID);
-							$num_rsvps = Bimbler_RSVP::get_instance()->count_rsvps ($post->ID);
-							$rwgps_id = Bimbler_RSVP::get_instance()->get_rwgps_id ($post->ID);
-							
-							// Nothing found, use Tomewin.
-							if (0 == $rwgps_id) {
-								$rwgps_id = 5961603; 
-							}
-	
-							if ((null === $num_rsvps)) $num_rsvps = 0;
-							
-	//						print_r ($post);
-						?>
-						<li class="AvatarListSide">
-							<div class="tab-item-avatar">
-		  						<div class="rsvp-checkin-container">
-				 					<img src="http://assets2.ridewithgps.com/routes/<?php echo $rwgps_id; ?>/thumb.png" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">
-		  						
-		  							<div class="rsvp-checkin-indicator">   
-		
-		  							<?php 
-		  							// Only show RSVP indicators to logged-in users.
-		  							if (is_user_logged_in()) {
-				  						if (!isset ($rsvpd)) {
-											echo '<div class="rsvp-indicator-none"><i class="fa-question-circle"></i></div>';
-											$no_btn_state = '  ';
-											$yes_btn_state = ' ';
-										} else if ('Y' == $rsvpd) {
-											echo '<div class="rsvp-indicator-yes"><i class="fa-check-circle"></i></div>';
-											$yes_btn_state = ' disabled="disabled" ';
-											$no_btn_state = ' ';
-										}
-										else {
-											echo '<div class="rsvp-indicator-no"><i class="fa-times-circle"></i></div>';
-											$no_btn_state = ' disabled="disabled" ';
-											$yes_btn_state = ' ';
-										}
-									}
-		  							?>
-	  							
-									</div>
-								</div>
-							</div> 
-							<div class="tab-item-inner group">
-								<p class="tab-item-title"><a href="<?php echo tribe_get_event_link($post); ?>" rel="bookmark" title="<?php echo $post->post_title; ?>"><?php echo $post->post_title; ?></a></p>
-								<?php if($instance['tabs_date']) { ?><p class="tab-item-date"><?php echo date ($day_time_str, strtotime($event_date)); ?>, <?php echo $num_rsvps; ?> attending.</p><?php } ?>
-
-		  						<?php if (is_user_logged_in()) {
-									   
-									global $current_user;
-									get_currentuserinfo();
-									
-									// User ID
-									$user_id = $current_user->ID;
-									
-									$nonce = wp_create_nonce('bimbler_rsvp');
-
-								?>
-								
-								<form action="#" method="post" id="commentform" class="commentform" enctype="multipart/form-data">
-								<?php wp_nonce_field('rsvp', 'rsvp_nonce', true, true); ?>
-								<input type="hidden" name="rsvp_post_id" id="rsvp_post_id" value="<?php echo $post->ID; ?>">
-								<input type="hidden" name="accept_terms" value="accept" value="Y">
-
-								<div id="bimbler-rsvp-control" class="btn-group btn-group-xs" data-event-id="<?php echo  $post->ID; ?>" data-user-id="<?php echo $user_id; ?>" data-nonce="<?php echo  $nonce; ?>">
-									<button type="submit" name="submit" value='RSVP Yes' class="btn btn-success btn-xs rsvp-button" <?php echo $yes_btn_state; ?> data-rsvp="Y" id="bimbler-rsvp-yes" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP Yes">
-										RSVP Yes
-									</button>
-									<button type="submit" name="submit" value='RSVP No' class="btn btn-danger btn-xs rsvp-button" <?php echo $no_btn_state; ?> data-rsvp="N" id="bimbler-rsvp-no" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP No">
-										RSVP No
-									</button>
-								</div>
-								
-								</form>
-								
-								<?php } ?>
-
-							</div>
-
-						</li>
-					<?php 
-						} // foreach
+						
+						$this->render_events ($posts);
+						
+						
 					} // if posts	
 				}// TEC loaded.
 				}// User logged in.			
 				?>
 				</ul>
 		<?php } ?>
+		
+<?php 
+
+			// Mingler Events.
+		
+			if(!empty ($instance['mingler_events_enable'])) { // Tags enabled? 
+				
+				?>
+				<ul id="tab-mingler_events" class="bimbler-tab group avatars-enabled">
+				
+				<?php
+					
+				if (!is_user_logged_in()) {
+					echo '<div class="bimbler-alert-box notice"><span>Notice: </span>You must be logged in to view RSVPs.</div>';
+				}
+				else {
+
+				// Check if The Events Calendar is loaded.
+				if (!function_exists ('tribe_get_events')) {
+					echo '<div class="bimbler-alert-box error"><span>Error: </span>This plugin requires <a href="https://theeventscalendar.com/product/wordpress-events-calendar/" targer="_external">The Events Calendar</a> to work.</div>';
+				} else {
+					
+					//$posts = Bimbler_RSVP::get_instance()->get_upcoming_events($instance["events_num"]);
+					
+					$posts = tribe_get_events(array(
+//        				'start_date' => '2012-10-01',
+//        				'end_date' => '2012-10-31',
+						'posts_per_page' 	=> $instance["mingler_events_num"],
+						'eventDisplay' 		=> 'upcoming',
+						'tax_query' 		=> array(
+													'relation' 	=> 'OR', 
+													array(
+														'taxonomy' => TribeEvents::TAXONOMY,
+																	'field' => 'slug',
+																	'terms' => 'mingle'),
+													array(
+														'taxonomy' => TribeEvents::TAXONOMY,
+																	'field' => 'slug',
+																	'terms' => 'social')
+													)
+													));
+	
+					if ($posts)
+					{
+						$this->render_events ($posts);
+					} // if posts	
+				}// TEC loaded.
+				}// User logged in.			
+				?>
+				</ul>
+		<?php } ?>
+		
 	</div>
 
 <?php
@@ -443,11 +535,14 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 	// Events
 		$instance['events_enable'] = $new['events_enable']?1:0;
 		$instance['events_num'] = strip_tags($new['events_num']);
+		$instance['mingler_events_enable'] = $new['mingler_events_enable']?1:0;
+		$instance['mingler_events_num'] = strip_tags($new['mingler_events_num']);
 		// Order
 		$instance['order_recent'] = strip_tags($new['order_recent']);
 		$instance['order_rsvps'] = strip_tags($new['order_rsvps']);
 		$instance['order_comments'] = strip_tags($new['order_comments']);
 		$instance['order_events'] = strip_tags($new['order_events']);
+		$instance['order_mingler_events'] = strip_tags($new['order_mingler_events']);
 		return $instance;
 	}
 
@@ -477,11 +572,14 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 		// Events
 			'events_enable' 	=> 1,
 			'events_num' 		=> '5',
+			'mingler_events_enable' 	=> 1,
+			'mingler_events_num' 		=> '5',
 		// Order
-			'order_recent' 		=> '1',
-			'order_rsvps' 		=> '2',
-			'order_comments' 	=> '3',
-			'order_events' 		=> '4',
+			'order_recent' 				=> '5',
+			'order_rsvps' 				=> '3',
+			'order_comments' 			=> '4',
+			'order_events' 				=> '1',
+			'order_mingler_events' 		=> '2',
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults );
 ?>
@@ -577,6 +675,20 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 		</p>
 		
 		<hr>
+
+		<h4>Mingler Events</h4>
+		
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('mingler_events_enable'); ?>" name="<?php echo $this->get_field_name('mingler_events_enable'); ?>" <?php checked( (bool) $instance["mingler_events_enable"], true ); ?>>
+			<label for="<?php echo $this->get_field_id('mingler_events_enable'); ?>">Enable Mingler events</label>
+		</p>
+		<p>
+			<label style="width: 55%; display: inline-block;" for="<?php echo $this->get_field_id("mingler_events_num"); ?>">Items to show</label>
+			<input style="width:20%;" id="<?php echo $this->get_field_id("mingler_events_num"); ?>" name="<?php echo $this->get_field_name("mingler_events_num"); ?>" type="text" value="<?php echo absint($instance["mingler_events_num"]); ?>" size='3' />
+		</p>
+		
+		<hr>
+
 		<h4>Tab Order</h4>
 		
 		<p>
@@ -595,7 +707,11 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			<label style="width: 55%; display: inline-block;" for="<?php echo $this->get_field_id("order_events"); ?>">Events</label>
 			<input class="widefat" style="width:20%;" type="text" id="<?php echo $this->get_field_id("order_events"); ?>" name="<?php echo $this->get_field_name("order_events"); ?>" value="<?php echo $instance["order_events"]; ?>" />
 		</p>
-		
+		<p>
+			<label style="width: 55%; display: inline-block;" for="<?php echo $this->get_field_id("order_mingler_events"); ?>">Mingler Events</label>
+			<input class="widefat" style="width:20%;" type="text" id="<?php echo $this->get_field_id("order_mingler_events"); ?>" name="<?php echo $this->get_field_name("order_mingler_events"); ?>" value="<?php echo $instance["order_mingler_events"]; ?>" />
+		</p>
+
 		<hr>
 		<h4>Tab Info</h4>
 		
