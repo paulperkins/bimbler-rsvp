@@ -247,7 +247,7 @@ class Bimbler_RSVP {
         	// Hook to display notices (before HTML is fully rendered - use JavaScript).
         	//add_action( 'tribe_events_before_html' , array( $this, 'show_notices' ) );
         	add_action( 'wp_footer' , array( $this, 'show_notices' ),100 );
-        	
+
         	// Add the RSVP buttons to the Event form.
         	//add_action( 'tribe_events_after_html' , array( $this, 'add_rsvp_form' ) );
         	
@@ -331,11 +331,11 @@ class Bimbler_RSVP {
         	// Work around date UTC flaw.
         	add_action( 'init', array ($this, 'set_timezone'));
         	
-        	// Add style from settings rather than hard-coded in CSS.
-        	add_action('wp_head',array ($this, 'add_dynamic_style'));
-
 			// Add Open Graph tags.
         	add_action('wp_head',array ($this, 'add_opengraph_tags'));
+
+        	// Add style from settings rather than hard-coded in CSS.
+        	add_action('wp_head',array ($this, 'add_dynamic_style'));
         	
         	// Prevent cost fields from being displayed in editor.
         	add_filter('tribe_events_admin_show_cost_field', array ($this, 'tribe_events_admin_hide_cost_field'));
@@ -3720,6 +3720,30 @@ jQuery(document).ready(function($)
 
 			return $posts;
 		}
+
+		// Get future events - ignores in-flight events.		
+		function get_future_events ($events_per_page) {
+			
+			// Fix-up timezone bug.
+			date_default_timezone_set('Australia/Brisbane');
+	
+			$posts = tribe_get_events( array(
+				'eventDisplay' 	=> 'custom',
+				'posts_per_page'=>	-1,
+				'meta_query' 	=> array(
+						array(
+								'key' 		=> '_EventStartDate',
+								'value' 	=> date('Y-m-d H:i:s'), // Now onwards.
+								'compare' 	=> '>=',
+								'type' 		=> 'date'
+						),
+						'orderby' 	=> '_EventEndDate',
+						'order'	 	=> 'ASC'
+				)));
+
+	
+			return $posts;
+		}
 		
 		function get_upcoming_events ($events_per_page) {
 			
@@ -3855,22 +3879,36 @@ jQuery(document).ready(function($)
 		function add_opengraph_tags()
 		{
 			$post_id = get_queried_object_id();
-			
+			$rwgps_id = $this->get_rwgps_id ($post_id);
+
 			// If this is an event page, return the featured image, or the map.
-			if (tribe_is_event ($post_id) && ($rwgps_id = $this->get_rwgps_id ($post_id))) {
+			if (!empty ($rwgps_id)) {
+
+				$post_object = get_post ($post_id);
+
+				error_log ('Sending map as OpenGraph image for post ID ' . $post_id . ' with RWGPS ID ' . $rwgps_id);
 
 				$output  = '<meta property="og:image" content="http://ridewithgps.com/routes/full/' . $rwgps_id . '.png" />' . PHP_EOL;
-			} else { // Main website logo.
-				$output  = '<meta property="og:image" content="http://bimblers.com/wp-content/uploads/2014/04/bimbler_flag-520x245.jpeg" />' . PHP_EOL;
-			}
-			
-			$output .= '<meta property="og:url" content="http://bimblers.com" />' . PHP_EOL;
-			$output .= '<meta property="og:type" content="website" />' . PHP_EOL;
-			$output .= '<meta property="og:title" content="bimblers.com - Brisbane Bimblers Cycling" />' . PHP_EOL;
-			$output .= '<meta property="og:description" content="The Brisbane Bimblers’ Cycling Group is a light-hearted group of cyclists who love to get out and about on two wheels, but don’t take themselves too seriously." />' . PHP_EOL;
-			
-			echo $output;
-		}
+				$output .= '<meta property="og:url" content="' . get_permalink($post_id) . '" />' . PHP_EOL;
+				$output .= '<meta property="og:type" content="website" />' . PHP_EOL;
+				$output .= '<meta property="og:title" content="' . $post_object->post_title . '" />' . PHP_EOL;
+				$output .= '<meta property="og:description" content="' . $post_object->post_excerpt . '" />' . PHP_EOL;
 
-		
+			} else { // Main website logo.
+
+				$output  = '<meta property="og:image" content="http://bimblers.com/wp-content/uploads/2014/04/bimbler_flag-520x245.jpeg" />' . PHP_EOL;
+				$output .= '<meta property="og:url" content="http://bimblers.com" />' . PHP_EOL;
+				$output .= '<meta property="og:type" content="website" />' . PHP_EOL;
+				$output .= '<meta property="og:title" content="bimblers.com - Brisbane Bimblers Cycling" />' . PHP_EOL;
+				$output .= '<meta property="og:description" content="The Brisbane Bimblers’ Cycling Group is a light-hearted group of cyclists who love to get out and about on two wheels, but don’t take themselves too seriously." />' . PHP_EOL;
+
+			}
+
+//                      $output .= '<meta property="og:url" content="http://bimblers.com" />' . PHP_EOL;
+//                      $output .= '<meta property="og:type" content="website" />' . PHP_EOL;
+//                      $output .= '<meta property="og:title" content="bimblers.com - Brisbane Bimblers Cycling" />' . PHP_EOL;
+//                      $output .= '<meta property="og:description" content="The Brisbane Bimblers’ Cycling Group is a light-hearted group of cyclists who love to get out and about on two wheels, but don’t take themselves too seriously." />' . PHP_EOL;
+
+			echo $output;
+		}		
 } // End class
