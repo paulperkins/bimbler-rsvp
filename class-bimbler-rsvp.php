@@ -536,6 +536,11 @@ class Bimbler_RSVP {
   		
   			global $wpdb;
   			global $rsvp_db_table;
+			  
+			if(!is_numeric ($event)) {
+				error_log ('get_current_rsvp: called with no event ID set');
+				return null;
+			}
 
   			$table_name = $wpdb->base_prefix . $rsvp_db_table;
   				
@@ -582,6 +587,11 @@ class Bimbler_RSVP {
   			global $wpdb;
   			global $rsvp_db_table;
   		
+			if(!is_numeric ($event)) {
+				error_log ('get_current_rsvp_object: called with no event ID set');
+				return null;
+			}
+		  
   			$table_name = $wpdb->base_prefix . $rsvp_db_table;
   		
   			$sql = 'SELECT * from '. $table_name;
@@ -613,6 +623,11 @@ class Bimbler_RSVP {
   		
   			$table_name = $wpdb->base_prefix . $rsvp_db_table;
   		
+			if(!is_numeric ($event)) {
+				error_log ('get_event_rsvp_object: called with no event ID set');
+				return null;
+			}
+		  
   			/*$sql = 'SELECT * from '. $table_name;
   			$sql .= ' WHERE event = '. $event;
   			$sql .= ' AND rsvp = \'' . $rsvp . '\' ';
@@ -651,6 +666,11 @@ class Bimbler_RSVP {
   			global $rsvp_db_table;
   		
   			$table_name = $wpdb->base_prefix . $rsvp_db_table;
+			  
+			if(!is_numeric ($event)) {
+				error_log ('count_rsvps: called with no event ID set');
+				return null;
+			}
   		
   			$sql = 'SELECT COUNT(*) + SUM(guests) AS num ';
   			$sql .= ' FROM '. $table_name;
@@ -680,6 +700,11 @@ class Bimbler_RSVP {
   			global $rsvp_db_table;
   		
   			$table_name = $wpdb->base_prefix . $rsvp_db_table;
+
+			if(!is_numeric ($event)) {
+				error_log ('count_no_rsvps: called with no event ID set');
+				return null;
+			}
   		
   			$sql = 'SELECT COUNT(*) + SUM(guests) AS num ';
   			$sql .= ' FROM '. $table_name;
@@ -711,6 +736,11 @@ class Bimbler_RSVP {
 		
 			$table_name = $wpdb->base_prefix . $rsvp_db_table;
 		
+			if(!is_numeric ($event)) {
+				error_log ('count_attendees: called with no event ID set');
+				return null;
+			}
+
 			$sql = 'SELECT COUNT(*) + SUM(guests) AS num ';
 			$sql .= ' FROM '. $table_name;
 			$sql .= ' WHERE rsvp = \'Y\'';
