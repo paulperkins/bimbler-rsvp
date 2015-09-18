@@ -54,7 +54,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			'events'			=> 'fa fa-bicycle', //calendar',
 			'mingler_events'	=> 'fa fa-coffee', //calendar',
 		);
-		$output = sprintf('	<ul class="bimbler-tabs-nav group tab-count-%s">', $count) . PHP_EOL;
+		$output = sprintf('	<ul class="bimbler-tabs-nav tab-count-%s group">', $count) . PHP_EOL;
 		foreach ( $tabs as $tab ) {
 			$output .= sprintf('		<li class="bimbler-tab tab-%1$s"><a href="#tab-%2$s" title="%4$s"><i class="%3$s"></i><span>%4$s</span></a></li>',$tab, $tab, $icons[$tab], $titles[$tab]) . PHP_EOL;
 			//$output .= sprintf('		<li class="bimbler-tab tab-%1$s"><a href="#tab-%2$s" title="%4$s"><span class="fa-stack fa-lg"><i class="%3$s fa-stack-2x"></i><i class="fa fa-stack-1x">1</i></span><span>%4$s</span></a></li>',$tab, $tab, $icons[$tab], $titles[$tab]) . PHP_EOL;
