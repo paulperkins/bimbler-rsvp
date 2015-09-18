@@ -26,6 +26,7 @@
 .bimbler-tabs-nav.tab-count-2 li { width: 50%; }
 .bimbler-tabs-nav.tab-count-3 li { width: 33.333%; }
 .bimbler-tabs-nav.tab-count-4 li { width: 25%; }
+.bimbler-tabs-nav.tab-count-5 li { width: 20%; }
 .bimbler-tabs-nav li { display: block; float: left; }
 .bimbler-tabs-nav li a { font-size: 18px; display: block; padding: 8px 0; margin-bottom: -3px; border-bottom: 3px solid transparent; border-top-style: none;}
 .bimbler-tabs-nav li a:hover { border-bottom-color: #ccc; }
@@ -6191,4 +6192,52 @@ border-bottom-color: #dd9933!important;
 #tribe-bar-views .tribe-bar-views-list {
   z-index: 50; 
 }
+
+
+/* Bootstrap checkbox buttons. */
+
+[data-toggle="buttons"] > .btn input[type="radio"], [data-toggle="buttons"] > .btn-group > .btn input[type="radio"], [data-toggle="buttons"] > .btn input[type="checkbox"], [data-toggle="buttons"] > .btn-group > .btn input[type="checkbox"] {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #F5E0C2; /* #DD9933 with 30% tint applied. See http://www.brandwares.com/RGBTintCalculator.php */
+    border-color: #DD9933; /* #2e6da4; */
+}
+
+.btn-primary:active, .btn-primary:hover, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: #dd9933;
+    border-color: #DD9933; /* #204d74; */
+}
+
+.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+    border-radius: 0;
+}
+
+.btn-group .btn + .btn, .btn-group .btn + .btn-group, .btn-group .btn-group + .btn, .btn-group .btn-group + .btn-group {
+    margin-left: -1px;
+}
+
+.btn-group > .btn, .btn-group-vertical > .btn {
+    position: relative;
+    float: left;
+}
+
+.btn-group, .btn-group-vertical {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+} 
+
+/* End Bootstrap checkbox buttons. */
+
 
