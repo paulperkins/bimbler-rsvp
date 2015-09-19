@@ -1742,7 +1742,8 @@
 	
 	border-bottom: none;
 /* Adjust avatar spacing. */
-	padding-left: 25px !important;
+	padding-left: 10px !important;
+	padding-right: 10px !important;
 }
 
 #AvatarListSide ul li .permalink {
@@ -1919,13 +1920,14 @@
 	position: absolute; 
 /*   	top: 0px; 
 //   	left: 50px; */ 
-   	top: 5%; 
+   	top: 15%; 
    	left: 69%; 
 	font-size: 250%;
  	font-family: FontAwesome;
      font-style: normal;
 	z-index: 10;
 } 
+
 
 .rsvp-checkin-indicator-yes i {
 	color: green;
@@ -1948,7 +1950,7 @@
 .rsvp-indicator-no i,
 .rsvp-indicator-none i {
 	position: relative; 
-   	top: -58px; 
+   	top: -70px; 
    	left: 38px; 
 	font-size: 150%;
  	font-family: FontAwesome;
