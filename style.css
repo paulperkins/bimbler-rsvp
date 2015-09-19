@@ -6039,7 +6039,7 @@ a.list-group-item.active > .badge,
 
   /* the bun */
   position: absolute;
-  background: #dd9933;
+  /*background: #dd9933; // Set dynamically. */
   border-radius: 50%;
   display: inline-block;
   padding: 0.3em;
@@ -6245,4 +6245,8 @@ border-bottom-color: #dd9933!important;
 
 /* End Bootstrap checkbox buttons. */
 
+/* Set avatar border to zero width. */
+.avatar {
+  padding: 0px !important;
+}
 
