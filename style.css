@@ -1487,7 +1487,7 @@
 
 
 
-// Photo / avatars.
+/* Photo / avatars. */
 #alx-tabs-container ul li a img, .alx-posts img {
 	-webkit-border-radius: 50% !important;
 	-moz-border-radius: 50% !important;
@@ -1531,8 +1531,8 @@
 	border-radius: 50% !important;
 
 	display: block;
-	//width: 100% !important;
-	//height: auto !important; 	
+	/*width: 100% !important;
+	//height: auto !important; */ 	
 	/* Fix-up avatar squishing.*/
 	width: 150px !important;
 	height: 150px !important;
@@ -1550,8 +1550,8 @@
 	border-radius: 50% !important;
 
 	display: block;
-	//width: 100% !important;
-	//height: auto !important; 	
+	/*width: 100% !important;
+	//height: auto !important; */ 	
 	/* Fix-up avatar squishing.*/
 	width: 75px !important;
 	height: 75px !important;
@@ -1579,17 +1579,17 @@
 	border-radius: 50% !important;
 }
 
-// Recent posts.
+/* Recent posts. */
 .widget_recent_entries > ul > li a:before {
-	content: "\f044" !important; // Edit.
+	content: "\f044" !important; /* Edit. */
 }
 
 .widget > ul li:before, .widget > ul li a:before, .widget > div > ul li a:before, .widget_calendar caption:before {
-//	content: "\f044" !important; // Edit.
+/*	content: "\f044" !important; // Edit. */
 }
 
 .widget_bimbler_rsvp_widget > ul > li:before {
-	content: "\f046" !important;	// Check-in.
+	content: "\f046" !important;	/* Check-in. */
 }
 
 .tribe-events-list-widget .duration {
@@ -1603,13 +1603,13 @@
 .tribe-events-list-widget ol li h4:before {
  	font-weight: 300 !important; 
  	font-family: FontAwesome; 
-	content: "\f073" !important; // Calendar
+	content: "\f073" !important; /* Calendar */
 }
 
 
 #imagedescription {
 	width: 200px !important;  
-	//height: 20px
+	/*height: 20px */
 	}
 
 .widget_bimbler_rsvp_widget > ul > li:before { content: "\f075"; }
@@ -1631,13 +1631,13 @@
 	display: block;
 	width: 980px;
 	margin: 50px auto;
-//	font-family: 'museo_sans100', "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
-//	padding-left:20px;
+/*	font-family: 'museo_sans100', "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
+//	padding-left:20px; */
 }
 
 #AvatarList h2 {
-//	font-size: 11px;
-//	letter-spacing:1px;
+/*	font-size: 11px;
+//	letter-spacing:1px; */
 	color: #000;
 }
 
@@ -1647,11 +1647,11 @@
 
 #AvatarList ul li{
 	display:inline-block;
-//	width:130px;
-//	height: 125px;
+/*	width:130px;
+//	height: 125px; */
 	width:80px;
 	height: 80px;
-//	margin: 30px 30px 15px 0;
+/*	margin: 30px 30px 15px 0; */
 	margin: 0px 30px 40px 0;
 	position:relative;
 	vertical-align: text-top;
@@ -1668,8 +1668,8 @@
     z-index:5;
     left:0px;
     top:0px;
-//    width: 130px;
-//	height: 125px;
+/*    width: 130px;
+//	height: 125px; */
     width: 80px;
 	height: 80px;
 	background: none repeat scroll 0 0 rgba(138, 215, 201, 0.8);
@@ -1679,8 +1679,8 @@
 	cursor:pointer;
 	}
 #AvatarList ul li img {
-//	width:130px;
-//	height: 125px;
+/*	width:130px;
+//	height: 125px; */
 	width:80px;
 	height: 80px;
 	-webkit-border-radius: 50%;
@@ -1693,10 +1693,10 @@
 	max-height: 34px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-//	padding-top: 15px;
+/*	padding-top: 15px; */
 	padding-top: 5px;
 	text-align: center;
-//	color: #77787a;
+/*	color: #77787a; */
 }
 
 .AvatarListSide-wrap {
@@ -1707,16 +1707,16 @@
 
 #AvatarListSide {	
 	display: block;
-//	width: 340px;
-//	margin: 50px auto;
+/*	width: 340px;
+//	margin: 50px auto; */
 	margin: 0px auto;
-//	font-family: 'museo_sans100', "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
-//	padding-left:20px;
+/*	font-family: 'museo_sans100', "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
+//	padding-left:20px; */
 }
 
 #AvatarListSide h2 {
-//	font-size: 11px;
-//	letter-spacing:1px;
+/*	font-size: 11px;
+//	letter-spacing:1px; */
 	color: #000;
 }
 
@@ -1728,20 +1728,20 @@
 
 #AvatarListSide ul li{
 	display:inline-block;
-//	width:130px;
-//	height: 125px;
+/*	width:130px;
+//	height: 125px; */
 	width:80px;
-//	height: 80px;
+/*	height: 80px;
 //	margin: 30px 30px 15px 0; 
-//	margin: 0px 30px 20px 0; // Old. Top, right, bottom, left
-	margin: 0px 0px 20px 0; // Old. Top, right, bottom, left
-//	margin: 0px 30px 20px 0;
+//	margin: 0px 30px 20px 0; // Old. Top, right, bottom, left */
+	margin: 0px 0px 20px 0; /* Old. Top, right, bottom, left */
+/*	margin: 0px 30px 20px 0; */
 	position:relative;
 	vertical-align: text-top;
 	text-align: top;
 	
 	border-bottom: none;
-// Adjust avatar spacing.
+/* Adjust avatar spacing. */
 	padding-left: 5px !important;
 }
 
@@ -1789,8 +1789,8 @@
     z-index:5;
     left:0px;
     top:0px;
-//    width: 130px;
-//	height: 125px;
+/*    width: 130px;
+//	height: 125px; */
     width: 80px;
 	height: 80px;
 	background: none repeat scroll 0 0 rgba(138, 215, 201, 0.8);
@@ -1800,8 +1800,8 @@
 	cursor:pointer;
 	}
 #AvatarListSide ul li img {
-//	width:130px;
-//	height: 125px;
+/*	width:130px;
+//	height: 125px; */
 	width:80px;
 	height: 80px;
 	-webkit-border-radius: 50%;
@@ -1811,13 +1811,13 @@
 	
 #AvatarListSide ul li p{
 	line-height: 18px;
-//	max-height: 34px;
+/*	max-height: 34px; */
 	overflow: hidden;
 	text-overflow: ellipsis;
-//	padding-top: 15px;
-//	padding-top: 5px;
+/*	padding-top: 15px;
+//	padding-top: 5px; */
 	text-align: center;
-//	color: #77787a;
+/*	color: #77787a; */
 }
 
 
@@ -1886,8 +1886,8 @@
 	font-size: 250%;
  	font-family: FontAwesome;
  	text-colour: #6aab2d !important;
-// 	text-decoration: none solid rgb(0, 255, 0); 
-	content: "\f058" !important; //  fa-check-circle [&#xf058;] 
+/* 	text-decoration: none solid rgb(0, 255, 0); */ 
+	content: "\f058" !important; /*  fa-check-circle [&#xf058;] */ 
 }
 
 .rsvp_no::before {
@@ -1897,8 +1897,8 @@
  	font-family: FontAwesome;
  	text-colour: #f75300 !important; 
 	color: #f75300 !important;
-// 	text-decoration: none solid rgb(255, 0, 0); 
-	content: "\f057" !important; // fa-times-circle [&#xf057;]
+/* 	text-decoration: none solid rgb(255, 0, 0); */ 
+	content: "\f057" !important; /* fa-times-circle [&#xf057;] */
 }
 
 .rsvp_none::before {
@@ -1907,8 +1907,8 @@
 	font-size: 250%;
  	font-family: FontAwesome;
  	text-colour: #f75300 !important; 
-// 	text-decoration: none solid rgb(255, 0, 0); 
-	content: "\f059" !important; // fa-question-circle [&#xf059;]
+/* 	text-decoration: none solid rgb(255, 0, 0); */
+	content: "\f059" !important; /* fa-question-circle [&#xf059;] */
 }
 
 
@@ -1917,8 +1917,8 @@
 .rsvp-checkin-indicator-yes i,
 .rsvp-checkin-indicator-wait i {
 	position: absolute; 
-//   	top: 0px; 
-//   	left: 50px; 
+/*   	top: 0px; 
+//   	left: 50px; */ 
    	top: 5%; 
    	left: 69%; 
 	font-size: 250%;
@@ -1971,11 +1971,11 @@
 
 .rsvp-checkin-indicator-yes {
 	color: green;
-	content: "\f058" !important; //  fa-check-circle [&#xf058;] 
+	content: "\f058" !important; /*  fa-check-circle [&#xf058;] */ 
 } 
 .rsvp-checkin-indicator-no {
 	color: red;
-	content: "\f057" !important; // fa-times-circle [&#xf057;]
+	content: "\f057" !important; /* fa-times-circle [&#xf057;] */
 } 
 .rsvp-checkin-indicator-none {
 	color: gray;
@@ -1997,7 +1997,7 @@
 } 
 
 
-// Layout with vertical stacking.
+/* Layout with vertical stacking. */
 
 /*
     <div class="container">
@@ -2011,19 +2011,19 @@
     float:right !important;
     clear:right !important;
 }
-.bimbler-left{ // Left
+.bimbler-left{ /* Left */
     float: left;
     clear: left;
     background-color:green;
-//    width: 300px;
-//    height: 20px;
+/*    width: 300px;
+//    height: 20px; */
 }
-.bimbler-tr{ // Top right
+.bimbler-tr{ /* Top right */
     background-color:blue;
     width: 15px;
     height: 50%;
 }
-.bimbler-br{ // Bottom right
+.bimbler-br{ /* Bottom right */
     background-color:red;
     width: 15px;
     height: 50%;
@@ -2032,7 +2032,7 @@
 .bimbler-container{
     background-color: yellow;
     width: 20px;
-    //height: 400px;
+    /*height: 400px; */
 }
 
 
@@ -2101,12 +2101,12 @@
 	border-top-left-radius: 0;
 	border-top-right-radius: 0
 }
-// End layout.
+/* End layout. */
 
 
 
 
-// Bimbler ToolTips.
+/* Bimbler ToolTips. */
 
 
 .bimbler-message {
@@ -2371,8 +2371,8 @@
 .bimbler-alert-box {
 		color:#555;
 		border-radius:10px;
-		//font-family:Tahoma,Geneva,Arial,sans-serif;
-		//font-size:11px;
+		/*font-family:Tahoma,Geneva,Arial,sans-serif;
+		//font-size:11px; */
 		padding:10px 36px;
 		margin:10px;
 	}
@@ -6031,13 +6031,13 @@ a.list-group-item.active > .badge,
 
   /* the fries */
   position: absolute;
-//  background: #21a9e1;
+/*  background: #21a9e1; */
   background: #dd9933;
   border-radius: 50%;
   display: inline-block;
   padding: 0.3em;
   color: #f2f2f2;
-//  color: #000000;
+/*  color: #000000; */
 /*  right: 20%; */
   left: 55%;
   top: 2px; 
@@ -6061,7 +6061,7 @@ a.list-group-item.active > .badge,
   /* the fries */
   position: absolute;
   background: #00a651;
-//  border-radius: 50%;
+/*  border-radius: 50%; */
   border-radius: 20px;
   display: inline-block;
   padding: 0.3em;
@@ -6087,7 +6087,7 @@ a.list-group-item.active > .badge,
 
 .comment-reply-link:before { 
 	content: "\00BB"; 
-//	content: "&raquo;"; 
+/*	content: "&raquo;"; */ 
 }
 
 .bimbler-avatar-narrow {
@@ -6095,8 +6095,8 @@ a.list-group-item.active > .badge,
 }
 
 .avatar-clipped {
-//	width: 80px;
-//	height: 80px;
+/*	width: 80px;
+//	height: 80px; */
 	width: 48px;
 	height: 48px;
 	background-position: top;
