@@ -233,7 +233,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 				} else if ($rsvps && (count ($rsvps) > 0))	{
 		?>			
 				
-			<ul id="tab-rsvps" class="bimbler-tab<?php if($instance['rsvps_thumbs']) { echo 'avatars-enabled'; } ?> group">
+			<ul id="tab-rsvps" class="bimbler-tab <?php if($instance['rsvps_thumbs']) { echo 'avatars-enabled'; } ?> group">
 				<?php
 
 				if (!is_user_logged_in()) {
