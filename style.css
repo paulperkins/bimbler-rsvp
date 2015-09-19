@@ -100,7 +100,7 @@
 #footer .bimbler-posts .post-item-date { font-size: 14px; }
 
 /* Fix-up iOS 9 - turn off highlighting for hyperlinks. */
-.bimbler-tab li a
+.bimbler-tab li a i
  { color: #444!important;}
 
 
