@@ -261,7 +261,9 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 						
 						$avatar_img = $this->bimbler_get_avatar_img ($avatar);
 						
-						$avatar_div = '<div class="avatar-clipped" style="background-image: url(\'' . $avatar_img . '\');"></div>';
+						// Workaround iOS 9.0 bust...
+						//$avatar_div = '<div class="avatar-clipped" style="background-image: url(\'' . $avatar_img . '\');"></div>';
+						$avatar_div = '<img src="' . $avatar_img . '" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">';
 						
 						$num_rsvps = Bimbler_RSVP::get_instance()->count_rsvps ($post->ID);
 						
@@ -361,7 +363,9 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 						
 						$avatar_img = $this->bimbler_get_avatar_img ($avatar);
 						
-						$avatar_div = '<div class="avatar-clipped" style="background-image: url(\'' . $avatar_img . '\');"></div>';
+						// Work around iOS 9.0 issue.
+						//$avatar_div = '<div class="avatar-clipped" style="background-image: url(\'' . $avatar_img . '\');"></div>';
+						$avatar_div = '<img src="' . $avatar_img . '" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">';
 				
 				?>
 						<?php if($instance['comments_avatars']) { // Avatars enabled? ?>
