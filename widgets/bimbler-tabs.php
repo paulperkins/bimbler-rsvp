@@ -233,7 +233,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 				} else if ($rsvps && (count ($rsvps) > 0))	{
 		?>			
 				
-			<ul id="tab-rsvps" class="bimbler-tab group <?php if($instance['rsvps_thumbs']) { echo 'avatars-enabled'; } ?>">
+			<ul id="tab-rsvps" class="bimbler-tab<?php if($instance['rsvps_thumbs']) { echo 'avatars-enabled'; } ?> group">
 				<?php
 
 				if (!is_user_logged_in()) {
@@ -306,7 +306,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			<?php $recent=new WP_Query(); ?>
 			<?php $recent->query('showposts='.$instance["recent_num"].'&cat='.$instance["recent_cat_id"].'&ignore_sticky_posts=1');?>
 			
-			<ul id="tab-recent" class="bimbler-tab group <?php if($instance['recent_thumbs']) { echo 'avatars-enabled'; } ?>">
+			<ul id="tab-recent" class="bimbler-tab <?php if($instance['recent_thumbs']) { echo 'avatars-enabled'; } ?> group">
 				<?php while ($recent->have_posts()): $recent->the_post(); ?>
 				<li>
 					<?php if($instance['recent_thumbs']) { // Thumbnails enabled? ?>
@@ -345,7 +345,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 
 			<?php $comments = get_comments(array('number'=>$instance["comments_num"],'status'=>'approve','post_status'=>'publish')); ?>
 			
-			<ul id="tab-comments" class="bimbler-tab group <?php if($instance['comments_avatars']) { echo 'avatars-enabled'; } ?>">
+			<ul id="tab-comments" class="bimbler-tab <?php if($instance['comments_avatars']) { echo 'avatars-enabled'; } ?> group">
 
 <?php
 				if (!is_user_logged_in()) {
@@ -399,7 +399,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			if(!empty ($instance['events_enable'])) { // Tags enabled? 
 				
 				?>
-				<ul id="tab-events" class="bimbler-tab group avatars-enabled">
+				<ul id="tab-events" class="bimbler-tab avatars-enabled group">
 				
 				<?php
 					
@@ -458,7 +458,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			if(!empty ($instance['mingler_events_enable'])) { // Tags enabled? 
 				
 				?>
-				<ul id="tab-mingler_events" class="bimbler-tab group avatars-enabled">
+				<ul id="tab-mingler_events" class="bimbler-tab avatars-enabled group">
 				
 				<?php
 					
