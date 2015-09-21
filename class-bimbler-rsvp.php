@@ -3951,6 +3951,8 @@ jQuery(document).ready(function($)
 			// Must be a real user.
 			if (!is_user_logged_in()) {
 				$approved = 'spam';
+				
+				error_log ('bimbler_validate_comment: Spam comment detected - user not logged in.');
 			}
 			
 			return $approved;
