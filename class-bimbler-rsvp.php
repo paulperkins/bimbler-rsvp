@@ -339,6 +339,9 @@ class Bimbler_RSVP {
         	
         	// Prevent cost fields from being displayed in editor.
         	add_filter('tribe_events_admin_show_cost_field', array ($this, 'tribe_events_admin_hide_cost_field'));
+			
+			// Block spam comments - where author is not set.
+			add_filter ('pre_comment_approved', array ($this, 'bimbler_validate_comment'), 50, 2);
         	 
         	// Widgets.
         	require_once( $this->pluginPath.'/widgets/bimbler-widgets.php' );
@@ -3940,5 +3943,13 @@ jQuery(document).ready(function($)
 //                      $output .= '<meta property="og:description" content="The Brisbane Bimblers’ Cycling Group is a light-hearted group of cyclists who love to get out and about on two wheels, but don’t take themselves too seriously." />' . PHP_EOL;
 
 			echo $output;
-		}		
+		}
+		
+		// Block spam comments - where author is not set.		
+		function bimbler_validate_comment ( $approved , $comment_object ){
+			
+			if (empty ($comment_object->comment_author)) {
+				return 'spam';
+			}
+		 }		
 } // End class
