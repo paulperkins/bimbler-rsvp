@@ -3948,8 +3948,11 @@ jQuery(document).ready(function($)
 		// Block spam comments - where author is not set.		
 		function bimbler_validate_comment ( $approved , $comment_object ){
 			
-			if (empty ($comment_object->comment_author)) {
-				return 'spam';
+			// Must be a real user.
+			if (!is_user_logged_in()) {
+				$approved = 'spam';
 			}
+			
+			return $approved;
 		 }		
 } // End class
