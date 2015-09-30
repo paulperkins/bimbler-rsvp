@@ -423,7 +423,7 @@ class Bimbler_RSVP {
   			// Select2 - event host multi-select.
   			// TODO: Move into admin code.
   			
-  			// Only load if an admin user.
+  			// Only load if an admin user / can update eevents.
 			if ($this->can_modify_attendance (get_queried_object_id())) {
 	  			wp_register_style( 'bimbler-select2-style', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css' );
 	  			wp_enqueue_style( 'bimbler-select2-style' );
@@ -544,6 +544,8 @@ class Bimbler_RSVP {
 				error_log ('get_current_rsvp: called with no event ID set');
 				return null;
 			}
+			
+			// TODO: Validate / sanitise user ID.
 
   			$table_name = $wpdb->base_prefix . $rsvp_db_table;
   				
@@ -594,6 +596,8 @@ class Bimbler_RSVP {
 				error_log ('get_current_rsvp_object: called with no event ID set');
 				return null;
 			}
+			
+			// TODO: Validate / sanitise user ID.
 		  
   			$table_name = $wpdb->base_prefix . $rsvp_db_table;
   		
@@ -630,6 +634,8 @@ class Bimbler_RSVP {
 				error_log ('get_event_rsvp_object: called with no event ID set');
 				return null;
 			}
+			
+			// TODO: Validate RSVP - should be single char.
 		  
   			/*$sql = 'SELECT * from '. $table_name;
   			$sql .= ' WHERE event = '. $event;
@@ -1178,6 +1184,7 @@ class Bimbler_RSVP {
 	 	 *
 		 * @param slug
 		 */
+		 // TODO: This function doesn't do what the function name says - fix or remove.
 		function get_ngg_galleries ($slug) {
 			//			error_log ('get_posts for slug \''. $slug .'\'.');
 		
@@ -1556,6 +1563,8 @@ class Bimbler_RSVP {
 		 *
 		 * @param post_id
 		 */
+		 
+		 // TODO: post ID parameter not used - re-factor this and callers.
 		function show_event_rwgps_map ($post_id) {
 
 			$rwgps_id = $this->get_rwgps_id (get_the_ID());
@@ -2931,8 +2940,8 @@ jQuery(document).ready(function($)
 				return null;
 			}
 
-			// Always send mails to Paul (user ID 1).
-			$notify_users[] = 1;
+			// Always send mails to admin team.
+			$notify_users = $this->get_admin_users();
 
 			$notify_users[] = $user_id;
 		
