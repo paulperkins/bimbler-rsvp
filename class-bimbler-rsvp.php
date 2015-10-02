@@ -1803,6 +1803,17 @@ class Bimbler_RSVP {
 			$hosts = json_encode($_POST['bimbler_ride_hosts']);
 		
 			update_post_meta( $event_id, 'bimbler_ride_hosts', $hosts);
+			
+			// Add an RSVP for event hosts.
+			foreach ($_POST['bimbler_ride_hosts'] as $host) {
+
+				// Only insert a new RSVP if this user is not already attending.				
+				if (null == $this->get_current_rsvp($event_id, $host)) {
+					error_log ('Adding RSVP for user ID ' . $host . ' as host of event ID ' . $event_id);
+
+					$this->insert_rsvp ($event_id, $host, 'Y');
+				}
+			}
 		}
 		
 		
@@ -2002,7 +2013,7 @@ class Bimbler_RSVP {
 		 * @param	$rsvp		The new RSVP.
 		 * @param	$comment	The new comment
 		 */
-		function insert_rsvp ($event_id, $user_id, $rsvp, $comment, $guests = 0) {
+		function insert_rsvp ($event_id, $user_id, $rsvp, $comment = '', $guests = 0) {
 		
 			global $wpdb;
 			global $rsvp_db_table;
