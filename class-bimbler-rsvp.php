@@ -32,7 +32,7 @@ $bimbler_timezone = 'Australia/Brisbane';
 //	require_once( plugin_dir_path( __FILE__ ) . 'admin/bimbler-rsvp-settings.php' );
 
 	// Meta boxes.	
-	//require_once( plugin_dir_path( __FILE__ ) . 'admin/bimbler-rsvp-admin.php' );
+//	require_once( plugin_dir_path( __FILE__ ) . 'admin/bimbler-rsvp-admin.php' );
 //}
 
 
@@ -239,13 +239,12 @@ class Bimbler_RSVP {
         	$this->pluginPath = trailingslashit( dirname( dirname(__FILE__) ) ) .'bimbler-rsvp';
         	
         	// Hook to save RSVP data.
-        	//add_action( 'tribe_events_before_html' , array( $this, 'process_rsvp' ) );
-			
         	add_action( 'init' , array( $this, 'process_rsvp' ) );
 			
         	
         	// Hook to display notices (before HTML is fully rendered - use JavaScript).
         	//add_action( 'tribe_events_before_html' , array( $this, 'show_notices' ) );
+
         	add_action( 'wp_footer' , array( $this, 'show_notices' ),100 );
 
         	// Add the RSVP buttons to the Event form.
@@ -281,10 +280,11 @@ class Bimbler_RSVP {
         	// Create the DB table if it doesn't exist.
         	register_activation_hook( __FILE__, array($this, 'rsvp_install' ) );
 
+			// TODO: This can be removed once DB table structure stabilised.
+        	$this->rsvp_install();
+
         	// Add stylesheet.
         	add_action( 'wp_enqueue_scripts', array ($this, 'add_stylesheet') );
-        	
-        	$this->rsvp_install();
 
         	// Add settings menu. Contained in bimbler-rsvp-settings.php.
         	//add_action( 'admin_menu', array ($this, 'create_admin_menu') );
@@ -336,8 +336,9 @@ class Bimbler_RSVP {
 
         	// Add style from settings rather than hard-coded in CSS.
         	add_action('wp_head',array ($this, 'add_dynamic_style'));
-        	
+			
         	// Prevent cost fields from being displayed in editor.
+			// TODO: should be named admin_SHOW_cost_field.
         	add_filter('tribe_events_admin_show_cost_field', array ($this, 'tribe_events_admin_hide_cost_field'));
 			
 			// Block spam comments - where author is not set.
@@ -541,12 +542,15 @@ class Bimbler_RSVP {
   			global $rsvp_db_table;
 			  
 			if(!is_numeric ($event)) {
-				error_log ('get_current_rsvp: called with no event ID set');
+				error_log ('get_current_rsvp: called with invalid event ID set');
 				return null;
 			}
 			
-			// TODO: Validate / sanitise user ID.
-
+			if(!is_numeric ($user_id)) {
+				error_log ('get_current_rsvp: called with invalid user ID set');
+				return null;
+			}
+			
   			$table_name = $wpdb->base_prefix . $rsvp_db_table;
   				
 //  			error_log ('Determining if user has RSVPd for this event.');
@@ -562,7 +566,7 @@ class Bimbler_RSVP {
   				
   			$link = $wpdb->get_row ($sql);
   				
-  			if (null == $link) {
+  			if (null === $link) {
 //  				error_log ('   No previous RSVP');
   				
   				return null;
@@ -593,11 +597,14 @@ class Bimbler_RSVP {
   			global $rsvp_db_table;
   		
 			if(!is_numeric ($event)) {
-				error_log ('get_current_rsvp_object: called with no event ID set');
+				error_log ('get_current_rsvp_object: called with invalid event ID set');
 				return null;
 			}
 			
-			// TODO: Validate / sanitise user ID.
+			if(!is_numeric ($user_id)) {
+				error_log ('get_current_rsvp_object: called with invalid user ID set');
+				return null;
+			}
 		  
   			$table_name = $wpdb->base_prefix . $rsvp_db_table;
   		
@@ -631,11 +638,15 @@ class Bimbler_RSVP {
   			$table_name = $wpdb->base_prefix . $rsvp_db_table;
   		
 			if(!is_numeric ($event)) {
-				error_log ('get_event_rsvp_object: called with no event ID set');
+				error_log ('get_event_rsvp_object: called with invalid event ID set');
 				return null;
 			}
 			
-			// TODO: Validate RSVP - should be single char.
+			// TODO: Validate RSVP.
+			/*if(!$this->is_char ($rsvp)) {
+				error_log ('get_event_rsvp_object: called with invalid RSVP char set');
+				return null;
+			}*/
 		  
   			/*$sql = 'SELECT * from '. $table_name;
   			$sql .= ' WHERE event = '. $event;
@@ -2112,17 +2123,18 @@ jQuery(document).ready(function($)
 		 * @param	$post_id	The ID of the post on which the comment is being added.
 		 */
 		function process_rsvp( $post_id ) {
-			// Check if the user is logged-in - this page should only be visible if they are.
+			// TODO: Check if the user is logged-in - this functionality should only be accessible if they are.
 /*			if (!is_user_logged_in())
 			{
-				
+				error_log ('process_rsvp: Called by non logged-in user.');
+				return;
 			} */
 
 			
 			// Only save if we've been passed the 'nonce'... i.e. the event is being renderered as part of an 
 			// RSVP update.
 			//if ( ( is_single() || is_page() ) &&
-			if (		
+			if ( // TODO: Flatten this out - return on validation failures.
 				isset ($_POST['rsvp_post_id']) &&
 				isset($_POST['rsvp_nonce']) &&
 					wp_verify_nonce($_POST['rsvp_nonce'], 'rsvp')
@@ -2257,6 +2269,7 @@ jQuery(document).ready(function($)
 				
 			// Only save if we've been passed the 'nonce'... i.e. the event is being renderered as part of an
 			// RSVP update.
+			// TODO: Flatten this out - return on validation failures.
 			if ( ( is_single() || is_page() ) &&
 				isset($ajax_post['rsvp_nonce']) &&
 				wp_verify_nonce($ajax_post['rsvp_nonce'], 'rsvp')
@@ -2368,7 +2381,7 @@ jQuery(document).ready(function($)
 			$comments = get_comments ('post_id='. $post_id);
 			
 			if (!isset($comments)) {
-				error_log ('No comments for post ID '. $post_id);
+				//error_log ('No comments for post ID '. $post_id);
 				return null;
 			}
 			
@@ -2377,6 +2390,8 @@ jQuery(document).ready(function($)
 				
 				$user_list[] = $comment->user_id;
 			}
+			
+			// TODO: Remove duplicates in $user_list array.
 			
 			return $user_list;
 		}
@@ -2484,6 +2499,8 @@ jQuery(document).ready(function($)
 					}
 				}
 			}
+			
+			// TODO: Remove duplicates - same user may be Tribe organiser as well as event host.
 		
 			/*			error_log ('Event Hosts:');
 		
@@ -2940,10 +2957,6 @@ jQuery(document).ready(function($)
 		//
 		function user_approved ($user_id) {
 			
-		//error_log ('New user approved, ID '. $user_id);
-				
-			$notify_users = array ();
-
 			$new_user = get_userdata ($user_id);
 				
 			if (!isset ($new_user)) {
@@ -2951,10 +2964,16 @@ jQuery(document).ready(function($)
 				return null;
 			}
 
-			// Always send mails to admin team.
-			$notify_users = $this->get_admin_users();
-
+			$notify_users = array ();
 			$notify_users[] = $user_id;
+
+			// Always send mails to admin team.
+			$admin_users = array ();
+			$admin_users = $this->get_admin_users();
+
+			if (isset ($admin_users)) {
+				$notify_users = array_merge ($notify_users, $admin_users);
+			}
 		
 			$email_content = $this->build_new_user_notification_email ($new_user->first_name);
 			
@@ -3088,6 +3107,7 @@ jQuery(document).ready(function($)
 				return null;
 			}
 		
+			// TOOD: Change this to get_admin_users.
 			// Always send mails to Paul (user ID 1).
 			$notify_users[] = 1;
 				
@@ -3654,9 +3674,10 @@ jQuery(document).ready(function($)
 			return $pics->num_pics;
 		}
 		
+		// TODO: Move to bimbler-woofoo plugin.
 		public function bimbler_add_order_report ($reports) {
 
-			error_log ('Reports: ' . print_r ($reports, true));
+			//error_log ('Reports: ' . print_r ($reports, true));
 	
 			$reports['stock']['reports']['items_to_order'] = array(
 						'title'       => 'Items to Order',
@@ -3716,6 +3737,7 @@ jQuery(document).ready(function($)
 		/*
 		 * TODO: Add to admin file.
 		 */
+		// TODO: Should be called admin_SHOW_cost_field.
 		function tribe_events_admin_hide_cost_field () {
 
 			return false;
@@ -3976,5 +3998,11 @@ jQuery(document).ready(function($)
 			}
 			
 			return $approved;
-		 }		
+		 }
+
+		 // There is no PHP is_char.
+		 function is_char ($char) {
+			 return preg_match('/[a-zA-Z]/', $char);
+		 }
+		 		
 } // End class
