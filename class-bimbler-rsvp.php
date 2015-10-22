@@ -3897,13 +3897,13 @@ jQuery(document).ready(function($)
 			date_default_timezone_set('Australia/Brisbane');
 		
 			// Get the details of the first ride.
-/*			$get_posts = tribe_get_events(array(
+			$get_posts = tribe_get_events(array( // Show next ride, even if in-progress.
 					'eventDisplay'		=> 'all',
 					'start_date' 		=> date('Y-m-d H:i:s'), // From now, not midnight - we should already be at today's ride.
 					'posts_per_page' 	=> 1) );
-*/
 
-			$get_posts = tribe_get_events( array(
+
+/*			$get_posts = tribe_get_events( array(
 					'eventDisplay' 	=> 'custom',
 					'posts_per_page'=>	1,
 					'meta_query' 	=> array(
@@ -3916,7 +3916,7 @@ jQuery(document).ready(function($)
 							),
 							'orderby' 	=> '_EventEndDate',
 							'order'	 	=> 'ASC'
-					)));
+					))); */
 			
 			$event = $get_posts[0];
 
