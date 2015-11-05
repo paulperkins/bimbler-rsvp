@@ -3091,13 +3091,21 @@ jQuery(document).ready(function($)
 			
 			global $wp_query;
 			$post_id = $wp_query->post->ID;
+			
+			// Work around bug.
+			$post_id = get_queried_object_id();
+
+			// If fired from the mobile site, we won't have the query object set.
+			if (0 == $post_id) {
+				$post_id = $_GET['event'];
 				
+			}
 			//error_log ('Photo added to post '. $post_id .' by user ID '. $user_id);
 		
 			$post_object = get_post ($post_id);
 				
 			if (!isset ($post_object)) {
-				error_log ('Cannot get post details for post ID '. $post_id);
+				error_log ('photo_uploaded: Cannot get post details for post ID '. $post_id);
 				return null;
 			}
 			
