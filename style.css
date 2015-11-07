@@ -1757,6 +1757,7 @@
 	background: transparent;
 }
 
+/*
 #AvatarListSide ul li .rsvp-checkin-containerx {
 	display: none;
 	background: transparent;
@@ -1782,13 +1783,12 @@
     top:0px;
     width: 80px;
 	height: 80px;
-	/*background: none repeat scroll 0 0 rgba(138, 215, 201, 0.8);*/
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	border-radius: 50%;
 	cursor:pointer;
 	}
-
+*/
 
 #AvatarListSide ul li:hover .permalink{
 	display:block;
@@ -6031,6 +6031,7 @@ a.list-group-item.active > .badge,
   position: relative;
 }
 
+
 /* append the notification badge after it */
 [data-notifications]:after {
 
@@ -6039,7 +6040,7 @@ a.list-group-item.active > .badge,
 
   /* the bun */
   position: absolute;
-  /*background: #dd9933; // Set dynamically. */
+  /*background: #dd9933; // Set dynamically. */ /* Might not setting this be the cause of the iOS 9.0 bug? */
   border-radius: 50%;
   display: inline-block;
   padding: 0.3em;
@@ -6174,6 +6175,7 @@ a.list-group-item.active > .badge,
 	border-bottom: 0px;}
 	
 .bimbler-tabs-nav.tab-count-5 li { width: 20%; }
+.bimbler-tabs-nav.tab-count-6 li { width: 16%; }
 
 .bimbler-tabs-nav li.active a { border-bottom-color: #dd9933;  }
 .post-comments span:before { border-right-color: #dd9933; }				
