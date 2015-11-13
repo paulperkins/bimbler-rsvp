@@ -138,10 +138,10 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 					<input type="hidden" name="accept_terms" value="accept" value="Y">
 
 					<div id="bimbler-rsvp-control" class="btn-group btn-group-xs" data-event-id="<?php echo  $post->ID; ?>" data-user-id="<?php echo $user_id; ?>" data-nonce="<?php echo  $nonce; ?>">
-						<button type="submit" name="submit" value='RSVP Yes' class="btn btn-success btn-xs rsvp-button" <?php echo $yes_btn_state; ?> data-rsvp="Y" id="bimbler-rsvp-yes" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP Yes">
+						<button type="submit" name="submit" value='RSVP Yes' style="background-color: #00a651 !important; border-color: #00a651 !important;" class="btn btn-success btn-xs rsvp-button" <?php echo $yes_btn_state; ?> data-rsvp="Y" id="bimbler-rsvp-yes" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP Yes">
 							RSVP Yes
 						</button>
-						<button type="submit" name="submit" value='RSVP No' class="btn btn-danger btn-xs rsvp-button" <?php echo $no_btn_state; ?> data-rsvp="N" id="bimbler-rsvp-no" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP No">
+						<button type="submit" name="submit" value='RSVP No' style="background-color: #cc2424 !important; border-color: #cc2424 !important;" class="btn btn-danger btn-xs rsvp-button" <?php echo $no_btn_state; ?> data-rsvp="N" id="bimbler-rsvp-no" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP No">
 							RSVP No
 						</button>
 					</div>
@@ -302,8 +302,9 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 		<?php 
 			// Recent posts.
 			
-		
-			if(!empty ($instance['recent_enable'])) { // Recent posts enabled? ?>
+			// Recent posts enabled? 
+			if(!empty ($instance['recent_enable'])) { 
+		?>
 			
 			<?php $recent=new WP_Query(); ?>
 			<?php $recent->query('showposts='.$instance["recent_num"].'&cat='.$instance["recent_cat_id"].'&ignore_sticky_posts=1');?>
@@ -311,7 +312,8 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			<ul id="tab-recent" class="bimbler-tab <?php if($instance['recent_thumbs']) { echo 'avatars-enabled'; } ?> group">
 				<?php while ($recent->have_posts()): $recent->the_post(); ?>
 				<li>
-					<?php if($instance['recent_thumbs']) { // Thumbnails enabled? ?>
+					<?php if($instance['recent_thumbs']) { // Thumbnails enabled? 
+						?>
 					<div class="tab-item-avatar">
 						<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
 							<?php if ( has_post_thumbnail() ) { ?>
@@ -342,7 +344,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 
 		<?php 
 			// Comments.
-			if(!empty ($instance['comments_enable'])) { // Recent comments enabled? ?>
+			if(!empty ($instance['comments_enable'])) {  ?>
 
 
 			<?php $comments = get_comments(array('number'=>$instance["comments_num"],'status'=>'approve','post_status'=>'publish')); ?>
@@ -368,7 +370,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 						$avatar_div = '<img src="' . $avatar_img . '" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">';
 				
 				?>
-						<?php if($instance['comments_avatars']) { // Avatars enabled? ?>
+						<?php if($instance['comments_avatars']) { ?>
 						<div class="tab-item-avatar">
 							<a href="/profile/<?php echo urlencode($comment->comment_author); ?>/" title="View <?php echo $comment->comment_author;?>'s profile.">
 								<?php //echo get_avatar($comment->comment_author_email); ?>
