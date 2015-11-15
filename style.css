@@ -6258,6 +6258,64 @@ border-bottom-color: #dd9933!important;
   padding: 0px !important;
 }
 
+/* Taken from Porcelain theme */
+input, textarea, select, input[type=search], button {
+    max-width: 100%;
+    font-size: 100%;
+}
+
+button, .button, input[type="submit"], input[type="button"], #submit {
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    -webkit-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    margin: 2px 0;
+    padding: 12px 25px;
+    background: none;
+    background-image: none;
+    background-color: #359bb4;
+    color: #ffffff;
+    vertical-align: middle;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: normal;
+    font-size: 13px;
+    font-family: Oswald, 'Open Sans', Helvetica, Arial, sans-serif;
+    line-height: 20px;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+button, .button, input[type="submit"], input[type="button"], #submit {
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    -webkit-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    margin: 2px 0;
+    padding: 12px 25px;
+    background: none;
+    background-image: none;
+    background-color: #359bb4;
+    color: #ffffff;
+    vertical-align: middle;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: normal;
+    font-size: 13px;
+    font-family: Oswald, 'Open Sans', Helvetica, Arial, sans-serif;
+    line-height: 20px;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
 
 /* Make buttons nice again. */
 /*  base : forms
