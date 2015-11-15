@@ -6258,6 +6258,8 @@ border-bottom-color: #dd9933!important;
   padding: 0px !important;
 }
 
+/* Packaging from here forward. */
+
 /* Taken from Porcelain theme */
 input, textarea, select, input[type=search], button {
     max-width: 100%;
@@ -6359,5 +6361,42 @@ input, textarea, button, select, label { font-family: inherit; }
 .themeform button[type="button"] { background: #3b8dbd; color: #fff; padding: 8px 14px; font-weight: 600; display: inline-block; border: none; cursor: pointer; -webkit-border-radius: 3px; border-radius: 3px; }
 .themeform input[type="button"]:hover,
 .themeform button[type="button"]:hover { background: #444; }
+
+
+
+.btn-lg,
+.btn-group-lg > .btn {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.3333333;
+  border-radius: 6px;
+}
+.btn-sm,
+.btn-group-sm > .btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.btn-xs,
+.btn-group-xs > .btn {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.btn-block {
+  display: block;
+  width: 100%;
+}
+.btn-block + .btn-block {
+  margin-top: 5px;
+}
+input[type="submit"].btn-block,
+input[type="reset"].btn-block,
+input[type="button"].btn-block {
+  width: 100%;
+}
+
 
 
