@@ -1994,7 +1994,9 @@ class Bimbler_RSVP {
 					// Only send an email for 'yes' RSVPs.
 					if ('Y' == $rsvp) {
 						// Send the email confirmation.
-						Bimbler_Reminders::get_instance()->send_rsvp_confirmation($user_id, $event_id);
+						if (class_exists('Bimbler_Reminders')) {
+							Bimbler_Reminders::get_instance()->send_rsvp_confirmation($user_id, $event_id);
+						}
 					}
 				}
 				 
@@ -2055,7 +2057,9 @@ class Bimbler_RSVP {
 			// Admin updates will not trigger a notification.
 			if (('Y' == $rsvp) && ($user_id == $current_user->ID)) {
 				// Send the email confirmation.
-				Bimbler_Reminders::get_instance()->send_rsvp_confirmation($user_id, $event_id);
+				if (class_exists('Bimbler_Reminders')) {
+					Bimbler_Reminders::get_instance()->send_rsvp_confirmation($user_id, $event_id);
+				}
 			}
 		}
 		
@@ -2937,7 +2941,11 @@ jQuery(document).ready(function($)
 			// Get events from tomorrow onwards.
 			$date_from = date('Y-m-d', strtotime('1 days'));
 			
-			$events_html = Bimbler_Reminders::get_instance()->get_upcoming_events_html($date_from);
+			$events_html = '';
+			
+			if (class_exists('Bimbler_Reminders')) {
+				$events_html = Bimbler_Reminders::get_instance()->get_upcoming_events_html($date_from);
+			}
 							
 			$email_content = str_replace ('<p>[upcoming_events_list]</p>', $events_html, $email_content);
 			
