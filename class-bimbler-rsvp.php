@@ -1301,6 +1301,12 @@ class Bimbler_RSVP {
 		 * @param post_id
 		 */
 		function show_event_galleries ($post_id) {
+			
+			// Only render the controls if the NextGen Gallery plugin is loaded.
+			if (!class_exists ('C_Gallery_Storage')) {
+				return;
+			}
+			
 			$slug = 'ride';
 				
 			$galleries = $this->get_galleries();
@@ -1746,6 +1752,11 @@ class Bimbler_RSVP {
 		 * 
 		*/
 		function tribe_events_save_gallery ($event_id) {
+			
+			// Only try to save the gallery details if the NextGen Gallery plugin is loaded.
+			if (!class_exists ('C_Gallery_Storage')) {
+				return null;
+			}
 			
 			global $ngg;
 				
