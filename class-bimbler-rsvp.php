@@ -1583,6 +1583,10 @@ class Bimbler_RSVP {
 		 
 		 // TODO: post ID parameter not used - re-factor this and callers.
 		function show_event_rwgps_map ($post_id) {
+			
+			if (!function_exists ('iframe_unqprfx_embed_shortcode')) {
+				return null;
+			}
 
 			$rwgps_id = $this->get_rwgps_id (get_the_ID());
 			
@@ -1798,6 +1802,10 @@ class Bimbler_RSVP {
 		 * 
 		*/
 		function tribe_events_save_rwgps ($event_id) {
+			
+			if (!function_exists ('iframe_unqprfx_embed_shortcode')) {
+				return null;
+			}
 		
 			if (!isset ($_POST['RWGPSID'])) {
 				return null;
