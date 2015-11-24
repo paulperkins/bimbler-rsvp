@@ -322,6 +322,9 @@ class Bimbler_RSVP {
         	
         	// Change 'Leave a Reply' on comment form.
         	add_filter('comment_form_defaults', array ($this, 'comment_reform'));
+
+			// Display ride hosts as if they were part of the Events Calendar meta.
+			add_filter ('tribe_events_single_event_the_meta_addon', array ($this, 'add_host_meta'));
         	
         	add_action ('woocommerce_admin_reports', array ($this, 'bimbler_add_order_report'), 99, 1);
         	
@@ -355,6 +358,7 @@ class Bimbler_RSVP {
         	require_once( $this->pluginPath.'/widgets/bimbler-edit-attendees.php' );
         	require_once( $this->pluginPath.'/widgets/bimbler-join-us.php' );
         	require_once( $this->pluginPath.'/widgets/bimbler-download-gps.php' );
+//        	require_once( $this->pluginPath.'/widgets/bimbler-comments.php' );
         	 
         	add_action( 'widgets_init', array ($this, 'register_bimbler_rsvp_widget') );
         	add_action( 'widgets_init', array ($this, 'register_bimbler_tabs_widget') );
@@ -366,6 +370,7 @@ class Bimbler_RSVP {
         	add_action( 'widgets_init', array ($this, 'register_bimbler_edit_attendees_widget') );
         	add_action( 'widgets_init', array ($this, 'register_bimbler_join_us_widget') );
         	add_action( 'widgets_init', array ($this, 'register_bimbler_download_gps_widget') );
+//        	add_action( 'widgets_init', array ($this, 'register_bimbler_comments_widget') );
         	 
 		} // End constructor.
 		
@@ -421,6 +426,16 @@ class Bimbler_RSVP {
   			wp_register_script ('bimbler-toastr-script', plugin_dir_url( __FILE__ ) . 'js/toastr.js', array( 'jquery' ) );
   			wp_enqueue_script( 'bimbler-toastr-script');
 
+// Commented for now.
+
+//  			wp_register_script ('bimbler-bootstrap-script', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ) );
+//  			wp_enqueue_script( 'bimbler-bootstrap-script');
+
+//			wp_enqueue_script( 'jquery' );
+
+//  			wp_register_script ('bimbler-comments-script', plugin_dir_url( __FILE__ ) . 'js/bimbler-comments.js', array( 'jquery' ), false, true );
+//  			wp_enqueue_script( 'bimbler-comments-script');
+			  
   			// Select2 - event host multi-select.
   			// TODO: Move into admin code.
   			
@@ -456,6 +471,40 @@ class Bimbler_RSVP {
   			return $arg;
   		}
   		
+		// Show ride hosts in the Events Calendar meta box.
+		function add_host_meta ($content) {
+			
+			$post_id = get_queried_object_id();
+
+			$meta_hosts_json = get_post_meta ($post_id, 'bimbler_ride_hosts', true);
+
+  			if (0 < strlen ($meta_hosts_json)) {
+
+				$meta_hosts = json_decode($meta_hosts_json);
+				  
+				if (count($meta_hosts) > 0) {
+
+					$content .= '<div class="tribe-events-meta-group tribe-events-meta-group-organizer vcard">' . PHP_EOL;
+					$content .= '	<h3 class="tribe-events-single-section-title">Host</h3>' . PHP_EOL;
+					$content .= '	<dl>' . PHP_EOL;
+					
+					foreach ($meta_hosts as $host) {
+
+						$user_info   = get_userdata ($host);
+						
+						$content .= '		<dd class="fn org">'. $user_info->nickname . '</dd>' . PHP_EOL;
+						
+					}
+					
+					$content .= '	</dl>' . PHP_EOL;
+					$content .= '</div>' . PHP_EOL;
+				}
+			 }
+			
+			return $content;
+		}		  
+		  
+		  
   		/**
   		 *
   		 */
@@ -2153,9 +2202,10 @@ jQuery(document).ready(function($)
 				return;
 			} */
 
-			error_log ('Timezone is set to "' . $this->get_timezone_string() . '".');
-			
-			//error_log ('GMT offset is set to "' .get_option('gmt_offset') . '".');
+
+//			error_log ('PHP timezone is set to "' . ini_get('date.timezone') . '".');
+//			error_log ('Timezone is set to "' . $this->get_timezone_string() . '".');
+//			error_log ('GMT offset is set to "' .get_option('gmt_offset') . '".');
 			
 			// Only save if we've been passed the 'nonce'... i.e. the event is being renderered as part of an 
 			// RSVP update.
@@ -3347,6 +3397,10 @@ jQuery(document).ready(function($)
 		function register_bimbler_download_gps_widget() {
 			register_widget( 'Bimbler_Download_GPS_Widget' );
 		}
+
+		function register_bimbler_comments_widget() {
+			register_widget( 'Bimbler_Comments_Widget' );
+		}
 		
 		function display_admin_options_page () {
 			echo '<div class="wrap"><h4>Options page goes here</h4></div>';
@@ -4049,33 +4103,37 @@ jQuery(document).ready(function($)
 		 function get_timezone_string() {
 		
 			// if site timezone string exists, return it
-			if ( $timezone = get_option( 'timezone_string' ) )
+			if ( $timezone = get_option( 'timezone_string' ) ) {
 				return $timezone;
+			}
 		
 			// get UTC offset, if it isn't set then return UTC
-			if ( 0 === ( $utc_offset = get_option( 'gmt_offset', 0 ) ) )
+			if ( 0 === ( $utc_offset = get_option( 'gmt_offset', 0 ) ) ) {
 				return 'UTC';
+			}
 		
 			// adjust UTC offset from hours to seconds
 			$utc_offset *= 3600;
 		
 			// attempt to guess the timezone string from the UTC offset
-			if ( $timezone = timezone_name_from_abbr( '', $utc_offset, 0 ) ) {
-				return $timezone;
-			}
+			$timezone = timezone_name_from_abbr( '', $utc_offset, 0 );
 		
 			// last try, guess timezone string manually
-			$is_dst = date( 'I' );
+			if ( false === $timezone ) {
+				$is_dst = date( 'I' );
 		
-			foreach ( timezone_abbreviations_list() as $abbr ) {
-				foreach ( $abbr as $city ) {
-					if ( $city['dst'] == $is_dst && $city['offset'] == $utc_offset )
-						return $city['timezone_id'];
+				foreach ( timezone_abbreviations_list() as $abbr ) {
+					foreach ( $abbr as $city ) {
+						if ( $city['dst'] == $is_dst && $city['offset'] == $utc_offset ) {
+							return $city['timezone_id'];
+						}
+					}
 				}
+		
+				// fallback to UTC
+				return 'UTC';
 			}
-			
-			// fallback to UTC
-			return 'UTC';
-		}
-		 		
+		
+			return $timezone;
+		}		 		
 } // End class
