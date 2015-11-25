@@ -318,7 +318,10 @@ class Bimbler_RSVP {
         	add_action ('ngg_after_new_images_added', array ($this, 'photo_uploaded'), 50 , 2);
         	
         	// Send welcome message to new users.
-        	add_action( 'edit_user_profile', array ($this, 'profile_updated'));
+        	//add_action( 'edit_user_profile', array ($this, 'profile_updated'));
+
+        	// Send welcome message to new users.
+			add_action( 'new_user_approve_user_approved', array ($this, 'new_user_approved'));
         	
         	// Change 'Leave a Reply' on comment form.
         	add_filter('comment_form_defaults', array ($this, 'comment_reform'));
@@ -3124,6 +3127,16 @@ jQuery(document).ready(function($)
 			error_log (' ');
 		}
 		
+		// This function is called via a hook from the New User Approve plugin when a new user has been
+		// approved by an admin.		
+		function new_user_approved ($user_object) {
+
+			error_log ('New user signed-up: ' . $user_object->first_name . ' ' . $user_object->last_name);
+
+			$this->user_approved($user_object->ID);
+
+		}
+				
 		/**
 		 *
 		 * @param $gallery_id
