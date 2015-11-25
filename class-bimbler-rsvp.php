@@ -3048,12 +3048,7 @@ jQuery(document).ready(function($)
 			$notify_users[] = $user_id;
 
 			// Always send mails to admin team.
-			$admin_users = array ();
-			$admin_users = $this->get_admin_users();
-
-			if (isset ($admin_users)) {
-				$notify_users = array_merge ($notify_users, $admin_users);
-			}
+			$notify_users = array_merge ($notify_users, $this->get_admin_users());
 		
 			$email_content = $this->build_new_user_notification_email ($new_user->first_name);
 			
