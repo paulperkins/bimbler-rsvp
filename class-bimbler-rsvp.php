@@ -497,7 +497,6 @@ class Bimbler_RSVP {
 
 					$content .= '<div class="tribe-events-meta-group tribe-events-meta-group-organizer vcard" style="width:100%;">' . PHP_EOL;
 					$content .= '	<h3 class="tribe-events-single-section-title">Host</h3>' . PHP_EOL;
-//					$content .= '	<dl>' . PHP_EOL;
 
 					$content .= '<div id="AvatarListSide" class="AvatarListSide-wrap">' . PHP_EOL;
 
@@ -507,34 +506,27 @@ class Bimbler_RSVP {
 
 						$user_info   = get_userdata ($host);
 
-// New stuff.	
 						$avatar = '';
 							
 						if (isset ($user_info->user_login)) {
-							$avatar .= get_avatar ($rsvp->user_id, null, null, $user_info->user_login);
+							$avatar .= get_avatar ($user_info->id, null, null, $user_info->user_login);
 						}
 	
 						
 						$content .= '<li class="AvatarListSide bimbler-avatar-narrow bimbler-avatar-border">' . PHP_EOL;
 						$content .= '							<img src="' . bimbler_get_avatar_img($avatar) . '" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo bimbler-whoswho-marker" ';
-						$content .= 'id="user-avatar-' . $rsvp->user_id . '" data-user-id="' . $rsvp->user_id . '">' . PHP_EOL;
+						$content .= 'id="user-avatar-' . $user_info->id . '" data-user-id="' . $user_info->id . '">' . PHP_EOL;
 
 						if (isset ($user_info->user_nicename)) {
 							$content .= '<p>' . $user_info->nickname . '</p>' . PHP_EOL;
 						}
 
 						$content .= '</li>' . PHP_EOL;
-						
-// New stuff ends.						
-											
-//						$content .= '		<dd class="fn org">'. $user_info->nickname . '</dd>' . PHP_EOL;
-						
 					}
 					
 					$content .= '		    </ul>' . PHP_EOL;
 					$content .= '</div>' . PHP_EOL;
 					
-//					$content .= '	</dl>' . PHP_EOL;
 					$content .= '</div>' . PHP_EOL;
 				}
 			 }
