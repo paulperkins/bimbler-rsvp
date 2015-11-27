@@ -518,7 +518,7 @@ class Bimbler_RSVP {
 						$content .= 'id="user-avatar-' . $user_info->id . '" data-user-id="' . $user_info->id . '">' . PHP_EOL;
 
 						if (isset ($user_info->user_nicename)) {
-							$content .= '<p>' . $user_info->nickname . '</p>' . PHP_EOL;
+							$content .= '<p><a href="/profile/' . urlencode ($user_info->user_nicename) .'/">' . $user_info->nickname . '</a></p>' . PHP_EOL;
 						}
 
 						$content .= '</li>' . PHP_EOL;
