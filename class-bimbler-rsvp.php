@@ -2070,32 +2070,44 @@ class Bimbler_RSVP {
 				
 			date_default_timezone_set('Australia/Brisbane');
 
-			// If this is an admin update, don't set the timestamp, and don't send an email notification.
+			// If this is an admin update (user ID != current user ID), don't set the timestamp, and don't send an email notification.
 			if ($user_id == $current_user->ID) {
 						
-				if ( false === $wpdb->update(
-							$table_name,
-							array ( 'rsvp'    	=> $rsvp,
-									'comment'	=> $comment,
-									'time'		=> Date("Y-m-d H:i:s"),
-									'guests'	=> $guests
-							),
-							array (	'user_id'  	=> $user_id,
-									'event'		=> $event_id),
-							array ('%s', '%s', '%s', '%d')
-							)){
-					error_log ('    Could not update row: '. $wpdb->print_error());
-				} else {
+				// Do nothing if this is a for re-submit (no change to RSVP or guest count).
+				$current_rsvp = $this->get_current_rsvp_object ($event_id, $user_id);
+				
+				if (($current_rsvp->rsvp != $rsvp) || ($current_rsvp->guests != $guests)) {						
 						
-					get_currentuserinfo();
-		
-					// Only send an email for 'yes' RSVPs.
-					if ('Y' == $rsvp) {
-						// Send the email confirmation.
-						if (class_exists('Bimbler_Reminders')) {
-							Bimbler_Reminders::get_instance()->send_rsvp_confirmation($user_id, $event_id);
+					error_log ('Updating RSVP: was \'' . $current_rsvp->rsvp . '\', now \'' . $rsvp . '\'; was ' . $guests . ' guests, now ' . $current_rsvp->guests . '.');	
+						
+					if ( false === $wpdb->update(
+								$table_name,
+								array ( 'rsvp'    	=> $rsvp,
+										'comment'	=> $comment,
+										'time'		=> Date("Y-m-d H:i:s"),
+										'guests'	=> $guests
+								),
+								array (	'user_id'  	=> $user_id,
+										'event'		=> $event_id),
+								array ('%s', '%s', '%s', '%d')
+								)){
+						error_log ('    Could not update row: '. $wpdb->print_error());
+					} else {
+							
+						get_currentuserinfo();
+			
+						// Only send an email for 'yes' RSVPs.
+						if ('Y' == $rsvp) {
+							// Send the email confirmation.
+							if (class_exists('Bimbler_Reminders')) {
+								Bimbler_Reminders::get_instance()->send_rsvp_confirmation($user_id, $event_id);
+							}
 						}
 					}
+				} else { // Do nothing.
+					
+					error_log ('RSVP submitted with no change - doing nothing.');
+					
 				}
 				 
 			} else {
@@ -2113,7 +2125,7 @@ class Bimbler_RSVP {
 							error_log ('    Could not update row: '. $wpdb->print_error());
 								
 				}
-			}
+			} 
 		}
 		
 		/**
