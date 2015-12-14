@@ -4100,7 +4100,7 @@ jQuery(document).ready(function($)
 
 				$post_object = get_post ($post_id);
 
-				error_log ('Sending map as OpenGraph image for post ID ' . $post_id . ' with RWGPS ID ' . $rwgps_id);
+//				error_log ('Sending map as OpenGraph image for post ID ' . $post_id . ' with RWGPS ID ' . $rwgps_id);
 
 				$output  = '<meta property="og:image" content="http://ridewithgps.com/routes/full/' . $rwgps_id . '.png" />' . PHP_EOL;
 				$output .= '<meta property="og:url" content="' . get_permalink($post_id) . '" />' . PHP_EOL;
