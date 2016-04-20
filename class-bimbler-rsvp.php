@@ -429,7 +429,7 @@ class Bimbler_RSVP {
   			wp_register_script ('bimbler-toastr-script', plugin_dir_url( __FILE__ ) . 'js/toastr.js', array( 'jquery' ) );
   			wp_enqueue_script( 'bimbler-toastr-script');
 
-// Commented for now.
+// Commented for now - required for comments sidebar widget.
 
 //  			wp_register_script ('bimbler-bootstrap-script', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ) );
 //  			wp_enqueue_script( 'bimbler-bootstrap-script');
@@ -1663,9 +1663,10 @@ class Bimbler_RSVP {
 		 // TODO: post ID parameter not used - re-factor this and callers.
 		function show_event_rwgps_map ($post_id) {
 			
-			if (!function_exists ('iframe_unqprfx_embed_shortcode')) {
+            /* IFrame plugin has changed its function names... */
+/*			if (!function_exists ('iframe_unqprfx_embed_shortcode')) {
 				return null;
-			}
+			} */
 
 			$rwgps_id = $this->get_rwgps_id (get_the_ID());
 			
@@ -4182,5 +4183,16 @@ jQuery(document).ready(function($)
 			}
 		
 			return $timezone;
-		}		 		
+		}
+		
+		// Determines whether the current user can edit own events.
+		function is_author () {
+			return current_user_can ('edit_published_posts');
+		}
+
+		// Determines whether the current user can edit any events.
+		function is_editor () {
+			return current_user_can ('edit_others_posts');
+		}
+				 		
 } // End class
