@@ -89,7 +89,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 			<li class="AvatarListSide">
 				<div class="tab-item-avatar">
 					<div class="rsvp-checkin-container">
-						<img src="http://assets2.ridewithgps.com/routes/<?php echo $rwgps_id; ?>/thumb.png" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">
+						<img src="//assets2.ridewithgps.com/routes/<?php echo $rwgps_id; ?>/thumb.png" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">
 					
 						<div class="rsvp-checkin-indicator">   
 
