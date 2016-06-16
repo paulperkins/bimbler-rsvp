@@ -1883,9 +1883,9 @@ class Bimbler_RSVP {
 		*/
 		function tribe_events_save_rwgps ($event_id) {
 			
-			if (!function_exists ('iframe_unqprfx_embed_shortcode')) {
-				return null;
-			}
+//			if (!function_exists ('iframe_unqprfx_embed_shortcode')) {
+//				return null;
+//			}
 		
 			if (!isset ($_POST['RWGPSID'])) {
 				return null;
