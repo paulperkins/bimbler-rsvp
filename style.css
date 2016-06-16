@@ -29,6 +29,7 @@
 .bimbler-tabs-nav.tab-count-3 li { width: 33.333%; }
 .bimbler-tabs-nav.tab-count-4 li { width: 25%; }
 .bimbler-tabs-nav.tab-count-5 li { width: 20%; }
+.bimbler-tabs-nav.tab-count-6 li { width: 16%; }
 .bimbler-tabs-nav li { display: block; float: left; }
 .bimbler-tabs-nav li a { font-size: 18px; display: block; padding: 8px 0; margin-bottom: -3px; border-bottom: 3px solid transparent; border-top-style: none;}
 .bimbler-tabs-nav li a:hover { border-bottom-color: #ccc; }
@@ -6181,7 +6182,6 @@ a.list-group-item.active > .badge,
 	border-bottom: 0px;}
 	
 .bimbler-tabs-nav.tab-count-5 li { width: 20%; }
-.bimbler-tabs-nav.tab-count-6 li { width: 16.6%; }
 
 .bimbler-tabs-nav li.active a { border-bottom-color: #dd9933;  }
 .post-comments span:before { border-right-color: #dd9933; }				
