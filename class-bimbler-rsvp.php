@@ -349,6 +349,12 @@ class Bimbler_RSVP {
 			
 			// Block spam comments - where author is not set.
 			add_filter ('pre_comment_approved', array ($this, 'bimbler_validate_comment'), 50, 2);
+
+			// Shortcodes.
+
+			// Full-width rendering of home page.
+			add_shortcode( 'bimbler_render_full_width', array ($this, 'bimbler_render_full_width'));
+
         	 
         	// Widgets.
         	require_once( $this->pluginPath.'/widgets/bimbler-widgets.php' );
@@ -4194,5 +4200,309 @@ jQuery(document).ready(function($)
 		function is_editor () {
 			return current_user_can ('edit_others_posts');
 		}
-				 		
+
+/*
+[bgsection 
+	pex_attr_title="Social Climbing" 
+	pex_attr_subtitle="Our next ride - Sunday 26 June:" 
+	pex_attr_undefined="undefined" 
+	pex_attr_style="section-light" 
+	pex_attr_bgcolor="000000" 
+	pex_attr_image="/wp-content/nggallery/front-page-slider/peloton.jpeg" 
+	pex_attr_imageopacity="0.6" 
+	pex_attr_bgimagestyle="parallax-scroll" 
+	pex_attr_titlecolor="ffffff" 
+	pex_attr_textcolor="ffffff"]
+<p style="text-align: center;"><a class="button">Details</a></p>
+[/bgsection]';
+
+*/
+
+		function render_pexeto_box (
+			$pex_attr_title, 
+			$pex_attr_subtitle, 
+			$pex_attr_style, 
+			$pex_attr_bgcolor, 
+			$pex_attr_image, 
+			$pex_attr_imageopacity, 
+			$pex_attr_bgimagestyle, 
+			$pex_attr_titlecolor, 
+			$pex_attr_textcolor,
+			$pex_content,
+			$pex_attr_undefined = "undefined") {
+
+			$content = '';
+
+			$content .= '[bgsection ';
+			$content .= 'pex_attr_title="' . $pex_attr_title . '" '; 
+			$content .= 'pex_attr_subtitle="' . $pex_attr_subtitle . '" '; 
+			$content .= 'pex_attr_undefined="' . $pex_attr_undefined . '" '; 
+			$content .= 'pex_attr_style="' . $pex_attr_style . '" '; 
+			$content .= 'pex_attr_bgcolor="' . $pex_attr_bgcolor . '" '; 
+			$content .= 'pex_attr_image="' . $pex_attr_image . '" '; 
+			$content .= 'pex_attr_imageopacity="' . $pex_attr_imageopacity . '" '; 
+			$content .= 'pex_attr_bgimagestyle="' . $pex_attr_bgimagestyle . '" '; 
+			$content .= 'pex_attr_titlecolor="' . $pex_attr_titlecolor . '" '; 
+			$content .= 'pex_attr_textcolor="' . $pex_attr_textcolor . '" ';
+			$content .= ']';
+
+			$content .=  $pex_content;
+
+			$content .= '[/bgsection]';
+
+			error_log ($content);
+
+			return do_shortcode ($content);
+		}
+
+		function bimbler_render_full_width ($atts) {
+
+			$date_str = 'D j M';
+
+			$content = '';
+
+
+			// Get the next rides. We'll only use the first.
+			$bimbler_posts = $this->get_upcoming_events (1);
+
+			$event = $bimbler_posts [0]; 				
+			
+			$ride_title = $event->post_title; 
+			$ride_url 	= get_permalink ($event->ID);
+			//$ride_rwgps = Bimbler_RSVP::get_instance()->get_rwgps_id ($event->ID);
+			$ride_start_date = tribe_get_start_date($event->ID, false, $date_str);
+			//$ride_excerpt = $event->post_excerpt; // Only use the excerpt - post_content is generally too long.
+
+
+			// Get the most recent posts. We'll only use the first one.
+
+			$args = array(
+				'posts_per_page'   => 5,
+				'offset'           => 0,
+				'category'         => '',
+				'category_name'    => 'News',
+				'orderby'          => 'date',
+				'order'            => 'DESC',
+				'include'          => '',
+				'exclude'          => '',
+				'meta_key'         => '',
+				'meta_value'       => '',
+				'post_type'        => 'post',
+				'post_mime_type'   => '',
+				'post_parent'      => '',
+				'author'	   => '',
+				'post_status'      => 'publish',
+				'suppress_filters' => true);
+		
+			$posts_array = get_posts( $args ); 
+
+			$latest_post = $posts_array[0];
+
+			$latest_post_url = get_permalink ($latest_post->ID);
+			$latest_post_pic = $feat_image = wp_get_attachment_url( get_post_thumbnail_id($latest_post->ID) );
+
+
+			$next_event_title = $ride_title; // 'Social Climbing';
+			$next_event_subtitle = 'Our next ride - ' . $ride_start_date . ':'; //Sunday 26 June:';
+			$next_event_style = 'section-light';
+			$next_event_url = $ride_url; // '/event/thing/';
+			$next_event_bg_pic = '/wp-content/nggallery/front-page-slider/peloton.jpeg';
+			$next_event_bg_pic_mode = 'static'; // parallax-scroll';
+			$next_event_bg_colour = '000000';
+			$next_event_bg_opacity = '0.6';
+			$next_event_title_colour = 'ffffff';
+			$next_event_text_colour = 'ffffff';
+			$next_event_style = 'section-light';
+			$next_event_content = '<p style="text-align: center;"><a class="button" href="' . $ride_url  . '">Details</a></p>';
+
+			$content .= $this->render_pexeto_box (			
+				$next_event_title,
+				$next_event_subtitle,
+				$next_event_style,
+				$next_event_bg_colour,
+				$next_event_bg_pic,
+				$next_event_bg_opacity,
+				$next_event_bg_pic_mode,
+				$next_event_title_colour,
+				$next_event_text_colour,
+				$next_event_content);
+
+
+			$join_us_title = 'Join Us';
+			$join_us_subtitle = '';
+			$join_us_style = 'section-light2';
+			$join_us_bg_pic = '';
+			$join_us_bg_pic_mode = 'static';
+			$join_us_bg_colour = 'c8e5e9';
+			$join_us_bg_opacity = '0.1';
+			$join_us_title_colour = 'dd9933';
+			$join_us_text_colour = '777777';
+			$join_us_content = '<p style="text-align: center;">We\'re a Brisbane-based group of social cyclists.</p>' . $PHP_EOL . '<p style="text-align: center;">If you\'d like to join us, <a href="/about/">find out more here</a>.</p>';
+
+			$content .= $this->render_pexeto_box (			
+				$join_us_title,
+				$join_us_subtitle,
+				$join_us_style,
+				$join_us_bg_colour,
+				$join_us_bg_pic,
+				$join_us_bg_opacity,
+				$join_us_bg_pic_mode,
+				$join_us_title_colour,
+				$join_us_text_colour,
+				$join_us_content);
+
+			$latest_post_title = $latest_post->post_title;
+			$latest_post_subtitle = '';
+			$latest_post_bg_pic = $latest_post_pic; //''; ///wp-content/nggallery/front-page-slider/dave_sworks_beach.jpg';
+			$latest_post_bg_pic_mode = 'static';
+			$latest_post_bg_colour = '2f2f2f';
+			$latest_post_bg_opacity = '0.5';
+			$latest_post_title_colour = 'ffffff';
+			$latest_post_text_colour = 'ffffff';
+			$latest_post_style = 'section-dark';
+			$latest_post_content = $latest_post->post_excerpt; //'<p style="text-align: center;">Some text, with witty words and stuff...</p>' . $PHP_EOL . '<p style="text-align: center;">Words words... <a href="http://dfjkhdskjfhdsk">Read more...</a></p>';
+
+			$latest_post_content .= $PHP_EOL . '<p><a class="button" href="' . $latest_post_url  . '">Read more</a></p>';
+
+			$content .= $this->render_pexeto_box (			
+				$latest_post_title,
+				$latest_post_subtitle,
+				$latest_post_style,
+				$latest_post_bg_colour,
+				$latest_post_bg_pic,
+				$latest_post_bg_opacity,
+				$latest_post_bg_pic_mode,
+				$latest_post_title_colour,
+				$latest_post_text_colour,
+				$latest_post_content);
+
+
+			$events_title = 'Up-Coming Events';
+			$events_subtitle = '';
+			$events_style = 'section-light2';
+			$events_bg_pic = '';
+			$events_bg_pic_mode = 'static';
+			$events_bg_colour = 'c8e5e9';
+			$events_bg_opacity = '0.1';
+			$events_title_colour = 'dd9933';
+			$events_text_colour = '777777';
+			$events_content = '-- Event 1
+-- Event 2
+
+-- Event 1
+
+-- Event 1
+
+-- Event 2
+
+-- Event 1
+
+-- Event 2
+
+-- Event 2
+';
+
+			$content .= $this->render_pexeto_box (			
+				$events_title,
+				$events_subtitle,
+				$events_style,
+				$events_bg_colour,
+				$events_bg_pic,
+				$events_bg_opacity,
+				$events_bg_pic_mode,
+				$events_title_colour,
+				$events_text_colour,
+				$events_content);
+
+
+			$kit_page_title = 'Bimbler Kit';
+			$kit_page_subtitle = '';
+			$kit_page_bg_pic = '/wp-content/uploads/2015/06/Toowoomba-Gang-Final-Crop.jpeg';
+			$kit_page_bg_pic_mode = 'static';
+			$kit_page_bg_colour = '000000';
+			$kit_page_bg_opacity = '0.9';
+			$kit_page_title_colour = 'ffffff';
+			$kit_page_text_colour = 'ffffff';
+			$kit_page_style = 'section-light2';
+			$kit_page_content = '<p style="text-align: center;"><a class="button" href="https://bimblers.com/kit/">Shop</a></p>';
+
+			$content .= $this->render_pexeto_box (			
+				$kit_page_title,
+				$kit_page_subtitle,
+				$kit_page_style,
+				$kit_page_bg_colour,
+				$kit_page_bg_pic,
+				$kit_page_bg_opacity,
+				$kit_page_bg_pic_mode,
+				$kit_page_title_colour,
+				$kit_page_text_colour,
+				$kit_page_content);
+
+			$photos_title = 'Photos';
+			$photos_subtitle = '';
+			$photos_style = 'section-light2';
+			$photos_bg_pic = '';
+			$photos_bg_pic_mode = 'static';
+			$photos_bg_colour = 'c8e5e9';
+			$photos_bg_opacity = '0.1';
+			$photos_title_colour = 'dd9933';
+			$photos_text_colour = '777777';
+			$photos_content = '';
+
+			$content .= $this->render_pexeto_box (			
+				$photos_title,
+				$photos_subtitle,
+				$photos_style,
+				$photos_bg_colour,
+				$photos_bg_pic,
+				$photos_bg_opacity,
+				$photos_bg_pic_mode,
+				$photos_title_colour,
+				$photos_text_colour,
+				$photos_content);
+
+
+$box_1 = '[bgsection pex_attr_title="Social Climbing" pex_attr_subtitle="Our next ride - Sunday 26 June:" pex_attr_undefined="undefined" pex_attr_style="section-light" pex_attr_bgcolor="000000" pex_attr_image="/wp-content/nggallery/front-page-slider/peloton.jpeg" pex_attr_imageopacity="0.6" pex_attr_bgimagestyle="parallax-scroll" pex_attr_titlecolor="ffffff" pex_attr_textcolor="ffffff"]
+<p style="text-align: center;"><a class="button">Details</a></p>[/bgsection]';
+
+$box_2 = '[bgsection pex_attr_title="Join Us" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light2" pex_attr_bgcolor="c8e5e9" pex_attr_image="" pex_attr_imageopacity="0.1" pex_attr_bgimagestyle="static" pex_attr_titlecolor="dd9933" pex_attr_textcolor="777777"]
+<p style="text-align: center;">We\'re a Brisbane-based group of social cyclists.</p>
+<p style="text-align: center;">If you\'d like to join us, <a href="/about/">find out more here</a>.</p>[/bgsection]';
+
+
+$box_3 = '[bgsection pex_attr_title="Latest Blog Post Title" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-dark" pex_attr_bgcolor="2f2f2f" pex_attr_image="/wp-content/nggallery/front-page-slider/dave_sworks_beach.jpg" pex_attr_imageopacity="0.5" pex_attr_bgimagestyle="static" pex_attr_titlecolor="ffffff" pex_attr_textcolor="ffffff"]
+<p style="text-align: center;">Some text, with witty words and stuff...</p>
+<p style="text-align: center;">Words words... <a href="http://dfjkhdskjfhdsk">Read more...</a></p>
+[/bgsection]';
+
+$box_4 = '[bgsection pex_attr_title="Up-Coming Events" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light2" pex_attr_bgcolor="c8e5e9" pex_attr_image="" pex_attr_imageopacity="0.1" pex_attr_bgimagestyle="static" pex_attr_titlecolor="dd9933" pex_attr_textcolor="777777"]-- Event 1
+
+-- Event 2
+
+-- Event 1
+
+-- Event 1
+
+-- Event 2
+
+-- Event 1
+
+-- Event 2
+
+-- Event 2
+
+[/bgsection]
+';
+
+$box_5 = '[bgsection pex_attr_title="Bimbler Kit" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light" pex_attr_bgcolor="000000" pex_attr_image="/wp-content/uploads/2015/06/Toowoomba-Gang-Final-Crop.jpeg" pex_attr_imageopacity="0.9" pex_attr_bgimagestyle="static" pex_attr_titlecolor="ffffff" pex_attr_textcolor="ffffff"]
+<p style="text-align: center;"><a class="button" href="https://bimblers.com/kit/">Shop</a></p>
+[/bgsection]
+';
+
+$box_6 = '[bgsection pex_attr_title="Photos" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light2" pex_attr_bgcolor="c8e5e9" pex_attr_image="" pex_attr_imageopacity="0.5" pex_attr_bgimagestyle="static" pex_attr_titlecolor="dd9933" pex_attr_textcolor="777777"][/bgsection]
+';
+			echo $content;
+		}
+
+
 } // End class
