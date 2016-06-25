@@ -4201,6 +4201,150 @@ jQuery(document).ready(function($)
 			return current_user_can ('edit_others_posts');
 		}
 
+
+		function render_events_list ($posts) {
+			
+			$day_time_str = 'D j M g:ia';
+			
+			if ($posts) {
+
+				foreach ($posts as $post)
+				{
+					$event_date = $post->EventStartDate;
+					
+					$rsvpd = Bimbler_RSVP::get_instance()->get_current_rsvp ($post->ID);
+					$num_rsvps = Bimbler_RSVP::get_instance()->count_rsvps ($post->ID);
+					$rwgps_id = Bimbler_RSVP::get_instance()->get_rwgps_id ($post->ID);
+					
+					// Nothing found, use Tomewin.
+					if (0 == $rwgps_id) {
+						$rwgps_id = 5961603; 
+					}
+
+					if ((null === $num_rsvps)) $num_rsvps = 0;
+					
+	//						print_r ($post);
+				?>
+
+
+				<li class="AvatarListSide">
+					<div class="tab-item-avatar">
+						<div class="rsvp-checkin-container">
+							<img src="//assets2.ridewithgps.com/routes/<?php echo $rwgps_id; ?>/thumb.png" style="width:64 !important;  height:64 !important;" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">
+						
+							<div class="rsvp-checkin-indicator">   
+
+							<?php 
+							// Only show RSVP indicators to logged-in users.
+							if (is_user_logged_in()) {
+								if (!isset ($rsvpd)) {
+									echo '<div class="rsvp-indicator-none"><i class="fa-question-circle"></i></div>';
+									$no_btn_state = '  ';
+									$yes_btn_state = ' ';
+								} else if ('Y' == $rsvpd) {
+									echo '<div class="rsvp-indicator-yes"><i class="fa-check-circle"></i></div>';
+									$yes_btn_state = ' disabled="disabled" ';
+									$no_btn_state = ' ';
+								}
+								else {
+									echo '<div class="rsvp-indicator-no"><i class="fa-times-circle"></i></div>';
+									$no_btn_state = ' disabled="disabled" ';
+									$yes_btn_state = ' ';
+								}
+							}
+							?>
+						
+							</div> <!-- indicator -->
+						</div> <!-- container -->
+					</div> <!-- tab item avatar -->
+					<div class="tab-item-inner group">
+						<p class="tab-item-title"><a href="<?php echo tribe_get_event_link($post); ?>" rel="bookmark" title="<?php echo $post->post_title; ?>"><?php echo $post->post_title; ?></a></p>
+						<p class="tab-item-date"><?php echo date ($day_time_str, strtotime($event_date)); ?>, <?php echo $num_rsvps; ?> attending.</p>
+
+						<?php if (is_user_logged_in()) {
+								
+							global $current_user;
+							get_currentuserinfo();
+							
+							// User ID
+							$user_id = $current_user->ID;
+							
+							$nonce = wp_create_nonce('bimbler_rsvp');
+
+						?>
+						
+						<form action="#" method="post" id="commentform" class="commentform" enctype="multipart/form-data">
+						<?php wp_nonce_field('rsvp', 'rsvp_nonce', true, true); ?>
+						<input type="hidden" name="rsvp_post_id" id="rsvp_post_id" value="<?php echo $post->ID; ?>">
+						<input type="hidden" name="accept_terms" value="accept" value="Y">
+
+						<div id="bimbler-rsvp-control" class="btn-group btn-group-xs" data-event-id="<?php echo  $post->ID; ?>" data-user-id="<?php echo $user_id; ?>" data-nonce="<?php echo  $nonce; ?>">
+							<button type="submit" name="submit" value='RSVP Yes' style="background-color: #00a651 !important; border-color: #00a651 !important;" class="btn btn-success btn-xs rsvp-button" <?php echo $yes_btn_state; ?> data-rsvp="Y" id="bimbler-rsvp-yes" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP Yes">
+								RSVP Yes
+							</button>
+							<button type="submit" name="submit" value='RSVP No' style="background-color: #cc2424 !important; border-color: #cc2424 !important;" class="btn btn-danger btn-xs rsvp-button" <?php echo $no_btn_state; ?> data-rsvp="N" id="bimbler-rsvp-no" data-loading-text="<i class='fa fa-spinner fa-spin'></i> RSVP No">
+								RSVP No
+							</button>
+						</div>
+						
+						</form>
+						
+						<?php } ?>
+
+					</div> <!-- inner group -->
+
+				</li>
+
+			<?php 
+				} // foreach
+			} // If posts
+		} // End function
+
+
+		function render_events () {
+
+			ob_start ();
+
+?>
+		<ul id="tab-events" class="bimbler-tab avatars-enabled group">
+<?php				
+
+
+			$posts = tribe_get_events(array(
+				'posts_per_page' 	=> 1, //$instance["events_num"],
+				'eventDisplay' 		=> 'upcoming',
+				'tax_query' 		=> array(
+											'relation' 	=> 'OR', 
+											array(
+												'taxonomy' => TribeEvents::TAXONOMY,
+															'field' => 'slug',
+															'terms' => 'bimble'),
+											array(
+												'taxonomy' => TribeEvents::TAXONOMY,
+															'field' => 'slug',
+															'terms' => 'social')
+											)
+											));
+			
+
+			if ($posts)
+			{
+				
+				//$this->render_events_list ($posts);
+				
+				
+			} // if posts	
+
+?>
+			</ul>
+<?php
+
+
+			$output = ob_get_clean();
+
+			return $output;
+		}
+
 /*
 [bgsection 
 	pex_attr_title="Social Climbing" 
@@ -4219,6 +4363,7 @@ jQuery(document).ready(function($)
 */
 
 		function render_pexeto_box (
+			$content,
 			$pex_attr_title, 
 			$pex_attr_subtitle, 
 			$pex_attr_style, 
@@ -4243,24 +4388,78 @@ jQuery(document).ready(function($)
 			$content .= 'pex_attr_imageopacity="' . $pex_attr_imageopacity . '" '; 
 			$content .= 'pex_attr_bgimagestyle="' . $pex_attr_bgimagestyle . '" '; 
 			$content .= 'pex_attr_titlecolor="' . $pex_attr_titlecolor . '" '; 
-			$content .= 'pex_attr_textcolor="' . $pex_attr_textcolor . '" ';
+			$content .= 'pex_attr_textcolor="' . $pex_attr_textcolor . '"';
 			$content .= ']';
 
 			$content .=  $pex_content;
 
 			$content .= '[/bgsection]';
 
-			error_log ($content);
+//			error_log ($content);
 
-			return do_shortcode ($content);
+			// Try this - just return the shortcode itself.
+			$output = PHP_EOL . do_shortcode ($content) . PHP_EOL;
+			//$output = $content;
+
+
+			//$output = apply_filters( 'the_content', $content );
+
+
+			error_log ($output);
+
+			return $output;
 		}
 
-		function bimbler_render_full_width ($atts) {
+		function render_pexeto_box_x (
+			$content,
+			$title, 
+			$subtitle, 
+			$style, 
+			$bgcolor, 
+			$image, 
+			$imageopacity, 
+			$bgimagestyle, 
+			$titlecolor, 
+			$textcolor,
+			$pex_content,
+			$pex_attr_undefined = "undefined") {
+
+			$html = '';
+
+			$add_class = $bgimagestyle=='static'?'':' '.$bgimagestyle;
+
+			$html .= PHP_EOL . '<!-- Start bg section -->' . PHP_EOL;
+
+			$html .= '<div class="section-full-width '.$style.$add_class.'" style="background-color:#'.$bgcolor.';">';
+			if($image){
+				$html.='<div style="background-image:url('.$image.'); opacity:'.$imageopacity.';'.
+					' filter: alpha(opacity='.((float)$imageopacity*100).');" class="full-bg-image" ></div>';
+			}
+			$html.= '<div class="section-boxed" style="color:#'.$textcolor.';">';
+			$subtitle = $subtitle ? '<h4 style="color:#'.$titlecolor.';" class="sub-title">'.$subtitle.'</h4>' : '';
+			if($style=='section-light'){
+				$html.=$subtitle;
+			}
+			$html.=$title ? '<h2 class="section-title" style="color:#'.$titlecolor.';">'.$title.'</h2>' : '';
+			if($style!='section-light'){
+				$html.=$subtitle;
+			}
+
+			$html.= apply_filters( 'the_content', $pex_content );
+			$html.='</div></div>';
+			$html .= PHP_EOL . '<!-- End bg section -->' . PHP_EOL;
+
+			error_log ($html);
+
+			return $html;
+
+		}
+
+		function bimbler_render_full_width ($atts, $post_content) {
 
 			$date_str = 'D j M';
 
 			$content = '';
-
 
 			// Get the next rides. We'll only use the first.
 			$bimbler_posts = $this->get_upcoming_events (1);
@@ -4272,7 +4471,6 @@ jQuery(document).ready(function($)
 			//$ride_rwgps = Bimbler_RSVP::get_instance()->get_rwgps_id ($event->ID);
 			$ride_start_date = tribe_get_start_date($event->ID, false, $date_str);
 			//$ride_excerpt = $event->post_excerpt; // Only use the excerpt - post_content is generally too long.
-
 
 			// Get the most recent posts. We'll only use the first one.
 
@@ -4315,7 +4513,8 @@ jQuery(document).ready(function($)
 			$next_event_style = 'section-light';
 			$next_event_content = '<p style="text-align: center;"><a class="button" href="' . $ride_url  . '">Details</a></p>';
 
-			$content .= $this->render_pexeto_box (			
+			$content .= $this->render_pexeto_box (	
+				$post_content,		
 				$next_event_title,
 				$next_event_subtitle,
 				$next_event_style,
@@ -4337,9 +4536,10 @@ jQuery(document).ready(function($)
 			$join_us_bg_opacity = '0.1';
 			$join_us_title_colour = 'dd9933';
 			$join_us_text_colour = '777777';
-			$join_us_content = '<p style="text-align: center;">We\'re a Brisbane-based group of social cyclists.</p>' . $PHP_EOL . '<p style="text-align: center;">If you\'d like to join us, <a href="/about/">find out more here</a>.</p>';
+			$join_us_content = '<p style="text-align: center;">We\'re a Brisbane-based group of social cyclists.</p>' . PHP_EOL . '<p style="text-align: center;">If you\'d like to join us, <a href="/about/">find out more here</a>.</p>';
 
 			$content .= $this->render_pexeto_box (			
+				$post_content,		
 				$join_us_title,
 				$join_us_subtitle,
 				$join_us_style,
@@ -4365,6 +4565,7 @@ jQuery(document).ready(function($)
 			$latest_post_content .= $PHP_EOL . '<p><a class="button" href="' . $latest_post_url  . '">Read more</a></p>';
 
 			$content .= $this->render_pexeto_box (			
+				$post_content,		
 				$latest_post_title,
 				$latest_post_subtitle,
 				$latest_post_style,
@@ -4402,7 +4603,10 @@ jQuery(document).ready(function($)
 -- Event 2
 ';
 
+			$events_content = $this->render_events ();
+
 			$content .= $this->render_pexeto_box (			
+				$post_content,		
 				$events_title,
 				$events_subtitle,
 				$events_style,
@@ -4427,6 +4631,7 @@ jQuery(document).ready(function($)
 			$kit_page_content = '<p style="text-align: center;"><a class="button" href="https://bimblers.com/kit/">Shop</a></p>';
 
 			$content .= $this->render_pexeto_box (			
+				$post_content,		
 				$kit_page_title,
 				$kit_page_subtitle,
 				$kit_page_style,
@@ -4447,9 +4652,10 @@ jQuery(document).ready(function($)
 			$photos_bg_opacity = '0.1';
 			$photos_title_colour = 'dd9933';
 			$photos_text_colour = '777777';
-			$photos_content = '';
+			$photos_content = '<div class="section-boxed" style="display: table; margin: 0 auto;">[ngg_images xgallery_ids=1 source=recent_images display_type=photocrati-nextgen_basic_thumbnails disable_pagination=1 images_per_page=4 order_by=imagedate order_direction=DESC]</div>';
 
 			$content .= $this->render_pexeto_box (			
+				$post_content,		
 				$photos_title,
 				$photos_subtitle,
 				$photos_style,
@@ -4501,6 +4707,10 @@ $box_5 = '[bgsection pex_attr_title="Bimbler Kit" pex_attr_subtitle="" pex_attr_
 
 $box_6 = '[bgsection pex_attr_title="Photos" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light2" pex_attr_bgcolor="c8e5e9" pex_attr_image="" pex_attr_imageopacity="0.5" pex_attr_bgimagestyle="static" pex_attr_titlecolor="dd9933" pex_attr_textcolor="777777"][/bgsection]
 ';
+
+//[bgsection pex_attr_title="Photos" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light2" pex_attr_bgcolor="c8e5e9" pex_attr_image="" pex_attr_imageopacity="0.1" pex_attr_bgimagestyle="static" pex_attr_titlecolor="dd9933" pex_attr_textcolor="777777" ][/bgsection]
+
+		//	return $content;
 			echo $content;
 		}
 
