@@ -4203,6 +4203,80 @@ jQuery(document).ready(function($)
 
 
 		function render_events_list ($posts) {
+			$day_time_str = 'D j M g:ia';
+			$time_str = 'D j M g:ia';
+			$month_str = 'F';
+
+			$content = '';
+
+			if (!$posts) {
+
+				return;
+			}
+
+			foreach ($posts as $post) {
+
+					$event_date = $post->EventStartDate;
+					
+					$rsvpd = Bimbler_RSVP::get_instance()->get_current_rsvp ($post->ID);
+					$num_rsvps = Bimbler_RSVP::get_instance()->count_rsvps ($post->ID);
+					$rwgps_id = Bimbler_RSVP::get_instance()->get_rwgps_id ($post->ID);
+					
+					// Nothing found, use Tomewin.
+					if (0 == $rwgps_id) {
+						$rwgps_id = 5961603; 
+					}
+
+					if ((null === $num_rsvps)) {
+						 $num_rsvps = 0;
+					}
+
+					$content .= '				<div class="xrow">' . PHP_EOL;
+						
+//					$content .= '					<div class="col-xs2 pull-left" style="height: 80px;">' . PHP_EOL;
+					
+//					$content .= '						<div class="rsvp-checkin-indicator-noajax">' . PHP_EOL;
+					
+//					$content .= '						<div class="avatar-clipped bimbler-spinner-target" style="background-image: url(\'//assets2.ridewithgps.com/routes/' . $rwgps_id . '/thumb.png\');"></div>' . PHP_EOL;
+					
+/*					if (!isset ($rsvpd)) {
+						$content .= '						<div class="rsvp-checkin-indicator-none"><i class="fa-question-circle"></i></div>' . PHP_EOL;
+					} else if ('Y' == $rsvpd) {
+						$content .= '						<div class="rsvp-checkin-indicator-yes"><i class="fa-check-circle"></i></div>' . PHP_EOL;
+					}
+					else {
+						$content .= '						<div class="rsvp-checkin-indicator-no"><i class="fa-times-circle"></i></div>' . PHP_EOL;
+					} */
+					
+//					$content .= '						</div>' . PHP_EOL;
+														
+//					$content .= '					</div>' . PHP_EOL;
+					
+					$content .= '					<div class="col-xs-8" style="padding-left:10px;">' . PHP_EOL;
+
+//					$conten .- ' <div>' . PHP_EOL;
+
+/*<a href="<?php echo tribe_get_event_link($post); ?>" rel="bookmark" title="<?php echo $title; ?>"><?php echo $title; ?></a> */
+
+
+					$content .= '						<h4 style="text-align: center; text-overflow: none!important;"><a href="' . tribe_get_event_link($post) . '">' . $post->post_title . '</a></h4>' . PHP_EOL;
+					//$content .= '						<p class="xui-li-aside" style="text-align: right"><strong>' . date ($time_str, strtotime($event_date)) . '</strong></p>' . PHP_EOL;
+					$content .= '						<p style="text-align: center;" xclass="pull-right xui-li-aside" xstyle="text-align: right"><strong>' . date ($time_str, strtotime($event_date)) . '</strong></p>' . PHP_EOL;
+					$content .= '					</div>' . PHP_EOL;
+					
+//					$content .= '					<div class="col-xs-2 xbimbler-spinner-target">' . PHP_EOL;
+//					$content .= '					</div>' . PHP_EOL;
+					
+					$content .= '				</div> <!-- /row -->' . PHP_EOL;
+
+
+
+			} // foreach posts.
+
+			echo $content; // We're capturing output into the OB.
+		}
+ 
+		function render_events_list_x ($posts) {
 			
 			$day_time_str = 'D j M g:ia';
 			
@@ -4306,12 +4380,12 @@ jQuery(document).ready(function($)
 			ob_start ();
 
 ?>
-		<ul id="tab-events" class="bimbler-tab avatars-enabled group">
+<!--		<ul id="tab-events" class="bimbler-tab avatars-enabled group"> -->
 <?php				
 
 
 			$posts = tribe_get_events(array(
-				'posts_per_page' 	=> 1, //$instance["events_num"],
+				'posts_per_page' 	=> 10, //$instance["events_num"],
 				'eventDisplay' 		=> 'upcoming',
 				'tax_query' 		=> array(
 											'relation' 	=> 'OR', 
@@ -4330,13 +4404,13 @@ jQuery(document).ready(function($)
 			if ($posts)
 			{
 				
-				//$this->render_events_list ($posts);
+				$this->render_events_list ($posts);
 				
 				
 			} // if posts	
 
 ?>
-			</ul>
+<!--			</ul> -->
 <?php
 
 
