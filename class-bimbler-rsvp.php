@@ -4259,9 +4259,9 @@ jQuery(document).ready(function($)
 /*<a href="<?php echo tribe_get_event_link($post); ?>" rel="bookmark" title="<?php echo $title; ?>"><?php echo $title; ?></a> */
 
 
-					$content .= '						<h4 style="text-align: center; text-overflow: none!important;"><a href="' . tribe_get_event_link($post) . '">' . $post->post_title . '</a></h4>' . PHP_EOL;
+					$content .= '						<h3 xclass="sub-title" style="font-size: 30px; padding-bottom: 0px; text-align: center; text-overflow: none!important; color: #dd9933; margin-bottom: 0px;"><a href="' . tribe_get_event_link($post) . '">' . $post->post_title . '</a></h4>' . PHP_EOL;
 					//$content .= '						<p class="xui-li-aside" style="text-align: right"><strong>' . date ($time_str, strtotime($event_date)) . '</strong></p>' . PHP_EOL;
-					$content .= '						<p style="text-align: center;" xclass="pull-right xui-li-aside" xstyle="text-align: right"><strong>' . date ($time_str, strtotime($event_date)) . '</strong></p>' . PHP_EOL;
+					$content .= '						<p style="text-align: center; margin-bottom: 25px;"><strong>' . date ($time_str, strtotime($event_date)) . ', ' . $num_rsvps . ' attending</strong></p>' . PHP_EOL;
 					$content .= '					</div>' . PHP_EOL;
 					
 //					$content .= '					<div class="col-xs-2 xbimbler-spinner-target">' . PHP_EOL;
