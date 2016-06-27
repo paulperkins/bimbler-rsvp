@@ -4742,6 +4742,40 @@ jQuery(document).ready(function($)
 				$photos_content);
 
 
+
+
+			$footer_content = '<div style="display: table; margin: 0 auto !important; ">' . PHP_EOL;
+			$footer_content .= '		<a href="http://www.blackchrome.com.au/portfolio/cycling-kits" target="_external"><img id="footer-logo" width="303" height="92" style="display: table; padding: 10px; margin: 0 auto !important;"' . PHP_EOL; 
+			$footer_content .= 'src="//bimblers.com/wp-content/uploads/2014/09/Blackchrome-Sportswear-2014-logo-trans.png" ' . PHP_EOL;
+			$footer_content .= '		alt="' . get_bloginfo('name') . '"></a>' . PHP_EOL;
+			$footer_content .= '		<p>Proud ambassador for <a href="http://www.blackchrome.com.au/portfolio/cycling-kits" target="_external">Blackchrome Sportswear</a>.</p>' . PHP_EOL;
+			$footer_content .= '	</div>' . PHP_EOL;				
+
+			$footer_title = '';
+			$footer_subtitle = '';
+			$footer_style = 'section-light2';
+			$footer_bg_pic = '';
+			$footer_bg_pic_mode = 'static';
+			$footer_bg_colour = '000000';
+			$footer_bg_opacity = '0.1';
+			$footer_title_colour = 'dd9933';
+			$footer_text_colour = '777777';
+
+			$content .= $this->render_pexeto_box (			
+				$post_content,		
+				$footer_title,
+				$footer_subtitle,
+				$footer_style,
+				$footer_bg_colour,
+				$footer_bg_pic,
+				$footer_bg_opacity,
+				$footer_bg_pic_mode,
+				$footer_title_colour,
+				$footer_text_colour,
+				$footer_content);
+
+
+
 $box_1 = '[bgsection pex_attr_title="Social Climbing" pex_attr_subtitle="Our next ride - Sunday 26 June:" pex_attr_undefined="undefined" pex_attr_style="section-light" pex_attr_bgcolor="000000" pex_attr_image="/wp-content/nggallery/front-page-slider/peloton.jpeg" pex_attr_imageopacity="0.6" pex_attr_bgimagestyle="parallax-scroll" pex_attr_titlecolor="ffffff" pex_attr_textcolor="ffffff"]
 <p style="text-align: center;"><a class="button">Details</a></p>[/bgsection]';
 
