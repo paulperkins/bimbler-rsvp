@@ -4661,22 +4661,6 @@ jQuery(document).ready(function($)
 			$events_bg_opacity = '0.1';
 			$events_title_colour = 'dd9933';
 			$events_text_colour = '777777';
-			$events_content = '-- Event 1
--- Event 2
-
--- Event 1
-
--- Event 1
-
--- Event 2
-
--- Event 1
-
--- Event 2
-
--- Event 2
-';
-
 			$events_content = $this->render_events ();
 
 			$content .= $this->render_pexeto_box (			
