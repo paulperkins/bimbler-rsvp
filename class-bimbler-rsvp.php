@@ -4479,7 +4479,7 @@ jQuery(document).ready(function($)
 			//$output = apply_filters( 'the_content', $content );
 
 
-			error_log ($output);
+			//error_log ($output);
 
 			return $output;
 		}
@@ -4774,49 +4774,6 @@ jQuery(document).ready(function($)
 				$footer_text_colour,
 				$footer_content);
 
-
-
-$box_1 = '[bgsection pex_attr_title="Social Climbing" pex_attr_subtitle="Our next ride - Sunday 26 June:" pex_attr_undefined="undefined" pex_attr_style="section-light" pex_attr_bgcolor="000000" pex_attr_image="/wp-content/nggallery/front-page-slider/peloton.jpeg" pex_attr_imageopacity="0.6" pex_attr_bgimagestyle="parallax-scroll" pex_attr_titlecolor="ffffff" pex_attr_textcolor="ffffff"]
-<p style="text-align: center;"><a class="button">Details</a></p>[/bgsection]';
-
-$box_2 = '[bgsection pex_attr_title="Join Us" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light2" pex_attr_bgcolor="c8e5e9" pex_attr_image="" pex_attr_imageopacity="0.1" pex_attr_bgimagestyle="static" pex_attr_titlecolor="dd9933" pex_attr_textcolor="777777"]
-<p style="text-align: center;">We\'re a Brisbane-based group of social cyclists.</p>
-<p style="text-align: center;">If you\'d like to join us, <a href="/about/">find out more here</a>.</p>[/bgsection]';
-
-
-$box_3 = '[bgsection pex_attr_title="Latest Blog Post Title" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-dark" pex_attr_bgcolor="2f2f2f" pex_attr_image="/wp-content/nggallery/front-page-slider/dave_sworks_beach.jpg" pex_attr_imageopacity="0.5" pex_attr_bgimagestyle="static" pex_attr_titlecolor="ffffff" pex_attr_textcolor="ffffff"]
-<p style="text-align: center;">Some text, with witty words and stuff...</p>
-<p style="text-align: center;">Words words... <a href="http://dfjkhdskjfhdsk">Read more...</a></p>
-[/bgsection]';
-
-$box_4 = '[bgsection pex_attr_title="Up-Coming Events" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light2" pex_attr_bgcolor="c8e5e9" pex_attr_image="" pex_attr_imageopacity="0.1" pex_attr_bgimagestyle="static" pex_attr_titlecolor="dd9933" pex_attr_textcolor="777777"]-- Event 1
-
--- Event 2
-
--- Event 1
-
--- Event 1
-
--- Event 2
-
--- Event 1
-
--- Event 2
-
--- Event 2
-
-[/bgsection]
-';
-
-$box_5 = '[bgsection pex_attr_title="Bimbler Kit" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light" pex_attr_bgcolor="000000" pex_attr_image="/wp-content/uploads/2015/06/Toowoomba-Gang-Final-Crop.jpeg" pex_attr_imageopacity="0.9" pex_attr_bgimagestyle="static" pex_attr_titlecolor="ffffff" pex_attr_textcolor="ffffff"]
-<p style="text-align: center;"><a class="button" href="https://bimblers.com/kit/">Shop</a></p>
-[/bgsection]
-';
-
-$box_6 = '[bgsection pex_attr_title="Photos" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light2" pex_attr_bgcolor="c8e5e9" pex_attr_image="" pex_attr_imageopacity="0.5" pex_attr_bgimagestyle="static" pex_attr_titlecolor="dd9933" pex_attr_textcolor="777777"][/bgsection]
-';
-
-//[bgsection pex_attr_title="Photos" pex_attr_subtitle="" pex_attr_undefined="undefined" pex_attr_style="section-light2" pex_attr_bgcolor="c8e5e9" pex_attr_image="" pex_attr_imageopacity="0.1" pex_attr_bgimagestyle="static" pex_attr_titlecolor="dd9933" pex_attr_textcolor="777777" ][/bgsection]
 
 		//	return $content;
 			echo $content;
