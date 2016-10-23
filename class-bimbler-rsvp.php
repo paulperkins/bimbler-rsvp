@@ -525,8 +525,9 @@ class Bimbler_RSVP {
 			$content .= '	<h3 class="tribe-events-single-section-title">Venue Map</h3>' . PHP_EOL;
 
 
-			$venue_address = $this->get_venue_address($post_id);
+			$venue_name = tribe_get_venue($post_id);
 
+			$venue_address = $this->get_venue_address($post_id);
 
 			if (empty ($venue_address)) {
 
@@ -534,7 +535,7 @@ class Bimbler_RSVP {
 
 			} else {
 
-				$content .= '<div class="next-ride" id="' .  $map_id . '" data-rwgps-id="' . $bimblers_ride->rwgps . '" style="' . $map_style . '" data-venue-address="' . urlencode($venue_address) . '">' . PHP_EOL;
+				$content .= '<div class="next-ride" id="' .  $map_id . '" data-rwgps-id="' . $bimblers_ride->rwgps . '" style="' . $map_style . '" data-venue-address="' . urlencode($venue_address) . '" data-venue-name="' . $venue_name . '">' . PHP_EOL;
 				$content .= '</div><!--/.next-ride -->' . PHP_EOL;
 			}
 
