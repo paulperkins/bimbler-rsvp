@@ -519,13 +519,13 @@ class Bimbler_RSVP {
 
 			$content = '';
 
-//			$rwgps_id = $this->get_rwgps_id ($post_id);
+			$rwgps_id = $this->get_rwgps_id ($post_id);
 
 			$content .= '<div class="tribe-events-meta-group tribe-events-meta-group-organizer vcard" style="width:100%;">' . PHP_EOL;
 			$content .= '	<h3 class="tribe-events-single-section-title">Venue Map</h3>' . PHP_EOL;
 
 
-			$venue_address = $this->get_venue_address($post__id);
+			$venue_address = $this->get_venue_address($post_id);
 
 
 			if (empty ($venue_address)) {
@@ -536,22 +536,6 @@ class Bimbler_RSVP {
 
 				$content .= '<div class="next-ride" id="' .  $map_id . '" data-rwgps-id="' . $bimblers_ride->rwgps . '" style="' . $map_style . '" data-venue-address="' . urlencode($venue_address) . '">' . PHP_EOL;
 				$content .= '</div><!--/.next-ride -->' . PHP_EOL;
-
-
-/*
-				$map_div = 'tribe-events-gmap-' . $post_id;
-				
-				$content .= '			<div id="' . $map_div . '" style="'. $map_style . '" class="bimbler_event_map" data-venue-address="' . urlencode($venue_address) . '"></div>' . PHP_EOL;
-				
-				// Fake clicking the first tab.
-				$content .= '<script type="text/javascript">$(\'a[data-toggle="pill"]:first\').trigger("shown.bs.tab");</script>' . PHP_EOL; 
-*/
-
-/*				$content .= '				<div class="tribe-events-venue-map">' . PHP_EOL;
-				$content .= tribe_get_embedded_map ($post_id, '100%', '150px', true) . PHP_EOL;
-				$content .= '				</div>' . PHP_EOL; 
-*/
-				
 			}
 
 			$content .= '</div>' . PHP_EOL;
