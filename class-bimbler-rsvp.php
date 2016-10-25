@@ -452,13 +452,13 @@ class Bimbler_RSVP {
   			// TODO: Move into admin code.
   			
   			// Only load if an admin user / can update eevents.
-			if ($this->can_modify_attendance (get_queried_object_id())) {
+/*			if ($this->can_modify_attendance (get_queried_object_id())) {
 	  			wp_register_style( 'bimbler-select2-style', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css' );
 	  			wp_enqueue_style( 'bimbler-select2-style' );
 	  			
 	  			wp_register_script ('bimbler-select2-script', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js', array( 'jquery' ) );
 	  			wp_enqueue_script( 'bimbler-select2-script');
-  			}
+  			} */
   		}
   		
   		/*
@@ -519,13 +519,13 @@ class Bimbler_RSVP {
 
 			$content = '';
 
-			$rwgps_id = $this->get_rwgps_id ($post_id);
+			//$rwgps_id = $this->get_rwgps_id ($post_id);
 
 			$content .= '<div class="tribe-events-meta-group tribe-events-meta-group-organizer vcard" style="width:100%;">' . PHP_EOL;
 			$content .= '	<h3 class="tribe-events-single-section-title">Venue Map</h3>' . PHP_EOL;
 
 
-			$venue_name = tribe_get_venue($post_id);
+			$venue_name = tribe_get_venue($post_id); // Note: this is already URL-encoded.
 
 			$venue_address = $this->get_venue_address($post_id);
 
@@ -535,7 +535,8 @@ class Bimbler_RSVP {
 
 			} else {
 
-				$content .= '<div class="next-ride" id="' .  $map_id . '" data-rwgps-id="' . $bimblers_ride->rwgps . '" style="' . $map_style . '" data-venue-address="' . urlencode($venue_address) . '" data-venue-name="' . $venue_name . '">' . PHP_EOL;
+//				$content .= '<div class="next-ride" id="' .  $map_id . '" data-rwgps-id="' . $rwgps_id . '" style="' . $map_style . '" data-venue-address="' . urlencode($venue_address) . '" data-venue-name="' . $venue_name . '">' . PHP_EOL;
+				$content .= '<div class="next-ride" id="' .  $map_id . '"                                   style="' . $map_style . '" data-venue-address="' . urlencode($venue_address) . '" data-venue-name="' . $venue_name . '">' . PHP_EOL;
 				$content .= '</div><!--/.next-ride -->' . PHP_EOL;
 			}
 
@@ -1616,13 +1617,13 @@ class Bimbler_RSVP {
 								
 							</table>
 							
-<script type="text/javascript">
-	jQuery(document).ready(function($)
+<!--<script type="text/javascript">
+/*	jQuery(document).ready(function($)
 	{
 		$(".bimbler-select2-event-hosts").select2();
-	});
+	});*/
 	
-</script>
+</script>-->
 					<?php 
 				}		
 
@@ -1874,7 +1875,7 @@ class Bimbler_RSVP {
 			}
 		
 			// now add the gallery to the database
-			$galleryID = nggdb::add_gallery($title, $defaultpath . $name, '', 0, 0, $user_ID );
+			$galleryID = nggdb::add_gallery($title, $defaultpath . $name, $title, 0, 0, $user_ID );
 			// here you can inject a custom function
 			do_action('ngg_created_new_gallery', $galleryID);
 		
