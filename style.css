@@ -7035,3 +7035,13 @@ html:not(.watch-active-state) .toolbar a.link:active,
 
 /* End Framework7. */
 
+
+/* Hide event Google and iCal links. */
+.single-tribe_events .tribe-events-cal-links  {
+    display: none !important;
+}
+
+/* Hide Export Month button. */
+#tribe-events-content a.tribe-events-ical {
+    display: none !important;
+}
