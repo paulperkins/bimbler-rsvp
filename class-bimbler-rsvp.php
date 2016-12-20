@@ -327,7 +327,7 @@ class Bimbler_RSVP {
         	add_filter('comment_form_defaults', array ($this, 'comment_reform'));
 
 			// Display ride map as if it is part of the Events Calendar meta.
-			add_filter ('tribe_events_single_event_the_meta_addon', array ($this, 'add_venue_map_meta'));
+//			add_filter ('tribe_events_single_event_the_meta_addon', array ($this, 'add_venue_map_meta'));
 
 			// Display ride hosts as if they were part of the Events Calendar meta.
 			add_filter ('tribe_events_single_event_the_meta_addon', array ($this, 'add_host_meta'));
