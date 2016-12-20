@@ -326,9 +326,6 @@ class Bimbler_RSVP {
         	// Change 'Leave a Reply' on comment form.
         	add_filter('comment_form_defaults', array ($this, 'comment_reform'));
 
-			// Display ride map as if it is part of the Events Calendar meta.
-//			add_filter ('tribe_events_single_event_the_meta_addon', array ($this, 'add_venue_map_meta'));
-
 			// Display ride hosts as if they were part of the Events Calendar meta.
 			add_filter ('tribe_events_single_event_the_meta_addon', array ($this, 'add_host_meta'));
         	
@@ -509,43 +506,6 @@ class Bimbler_RSVP {
 		return trim($address);
 	}
 
-
-		function add_venue_map_meta ($content) {
-
-			$map_id = 'bimbler-next-ride-map';
-			$map_style = "width: 100%; height: 270px;";
-
-			global $wp_query;
-			$post_id = $wp_query->post->ID;
-
-			$content = '';
-
-			//$rwgps_id = $this->get_rwgps_id ($post_id);
-
-			$content .= '<div class="tribe-events-meta-group tribe-events-meta-group-organizer vcard" style="width:100%;">' . PHP_EOL;
-			$content .= '	<h3 class="tribe-events-single-section-title">Venue Map</h3>' . PHP_EOL;
-
-
-			$venue_name = tribe_get_venue($post_id); // Note: this is already URL-encoded.
-
-			$venue_address = $this->get_venue_address($post_id);
-
-			if (empty ($venue_address)) {
-
-				$content .= "<p>This event does not yet have a venue.</p>";
-
-			} else {
-
-//				$content .= '<div class="next-ride" id="' .  $map_id . '" data-rwgps-id="' . $rwgps_id . '" style="' . $map_style . '" data-venue-address="' . urlencode($venue_address) . '" data-venue-name="' . $venue_name . '">' . PHP_EOL;
-				$content .= '<div class="next-ride" id="' .  $map_id . '"                                   style="' . $map_style . '" data-venue-address="' . urlencode($venue_address) . '" data-venue-name="' . $venue_name . '">' . PHP_EOL;
-				$content .= '</div><!--/.next-ride -->' . PHP_EOL;
-			}
-
-			$content .= '</div>' . PHP_EOL;
-
-			return $content;
-		}
-  		
 		// Show ride hosts in the Events Calendar meta box.
 		function add_host_meta ($content) {
 			
