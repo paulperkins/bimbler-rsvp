@@ -424,6 +424,7 @@ class Bimbler_RSVP {
   		 */
   		function add_stylesheet() {
   			wp_register_style( 'bimbler-rsvp-style', plugins_url('style.css', __FILE__) );
+//  			wp_register_style( 'bimbler-rsvp-style', plugins_url('style.css?v=' . time(), __FILE__) );
   			wp_enqueue_style( 'bimbler-rsvp-style' );
   			
   			wp_register_script ('bimbler-rsvp-script', plugin_dir_url( __FILE__ ) . 'js/bimbler.js', array( 'jquery' ) );
@@ -452,13 +453,13 @@ class Bimbler_RSVP {
   			// TODO: Move into admin code.
   			
   			// Only load if an admin user / can update eevents.
-/*			if ($this->can_modify_attendance (get_queried_object_id())) {
+			if ($this->can_modify_attendance (get_queried_object_id())) {
 	  			wp_register_style( 'bimbler-select2-style', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css' );
 	  			wp_enqueue_style( 'bimbler-select2-style' );
 	  			
 	  			wp_register_script ('bimbler-select2-script', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js', array( 'jquery' ) );
 	  			wp_enqueue_script( 'bimbler-select2-script');
-  			} */
+  			} 
   		}
   		
   		/*
@@ -1617,13 +1618,13 @@ class Bimbler_RSVP {
 								
 							</table>
 							
-<!--<script type="text/javascript">
-/*	jQuery(document).ready(function($)
+<script type="text/javascript">
+	jQuery(document).ready(function($)
 	{
 		$(".bimbler-select2-event-hosts").select2();
-	});*/
+	});
 	
-</script>-->
+</script>
 					<?php 
 				}		
 
