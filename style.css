@@ -7045,3 +7045,9 @@ html:not(.watch-active-state) .toolbar a.link:active,
 #tribe-events-content a.tribe-events-ical {
     display: none !important;
 }
+
+/* Show navbar above month. */
+.tribe-events-month #tribe-events-header .tribe-events-sub-nav .tribe-events-nav-next a, .tribe-events-month #tribe-events-header .tribe-events-sub-nav li {
+   display: block;
+}
+
