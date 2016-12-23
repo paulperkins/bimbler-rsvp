@@ -350,6 +350,11 @@ class Bimbler_RSVP {
 			// Block spam comments - where author is not set.
 			add_filter ('pre_comment_approved', array ($this, 'bimbler_validate_comment'), 50, 2);
 
+
+			// Make sure iCal link returns events we want it to.
+			add_filter ('tribe_ical_feed_month_view_query_args', array ($this, 'bimbler_tribe_ical_query'), 50, 2);
+
+
 			// Shortcodes.
 
 			// Full-width rendering of home page.
@@ -420,8 +425,8 @@ class Bimbler_RSVP {
   		 * Enqueue plugin style-file
   		 */
   		function add_stylesheet() {
-  			wp_register_style( 'bimbler-rsvp-style', plugins_url('style.css', __FILE__) );
-//  			wp_register_style( 'bimbler-rsvp-style', plugins_url('style.css?v=' . time(), __FILE__) );
+//  			wp_register_style( 'bimbler-rsvp-style', plugins_url('style.css', __FILE__) );
+  			wp_register_style( 'bimbler-rsvp-style', plugins_url('style.css?v=' . time(), __FILE__) );
   			wp_enqueue_style( 'bimbler-rsvp-style' );
   			
   			wp_register_script ('bimbler-rsvp-script', plugin_dir_url( __FILE__ ) . 'js/bimbler.js', array( 'jquery' ) );
@@ -4782,6 +4787,35 @@ jQuery(document).ready(function($)
 
 		//	return $content;
 			echo $content;
+		}
+
+		/* 
+			New version of Tribe Events Calendar includes iCal functionality in the free version.
+			Override query args to how we like them:
+			 - all events 
+			 - from 6 months back
+			 - no end date. 
+		*/
+		function bimbler_tribe_ical_query ($args, $month) {
+
+//			error_log ('iCal filter firing: ' . print_r ($args, true));
+
+			// Remove hide_upcoming.
+			unset ($args['hide_upcoming']);
+
+			// Show all events, will be set to 'custom' by TEC.
+			$args['eventDisplay'] = 'custom';
+
+			// Show back 6 months and forward until the end of time.
+            $date_from = date('Y-m-d', strtotime('-6 months'));
+			$args['start_date'] = $date_from;
+
+			// Remove end_date - will default to the end of the month.
+			unset ($args['end_date']);
+
+			// error_log ('iCal filter updated: ' . print_r ($args, true));
+
+			return $args;
 		}
 
 
