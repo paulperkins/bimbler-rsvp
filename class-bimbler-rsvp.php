@@ -4736,7 +4736,9 @@ jQuery(document).ready(function($)
 			$photos_bg_opacity = '0.1';
 			$photos_title_colour = 'dd9933';
 			$photos_text_colour = '777777';
-			$photos_content = '<div class="section-boxed" style="display: table; margin: 0 auto;">[ngg_images xgallery_ids=1 source=recent_images display_type=photocrati-nextgen_basic_thumbnails disable_pagination=1 images_per_page=4 order_by=imagedate order_direction=DESC]</div>';
+
+			$gallery_shortcode = '[justified_image_grid preset=10 last_row=flexible ng_recent_images=yes]';
+			$photos_content = '<div class="section-boxed">' . $gallery_shortcode . '</div>';
 
 			$content .= $this->render_pexeto_box (			
 				$post_content,		
