@@ -4737,7 +4737,7 @@ jQuery(document).ready(function($)
 			$photos_title_colour = 'dd9933';
 			$photos_text_colour = '777777';
 
-			$gallery_shortcode = '[justified_image_grid preset=10 last_row=flexible ng_recent_images=yes]';
+			$gallery_shortcode = '[justified_image_grid preset=1 caption=off last_row=flexible ng_recent_images=yes]';
 			$photos_content = '<div class="section-boxed">' . $gallery_shortcode . '</div>';
 
 			$content .= $this->render_pexeto_box (			
