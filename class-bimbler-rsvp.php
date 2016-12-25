@@ -4727,7 +4727,7 @@ jQuery(document).ready(function($)
 				$kit_page_text_colour,
 				$kit_page_content);
 
-			$photos_title = 'Photos';
+			$photos_title = 'Recent Photos';
 			$photos_subtitle = '';
 			$photos_style = 'section-light2';
 			$photos_bg_pic = '';
