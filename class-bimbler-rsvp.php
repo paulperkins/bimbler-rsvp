@@ -1950,7 +1950,7 @@ class Bimbler_RSVP {
 			foreach ($_POST['bimbler_ride_hosts'] as $host) {
 
 				// Only insert a new RSVP if this user is not already attending.				
-				if (null == $this->get_current_rsvp($event_id, $host)) {
+				if (null === $this->get_current_rsvp($event_id, $host)) {
 					error_log ('Adding RSVP for user ID ' . $host . ' as host of event ID ' . $event_id);
 
 					$this->insert_rsvp ($event_id, $host, 'Y');
