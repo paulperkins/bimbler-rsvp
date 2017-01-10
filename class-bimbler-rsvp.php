@@ -469,7 +469,8 @@ class Bimbler_RSVP {
   		 */
   		public function wp_complete() {
   			global $current_user;
-  			get_currentuserinfo();
+  			//get_currentuserinfo();
+			wp_get_current_user ();
   		
   			// User ID
   			$user_id = $current_user->ID;
@@ -641,7 +642,8 @@ class Bimbler_RSVP {
   				
   			if (null === $user_id) {
   				global $current_user;
-  				get_currentuserinfo();
+  				//get_currentuserinfo();
+				wp_get_current_user ();
   				$user_id = $current_user->ID;
   				
   			}
@@ -697,7 +699,8 @@ class Bimbler_RSVP {
   		
   			if (null === $user_id) {
   				global $current_user;
-  				get_currentuserinfo();
+  				//get_currentuserinfo();
+				wp_get_current_user ();
   				$user_id = $current_user->ID;
   			}
   		
@@ -1148,7 +1151,8 @@ class Bimbler_RSVP {
 			if (is_user_logged_in() && is_single() && !$this->has_event_passed ($postid)) {
 				
 				global $current_user;
-				get_currentuserinfo();
+				//get_currentuserinfo();
+				wp_get_current_user ();
 				
 				if (!$rsvps_open) {
 					$html  = '<div id="rsvp-form">';
@@ -1759,7 +1763,8 @@ class Bimbler_RSVP {
 			$storage  = C_Gallery_Storage::get_instance();
 		
 			// get the current user ID
-			get_currentuserinfo();
+			//get_currentuserinfo();
+			wp_get_current_user ();
 		
 			//cleanup pathname
 			$name = sanitize_file_name( sanitize_title($title)  );
@@ -2127,7 +2132,8 @@ class Bimbler_RSVP {
 						error_log ('    Could not update row: '. $wpdb->print_error());
 					} else {
 							
-						get_currentuserinfo();
+						//get_currentuserinfo();
+						wp_get_current_user();
 			
 						// Only send an email for 'yes' RSVPs.
 						if ('Y' == $rsvp) {
@@ -2195,7 +2201,8 @@ class Bimbler_RSVP {
 				error_log ('   Could not insert row: '. $wpdb->print_error());
 			}
 
-			get_currentuserinfo();
+			//get_currentuserinfo();
+			wp_get_current_user();
 
 			// Admin updates will not trigger a notification.
 			if (('Y' == $rsvp) && ($user_id == $current_user->ID)) {
@@ -2371,7 +2378,8 @@ jQuery(document).ready(function($)
 						}
 					} else {
 						global $current_user;
-						get_currentuserinfo();
+						//get_currentuserinfo();
+						wp_get_current_user();
 							
 						// User ID
 						$user_id = $current_user->ID;
@@ -2491,7 +2499,8 @@ jQuery(document).ready(function($)
 						$user_id = $ajax_post['rsvp_user'];
 						} else {
 							global $current_user;
-							get_currentuserinfo();
+							//get_currentuserinfo();
+							wp_get_current_user();
 				
 							// User ID
 							$user_id = $current_user->ID;
@@ -3245,7 +3254,8 @@ jQuery(document).ready(function($)
 			$notify_users = array ();
 			
 			global $current_user;
-			get_currentuserinfo();
+			//get_currentuserinfo();
+			wp_get_current_user ();
 			$user_id = $current_user->ID;
 				
 			
@@ -3937,7 +3947,8 @@ jQuery(document).ready(function($)
                 if (isset ($event_id)) {
 
                         global $current_user;
-                        get_currentuserinfo();
+                        //get_currentuserinfo();
+						wp_get_current_user ();
 
                         $host_users = Bimbler_RSVP::get_instance()->get_event_host_users ($event_id);
 
@@ -4364,7 +4375,8 @@ jQuery(document).ready(function($)
 						<?php if (is_user_logged_in()) {
 								
 							global $current_user;
-							get_currentuserinfo();
+							//get_currentuserinfo();
+							wp_get_current_user ();
 							
 							// User ID
 							$user_id = $current_user->ID;
@@ -4412,15 +4424,16 @@ jQuery(document).ready(function($)
 
 			$posts = tribe_get_events(array(
 				'posts_per_page' 	=> 10, //$instance["events_num"],
-				'eventDisplay' 		=> 'upcoming',
+//				'eventDisplay' 		=> 'upcoming',
+				'eventDisplay' 		=> 'list',
 				'tax_query' 		=> array(
 											'relation' 	=> 'OR', 
 											array(
-												'taxonomy' => TribeEvents::TAXONOMY,
+												'taxonomy' => Tribe__Events__Main::TAXONOMY, //TribeEvents::TAXONOMY,
 															'field' => 'slug',
 															'terms' => 'bimble'),
 											array(
-												'taxonomy' => TribeEvents::TAXONOMY,
+												'taxonomy' => Tribe__Events__Main::TAXONOMY, //TribeEvents::TAXONOMY,
 															'field' => 'slug',
 															'terms' => 'social')
 											)
@@ -4662,7 +4675,7 @@ jQuery(document).ready(function($)
 			$latest_post_style = 'section-dark';
 			$latest_post_content = $latest_post->post_excerpt; //'<p style="text-align: center;">Some text, with witty words and stuff...</p>' . $PHP_EOL . '<p style="text-align: center;">Words words... <a href="http://dfjkhdskjfhdsk">Read more...</a></p>';
 
-			$latest_post_content .= $PHP_EOL . '<p><a class="button" href="' . $latest_post_url  . '">Read more</a></p>';
+			$latest_post_content .= PHP_EOL . '<p><a class="button" href="' . $latest_post_url  . '">Read more</a></p>';
 
 			$content .= $this->render_pexeto_box (			
 				$post_content,		
