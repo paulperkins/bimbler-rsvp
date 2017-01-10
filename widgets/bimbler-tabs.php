@@ -123,7 +123,7 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 					<?php if (is_user_logged_in()) {
 							
 						global $current_user;
-						get_currentuserinfo();
+						wp_get_current_user();
 						
 						// User ID
 						$user_id = $current_user->ID;
@@ -429,15 +429,15 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 					
 						$posts = tribe_get_events(array(
 							'posts_per_page' 	=> $instance["events_num"],
-							'eventDisplay' 		=> 'upcoming',
+							'eventDisplay' 		=> 'list',// 'upcoming',
 							'tax_query' 		=> array(
 														'relation' 	=> 'OR', 
 														array(
-															'taxonomy' => TribeEvents::TAXONOMY,
+															'taxonomy' => Tribe__Events__Main::TAXONOMY,
 																		'field' => 'slug',
 																		'terms' => 'bimble'),
 														array(
-															'taxonomy' => TribeEvents::TAXONOMY,
+															'taxonomy' => Tribe__Events__Main::TAXONOMY,
 																		'field' => 'slug',
 																		'terms' => 'social')
 														)
@@ -484,15 +484,15 @@ class Bimbler_Tabs_Widget extends WP_Widget {
 //        				'start_date' => '2012-10-01',
 //        				'end_date' => '2012-10-31',
 						'posts_per_page' 	=> $instance["mingler_events_num"],
-						'eventDisplay' 		=> 'upcoming',
+						'eventDisplay' 		=> 'list', //'upcoming',
 						'tax_query' 		=> array(
 													'relation' 	=> 'OR', 
 													array(
-														'taxonomy' => TribeEvents::TAXONOMY,
+														'taxonomy' => Tribe__Events__Main::TAXONOMY,
 																	'field' => 'slug',
 																	'terms' => 'mingle'),
 													array(
-														'taxonomy' => TribeEvents::TAXONOMY,
+														'taxonomy' => Tribe__Events__Main::TAXONOMY,
 																	'field' => 'slug',
 																	'terms' => 'social')
 													)
