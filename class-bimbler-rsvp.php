@@ -2106,7 +2106,8 @@ class Bimbler_RSVP {
 			//error_log ('  Comment: ' . $comment);
 			//error_log ('  Guests:  ' . $guests); 
 				
-			date_default_timezone_set('Australia/Brisbane');
+//			date_default_timezone_set('Australia/Brisbane');
+			$this->set_timezone ();
 
 			// If this is an admin update (user ID != current user ID), don't set the timestamp, and don't send an email notification.
 			if ($user_id == $current_user->ID) {
@@ -3710,7 +3711,8 @@ jQuery(document).ready(function($)
 			global $wpdb;
 			global $rsvp_db_table;
 				
-			date_default_timezone_set('Australia/Brisbane');
+//			date_default_timezone_set('Australia/Brisbane');
+			$this->set_timezone ();			
 			
 			$table_name = $wpdb->base_prefix . $rsvp_db_table;
 		
@@ -3881,7 +3883,7 @@ jQuery(document).ready(function($)
 		function set_timezone () {
 			global $bimbler_timezone;
 		
-			date_default_timezone_set($bimbler_timezone);
+//			date_default_timezone_set($bimbler_timezone);
 		}
 
 		/**
@@ -3968,7 +3970,8 @@ jQuery(document).ready(function($)
 
 		function get_next_event () {
 			// Fix-up timezone bug.
-			date_default_timezone_set('Australia/Brisbane');
+//			date_default_timezone_set('Australia/Brisbane');
+			$this->set_timezone ();
 
 			$posts = tribe_get_events(array(
 					'eventDisplay'          => 'all',
@@ -3983,8 +3986,9 @@ jQuery(document).ready(function($)
 		function get_future_events ($events_per_page) {
 			
 			// Fix-up timezone bug.
-			date_default_timezone_set('Australia/Brisbane');
-	
+//			date_default_timezone_set('Australia/Brisbane');
+			$this->set_timezone ();	
+
 			$posts = tribe_get_events( array(
 				'eventDisplay' 	=> 'custom',
 				'posts_per_page'=>	-1,
@@ -4006,7 +4010,8 @@ jQuery(document).ready(function($)
 		function get_upcoming_events ($events_per_page) {
 			
 			// Fix-up timezone bug.
-			date_default_timezone_set('Australia/Brisbane');
+//			date_default_timezone_set('Australia/Brisbane');
+			$this->set_timezone ();
 
 			// Fallback, but sometimes gets the order wrong.
 			$posts = tribe_get_events(array(
@@ -4038,8 +4043,9 @@ jQuery(document).ready(function($)
 		function get_past_events ($events_per_page) {
 		
 			// Fix-up timezone bug.
-			date_default_timezone_set('Australia/Brisbane');
-		
+//			date_default_timezone_set('Australia/Brisbane');
+			$this->set_timezone ();
+
 			$posts = tribe_get_events( array(
 					'eventDisplay' 	=> 'custom',
 					'posts_per_page'=>	$events_per_page,
@@ -4059,8 +4065,9 @@ jQuery(document).ready(function($)
 		function get_added_events ($events_per_page) {
 		
 			// Fix-up timezone bug.
-			date_default_timezone_set('Australia/Brisbane');
-				
+//			date_default_timezone_set('Australia/Brisbane');
+			$this->set_timezone ();
+							
 			$posts = tribe_get_events( array(
 					'eventDisplay'   => 'all', //'upcoming',
 					'posts_per_page' => $events_per_page,
@@ -4077,8 +4084,9 @@ jQuery(document).ready(function($)
 			
 			$date_str = 'D j M';
 
-			date_default_timezone_set('Australia/Brisbane');
-		
+//			date_default_timezone_set('Australia/Brisbane');
+			$this->set_timezone ();
+
 			// Get the details of the first ride.
 			$get_posts = tribe_get_events(array( // Show next ride, even if in-progress.
 					'eventDisplay'		=> 'all',
