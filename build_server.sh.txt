@@ -50,7 +50,7 @@ rsync -av wordpress/* /var/www/this_machine/
 chown -R www-data:www-data /var/www/this_machine/
 
 echo 'create database wordpress;' > ~/create_db.sql
-echo 'create user '\''wordpress'\''@localhost identified by '\''w0rdpr3ss'\'';' >> ~/create_db.sql
+echo 'create user '\''wordpress'\''@localhost identified by '\''xxxxxxx'\'';' >> ~/create_db.sql
 echo 'grant all privileges on wordpress.* to '\''wordpress'\''@localhost with grant option;' >> ~/create_db.sql
 echo 'flush privileges;' >> ~/create_db.sql
 
